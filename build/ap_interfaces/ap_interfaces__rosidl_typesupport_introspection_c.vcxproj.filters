@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_typesupport_introspection_c\ap_interfaces\msg\detail\pos__type_support.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_typesupport_introspection_c\ap_interfaces\msg\detail\pos__rosidl_typesupport_introspection_c.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\CMakeFiles\130aad8d39a629665e15de8f498b7ab0\pos__rosidl_typesupport_introspection_c.h.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ifate\Documents\ros2_airplay\src\ap_interfaces\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B938F891-FAFE-3DE8-A42C-7E9CC4D0CCD2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{D2D50A17-EFFF-3DA7-B85A-E96B5035D56A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{FE56BBE4-027D-3590-8187-D2BE60117453}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

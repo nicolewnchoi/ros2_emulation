@@ -1,0 +1,28 @@
+^C:\USERS\IFATE\DOCUMENTS\ROS2_AIRPLAY\BUILD\AP_INTERFACES\CMAKEFILES\BCE26AAA7BD02A223AC2064DDC2F109C\POS.HPP.RULE
+setlocal
+C:\opt\ros\foxy\x64\python.exe C:/opt/ros/foxy/x64/share/rosidl_generator_cpp/cmake/../../../lib/rosidl_generator_cpp/rosidl_generator_cpp --generator-arguments-file C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_generator_cpp__arguments.json
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\IFATE\DOCUMENTS\ROS2_AIRPLAY\BUILD\AP_INTERFACES\CMAKEFILES\8AA0F424DECEB95E134FE355C1C506EB\AP_INTERFACES__CPP.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\IFATE\DOCUMENTS\ROS2_AIRPLAY\SRC\AP_INTERFACES\CMAKELISTS.TXT
+setlocal
+C:\opt\ros\foxy\x64\Lib\site-packages\cmake\data\bin\cmake.exe -SC:/Users/ifate/Documents/ros2_airplay/src/ap_interfaces -BC:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces --check-stamp-file C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

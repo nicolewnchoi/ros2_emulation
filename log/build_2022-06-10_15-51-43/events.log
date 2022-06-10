@@ -1,0 +1,279 @@
+[0.000000] (-) TimerEvent: {}
+[0.016000] (ap_interfaces) JobQueued: {'identifier': 'ap_interfaces', 'dependencies': OrderedDict()}
+[0.016000] (ap_interfaces) JobStarted: {'identifier': 'ap_interfaces'}
+[0.094000] (ap_interfaces) JobProgress: {'identifier': 'ap_interfaces', 'progress': 'cmake'}
+[0.094000] (ap_interfaces) Command: {'cmd': ['c:\\opt\\ros\\foxy\\x64\\Scripts\\cmake.EXE', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\src\\ap_interfaces', '-DCMAKE_INSTALL_PREFIX=C:\\Users\\ifate\\Documents\\ros2_airplay\\install'], 'cwd': 'C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces', 'env': OrderedDict([('ALLUSERSPROFILE', 'C:\\ProgramData'), ('AMENT_PREFIX_PATH', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install;c:\\opt\\ros\\foxy\\x64'), ('APPDATA', 'C:\\Users\\ifate\\AppData\\Roaming'), ('BT_PANEL', 'C:\\BtSoft\\panel'), ('BT_PYTHON', 'C:\\Program Files\\python'), ('BT_SETUP', 'C:\\BtSoft'), ('ChocolateyInstall', 'C:\\ProgramData\\chocolatey'), ('ChocolateyLastPathUpdate', '132978260262394475'), ('chocolatey_bin_root', 'C:\\Tools'), ('CMAKE_PREFIX_PATH', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install;C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg\\installed\\x64-windows;c:\\opt\\ros\\foxy\\x64'), ('COLCON', '1'), ('COLCON_PREFIX_PATH', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install\\;c:\\opt\\ros\\foxy\\x64\\'), ('CommonProgramFiles', 'C:\\Program Files\\Common Files'), ('CommonProgramFiles(x86)', 'C:\\Program Files (x86)\\Common Files'), ('CommonProgramW6432', 'C:\\Program Files\\Common Files'), ('COMPUTERNAME', 'DESKTOP-15LOCBO'), ('ComSpec', 'C:\\WINDOWS\\system32\\cmd.exe'), ('DriverData', 'C:\\Windows\\System32\\Drivers\\DriverData'), ('GNUPLOT_LIB', 'C:\\Program Files\\gnuplot\\demo;C:\\Program Files\\gnuplot\\demo\\games;C:\\Program Files\\gnuplot\\share'), ('GSTREAMER_1_0_ROOT_X86_64', 'C:\\gstreamer\\1.0\\x86_64\\'), ('GST_PLUGIN_PATH_1_0', 'C:\\gstreamer\\1.0\\x86_64\\lib\\gstreamer-1.0'), ('Home', 'C:\\Users\\ifate'), ('HOMEDRIVE', 'C:'), ('HOMEPATH', '\\Users\\ifate'), ('INTEL_DEV_REDIST', 'C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\'), ('JAVA_HOME', 'C:\\Program Files\\Java\\jdk-11.0.7'), ('KEYSHOT9', 'C:\\Users\\Public\\Documents\\KeyShot 9'), ('LOCALAPPDATA', 'C:\\Users\\ifate\\AppData\\Local'), ('LOGONSERVER', '\\\\DESKTOP-15LOCBO'), ('MIC_LD_LIBRARY_PATH', 'C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\compiler\\lib\\mic'), ('NUMBER_OF_PROCESSORS', '8'), ('OneDrive', 'C:\\Users\\ifate\\OneDrive'), ('OneDriveConsumer', 'C:\\Users\\ifate\\OneDrive'), ('OnlineServices', 'Online Services'), ('OpenCV_DIR', 'C:\\opencv'), ('OPENSSL_CONF', 'C:\\Program Files\\OpenSSL-Win64\\bin\\openssl.cfg'), ('OS', 'Windows_NT'), ('Path', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install\\bin;c:\\opt\\ros\\foxy\\x64\\;c:\\opt\\ros\\foxy\\x64\\opt\\rviz_ogre_vendor\\bin;C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg\\installed\\x64-windows\\bin;C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg;c:\\opt\\ros\\foxy\\x64\\Scripts;c:\\opt\\ros\\foxy\\x64\\bin;C:\\Python38\\Scripts\\;C:\\Python38\\;C:\\Python310\\Scripts\\;C:\\Python310\\;C:\\Python35\\Scripts\\;C:\\Python35\\;C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\redist\\intel64\\compiler;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\Java\\jdk-11.0.7\\bin;C:\\Program Files\\python;C:\\Program Files\\python\\Scripts;C:\\BtSoft\\panel\\script;C:\\Program Files (x86)\\Calibre2\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\gstreamer\\1.0\\x86_64\\bin;C:\\mingw64\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\ProgramData\\chocolatey\\bin;C:\\Strawberry\\c\\bin;C:\\Strawberry\\perl\\site\\bin;C:\\Strawberry\\perl\\bin;C:\\Program Files\\Pandoc\\;C:\\Program Files\\OpenSSL-Win64\\bin\\;C:\\opencv\\x64\\vc16\\bin;C:\\Program Files\\CMake\\bin;C:\\ProgramData\\chocolatey\\lib\\cunit\\lib;C:\\ProgramData\\chocolatey\\lib\\tinyxml2\\lib;C:\\ProgramData\\chocolatey\\lib\\log4cxx\\lib;C:\\ProgramData\\chocolatey\\lib\\bullet\\lib;C:\\Program Files\\Graphviz\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\MATLAB\\R2022a\\bin;C:\\Users\\ifate\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\ifate\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\ifate\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\ifate\\AppData\\Roaming\\npm;C:\\Program Files (x86)\\Brackets\\;C:\\Users\\ifate\\AppData\\Roaming\\TinyTeX\\bin\\win32'), ('PATHEXT', '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW'), ('PKG_CONFIG_PATH', 'c:\\opt\\ros\\foxy\\x64\\lib\\pkgconfig'), ('platformcode', 'AN'), ('PROCESSOR_ARCHITECTURE', 'AMD64'), ('PROCESSOR_IDENTIFIER', 'Intel64 Family 6 Model 142 Stepping 12, GenuineIntel'), ('PROCESSOR_LEVEL', '6'), ('PROCESSOR_REVISION', '8e0c'), ('ProgramData', 'C:\\ProgramData'), ('ProgramFiles', 'C:\\Program Files'), ('ProgramFiles(x86)', 'C:\\Program Files (x86)'), ('ProgramW6432', 'C:\\Program Files'), ('PROMPT', '$P$G'), ('PSModulePath', 'C:\\Program Files\\WindowsPowerShell\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules'), ('PUBLIC', 'C:\\Users\\Public'), ('PYTHONPATH', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install\\Lib\\site-packages;c:\\opt\\ros\\foxy\\x64\\Lib\\site-packages'), ('RegionCode', 'APJ'), ('ROS_DISTRO', 'foxy'), ('ROS_ETC_DIR', 'C:\\opt\\ros\\foxy\\x64\\etc\\ros'), ('ROS_LOCALHOST_ONLY', '0'), ('ROS_PYTHON_VERSION', '3'), ('ROS_VERSION', '2'), ('SDF_PATH', 'C:\\opt\\ros\\foxy\\x64\\share\\sdformat\\1.6'), ('SESSIONNAME', 'Console'), ('SystemDrive', 'C:'), ('SystemRoot', 'C:\\WINDOWS'), ('TEMP', 'C:\\Users\\ifate\\AppData\\Local\\Temp'), ('TMP', 'C:\\Users\\ifate\\AppData\\Local\\Temp'), ('UNRAR_LIB_PATH', 'C:\\Program Files\\python\\Lib\\site-packages\\unrar\\UnRAR.dll'), ('USERDOMAIN', 'DESKTOP-15LOCBO'), ('USERDOMAIN_ROAMINGPROFILE', 'DESKTOP-15LOCBO'), ('USERNAME', 'ifate'), ('USERPROFILE', 'C:\\Users\\ifate'), ('VCPKG_DEFAULT_TRIPLET', 'x64-windows'), ('VCPKG_ROOT', 'C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg'), ('windir', 'C:\\WINDOWS'), ('ZES_ENABLE_SYSMAN', '1')]), 'shell': False}
+[0.109000] (-) TimerEvent: {}
+[0.219000] (-) TimerEvent: {}
+[0.281000] (ap_interfaces) StdoutLine: {'line': b'-- Selecting Windows SDK version 10.0.19041.0 to target Windows 10.0.19044.\n'}
+[0.312000] (ap_interfaces) StdoutLine: {'line': b'-- Found ament_cmake: 0.9.9 (C:/opt/ros/foxy/x64/share/ament_cmake/cmake)\n'}
+[0.328000] (-) TimerEvent: {}
+[0.375000] (ap_interfaces) StdoutLine: {'line': b'-- Found PythonInterp: C:/opt/ros/foxy/x64/python.exe (found suitable version "3.8.3", minimum required is "3") \n'}
+[0.375000] (ap_interfaces) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: C:/opt/ros/foxy/x64/python.exe\n'}
+[0.437000] (-) TimerEvent: {}
+[0.547000] (-) TimerEvent: {}
+[0.656000] (-) TimerEvent: {}
+[0.766000] (-) TimerEvent: {}
+[0.844000] (ap_interfaces) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.0.1 (C:/opt/ros/foxy/x64/share/rosidl_default_generators/cmake)\n'}
+[0.859000] (ap_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.859000] (ap_interfaces) StdoutLine: {'line': b'-- Found rosidl_adapter: 1.2.1 (C:/opt/ros/foxy/x64/share/rosidl_adapter/cmake)\n'}
+[0.875000] (-) TimerEvent: {}
+[0.984000] (-) TimerEvent: {}
+[1.078000] (ap_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[1.109000] (-) TimerEvent: {}
+[1.125000] (ap_interfaces) StdoutLine: {'line': b'-- Found rclcpp: 2.4.0 (C:/opt/ros/foxy/x64/share/rclcpp/cmake)\n'}
+[1.219000] (-) TimerEvent: {}
+[1.250000] (ap_interfaces) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 1.0.3 (C:/opt/ros/foxy/x64/share/rmw_implementation_cmake/cmake)\n'}
+[1.250000] (ap_interfaces) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[1.328000] (-) TimerEvent: {}
+[1.437000] (-) TimerEvent: {}
+[1.437000] (ap_interfaces) StdoutLine: {'line': b'-- Found std_msgs: 2.0.4 (C:/opt/ros/foxy/x64/share/std_msgs/cmake)\n'}
+[1.531000] (ap_interfaces) StdoutLine: {'line': b'-- Found PythonInterp: C:/opt/ros/foxy/x64/python.exe (found version "3.8.3") \n'}
+[1.547000] (-) TimerEvent: {}
+[1.656000] (-) TimerEvent: {}
+[1.766000] (-) TimerEvent: {}
+[1.797000] (ap_interfaces) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.9.2 (C:/opt/ros/foxy/x64/share/ament_cmake_ros/cmake)\n'}
+[1.875000] (-) TimerEvent: {}
+[1.937000] (ap_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[1.984000] (ap_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[1.984000] (-) TimerEvent: {}
+[2.031000] (ap_interfaces) StdoutLine: {'line': b'-- Found PythonInterp: C:/opt/ros/foxy/x64/python.exe (found suitable version "3.8.3", minimum required is "3.5") \n'}
+[2.031000] (ap_interfaces) StdoutLine: {'line': b'-- Found python_cmake_module: 0.8.1 (C:/opt/ros/foxy/x64/share/python_cmake_module/cmake)\n'}
+[2.094000] (ap_interfaces) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: C:/opt/ros/foxy/x64/python.exe\n'}
+[2.094000] (-) TimerEvent: {}
+[2.094000] (ap_interfaces) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: C:/opt/ros/foxy/x64/include/python3.8\n'}
+[2.094000] (ap_interfaces) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: optimized;C:/opt/ros/foxy/x64/Lib/python38.lib;debug;C:/Python38/libs/python38_d.lib\n'}
+[2.203000] (-) TimerEvent: {}
+[2.312000] (-) TimerEvent: {}
+[2.375000] (ap_interfaces) StdoutLine: {'line': b'-- Using numpy include directory: C:\\opt\\ros\\foxy\\x64\\lib\\site-packages\\numpy\\core\\include\n'}
+[2.391000] (ap_interfaces) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.9.6 (C:/opt/ros/foxy/x64/share/ament_lint_auto/cmake)\n'}
+[2.422000] (-) TimerEvent: {}
+[2.453000] (ap_interfaces) StdoutLine: {'line': b"-- Added test 'copyright' to check source files copyright and LICENSE\n"}
+[2.469000] (ap_interfaces) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[2.469000] (ap_interfaces) StdoutLine: {'line': b'-- Configured cppcheck include dirs: \n'}
+[2.469000] (ap_interfaces) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[2.484000] (ap_interfaces) StdoutLine: {'line': b"-- Added test 'cpplint' to check C / C++ code against the Google style\n"}
+[2.484000] (ap_interfaces) StdoutLine: {'line': b'-- Configured cpplint exclude dirs and/or files: \n'}
+[2.484000] (ap_interfaces) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[2.500000] (ap_interfaces) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[2.500000] (ap_interfaces) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[2.516000] (ap_interfaces) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[2.516000] (ap_interfaces) StdoutLine: {'line': b'-- Configuring done\n'}
+[2.531000] (-) TimerEvent: {}
+[2.641000] (-) TimerEvent: {}
+[2.750000] (-) TimerEvent: {}
+[2.875000] (-) TimerEvent: {}
+[3.000000] (-) TimerEvent: {}
+[3.109000] (-) TimerEvent: {}
+[3.219000] (-) TimerEvent: {}
+[3.328000] (-) TimerEvent: {}
+[3.437000] (-) TimerEvent: {}
+[3.547000] (-) TimerEvent: {}
+[3.656000] (-) TimerEvent: {}
+[3.766000] (-) TimerEvent: {}
+[3.875000] (-) TimerEvent: {}
+[3.984000] (-) TimerEvent: {}
+[4.094000] (-) TimerEvent: {}
+[4.219000] (-) TimerEvent: {}
+[4.234000] (ap_interfaces) StdoutLine: {'line': b'-- Generating done\n'}
+[4.344000] (-) TimerEvent: {}
+[4.344000] (ap_interfaces) StdoutLine: {'line': b'-- Build files have been written to: C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces\n'}
+[4.391000] (ap_interfaces) CommandEnded: {'returncode': 0}
+[4.391000] (ap_interfaces) JobProgress: {'identifier': 'ap_interfaces', 'progress': 'build'}
+[4.391000] (ap_interfaces) Command: {'cmd': ['c:\\opt\\ros\\foxy\\x64\\Scripts\\cmake.EXE', '--build', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces', '--config', 'Release'], 'cwd': 'C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces', 'env': {'ALLUSERSPROFILE': 'C:\\ProgramData', 'AMENT_PREFIX_PATH': 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install;c:\\opt\\ros\\foxy\\x64', 'APPDATA': 'C:\\Users\\ifate\\AppData\\Roaming', 'BT_PANEL': 'C:\\BtSoft\\panel', 'BT_PYTHON': 'C:\\Program Files\\python', 'BT_SETUP': 'C:\\BtSoft', 'ChocolateyInstall': 'C:\\ProgramData\\chocolatey', 'ChocolateyLastPathUpdate': '132978260262394475', 'chocolatey_bin_root': 'C:\\Tools', 'CMAKE_PREFIX_PATH': 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install;C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg\\installed\\x64-windows;c:\\opt\\ros\\foxy\\x64', 'COLCON': '1', 'COLCON_PREFIX_PATH': 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install\\;c:\\opt\\ros\\foxy\\x64\\', 'CommonProgramFiles': 'C:\\Program Files\\Common Files', 'CommonProgramFiles(x86)': 'C:\\Program Files (x86)\\Common Files', 'CommonProgramW6432': 'C:\\Program Files\\Common Files', 'COMPUTERNAME': 'DESKTOP-15LOCBO', 'ComSpec': 'C:\\WINDOWS\\system32\\cmd.exe', 'DriverData': 'C:\\Windows\\System32\\Drivers\\DriverData', 'GNUPLOT_LIB': 'C:\\Program Files\\gnuplot\\demo;C:\\Program Files\\gnuplot\\demo\\games;C:\\Program Files\\gnuplot\\share', 'GSTREAMER_1_0_ROOT_X86_64': 'C:\\gstreamer\\1.0\\x86_64\\', 'GST_PLUGIN_PATH_1_0': 'C:\\gstreamer\\1.0\\x86_64\\lib\\gstreamer-1.0', 'Home': 'C:\\Users\\ifate', 'HOMEDRIVE': 'C:', 'HOMEPATH': '\\Users\\ifate', 'INTEL_DEV_REDIST': 'C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\', 'JAVA_HOME': 'C:\\Program Files\\Java\\jdk-11.0.7', 'KEYSHOT9': 'C:\\Users\\Public\\Documents\\KeyShot 9', 'LOCALAPPDATA': 'C:\\Users\\ifate\\AppData\\Local', 'LOGONSERVER': '\\\\DESKTOP-15LOCBO', 'MIC_LD_LIBRARY_PATH': 'C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\compiler\\lib\\mic', 'NUMBER_OF_PROCESSORS': '8', 'OneDrive': 'C:\\Users\\ifate\\OneDrive', 'OneDriveConsumer': 'C:\\Users\\ifate\\OneDrive', 'OnlineServices': 'Online Services', 'OpenCV_DIR': 'C:\\opencv', 'OPENSSL_CONF': 'C:\\Program Files\\OpenSSL-Win64\\bin\\openssl.cfg', 'OS': 'Windows_NT', 'Path': 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install\\bin;c:\\opt\\ros\\foxy\\x64\\;c:\\opt\\ros\\foxy\\x64\\opt\\rviz_ogre_vendor\\bin;C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg\\installed\\x64-windows\\bin;C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg;c:\\opt\\ros\\foxy\\x64\\Scripts;c:\\opt\\ros\\foxy\\x64\\bin;C:\\Python38\\Scripts\\;C:\\Python38\\;C:\\Python310\\Scripts\\;C:\\Python310\\;C:\\Python35\\Scripts\\;C:\\Python35\\;C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\redist\\intel64\\compiler;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\Java\\jdk-11.0.7\\bin;C:\\Program Files\\python;C:\\Program Files\\python\\Scripts;C:\\BtSoft\\panel\\script;C:\\Program Files (x86)\\Calibre2\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\gstreamer\\1.0\\x86_64\\bin;C:\\mingw64\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\ProgramData\\chocolatey\\bin;C:\\Strawberry\\c\\bin;C:\\Strawberry\\perl\\site\\bin;C:\\Strawberry\\perl\\bin;C:\\Program Files\\Pandoc\\;C:\\Program Files\\OpenSSL-Win64\\bin\\;C:\\opencv\\x64\\vc16\\bin;C:\\Program Files\\CMake\\bin;C:\\ProgramData\\chocolatey\\lib\\cunit\\lib;C:\\ProgramData\\chocolatey\\lib\\tinyxml2\\lib;C:\\ProgramData\\chocolatey\\lib\\log4cxx\\lib;C:\\ProgramData\\chocolatey\\lib\\bullet\\lib;C:\\Program Files\\Graphviz\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\MATLAB\\R2022a\\bin;C:\\Users\\ifate\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\ifate\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\ifate\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\ifate\\AppData\\Roaming\\npm;C:\\Program Files (x86)\\Brackets\\;C:\\Users\\ifate\\AppData\\Roaming\\TinyTeX\\bin\\win32', 'PATHEXT': '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW', 'PKG_CONFIG_PATH': 'c:\\opt\\ros\\foxy\\x64\\lib\\pkgconfig', 'platformcode': 'AN', 'PROCESSOR_ARCHITECTURE': 'AMD64', 'PROCESSOR_IDENTIFIER': 'Intel64 Family 6 Model 142 Stepping 12, GenuineIntel', 'PROCESSOR_LEVEL': '6', 'PROCESSOR_REVISION': '8e0c', 'ProgramData': 'C:\\ProgramData', 'ProgramFiles': 'C:\\Program Files', 'ProgramFiles(x86)': 'C:\\Program Files (x86)', 'ProgramW6432': 'C:\\Program Files', 'PROMPT': '$P$G', 'PSModulePath': 'C:\\Program Files\\WindowsPowerShell\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules', 'PUBLIC': 'C:\\Users\\Public', 'PYTHONPATH': 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install\\Lib\\site-packages;c:\\opt\\ros\\foxy\\x64\\Lib\\site-packages', 'RegionCode': 'APJ', 'ROS_DISTRO': 'foxy', 'ROS_ETC_DIR': 'C:\\opt\\ros\\foxy\\x64\\etc\\ros', 'ROS_LOCALHOST_ONLY': '0', 'ROS_PYTHON_VERSION': '3', 'ROS_VERSION': '2', 'SDF_PATH': 'C:\\opt\\ros\\foxy\\x64\\share\\sdformat\\1.6', 'SESSIONNAME': 'Console', 'SystemDrive': 'C:', 'SystemRoot': 'C:\\WINDOWS', 'TEMP': 'C:\\Users\\ifate\\AppData\\Local\\Temp', 'TMP': 'C:\\Users\\ifate\\AppData\\Local\\Temp', 'UNRAR_LIB_PATH': 'C:\\Program Files\\python\\Lib\\site-packages\\unrar\\UnRAR.dll', 'USERDOMAIN': 'DESKTOP-15LOCBO', 'USERDOMAIN_ROAMINGPROFILE': 'DESKTOP-15LOCBO', 'USERNAME': 'ifate', 'USERPROFILE': 'C:\\Users\\ifate', 'VCPKG_DEFAULT_TRIPLET': 'x64-windows', 'VCPKG_ROOT': 'C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg', 'windir': 'C:\\WINDOWS', 'ZES_ENABLE_SYSMAN': '1', 'CL': '/MP'}, 'shell': False}
+[4.453000] (-) TimerEvent: {}
+[4.578000] (-) TimerEvent: {}
+[4.687000] (-) TimerEvent: {}
+[4.734000] (ap_interfaces) StdoutLine: {'line': b'\xd3\xc3\xd3\xda .NET Framework \xb5\xc4 Microsoft (R) \xc9\xfa\xb3\xc9\xd2\xfd\xc7\xe6\xb0\xe6\xb1\xbe 16.11.2+f32259642\r\n'}
+[4.734000] (ap_interfaces) StdoutLine: {'line': b'\xb0\xe6\xc8\xa8\xcb\xf9\xd3\xd0(C) Microsoft Corporation\xa1\xa3\xb1\xa3\xc1\xf4\xcb\xf9\xd3\xd0\xc8\xa8\xc0\xfb\xa1\xa3\r\n'}
+[4.734000] (ap_interfaces) StdoutLine: {'line': b'\r\n'}
+[4.797000] (-) TimerEvent: {}
+[4.906000] (-) TimerEvent: {}
+[5.016000] (-) TimerEvent: {}
+[5.125000] (-) TimerEvent: {}
+[5.234000] (-) TimerEvent: {}
+[5.344000] (-) TimerEvent: {}
+[5.453000] (-) TimerEvent: {}
+[5.516000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__rosidl_generator_c.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\Release\\ap_interfaces__rosidl_generator_c.dll\r\n'}
+[5.562000] (-) TimerEvent: {}
+[5.609000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__rosidl_typesupport_c.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\Release\\ap_interfaces__rosidl_typesupport_c.dll\r\n'}
+[5.672000] (-) TimerEvent: {}
+[5.734000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__rosidl_typesupport_cpp.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\Release\\ap_interfaces__rosidl_typesupport_cpp.dll\r\n'}
+[5.781000] (-) TimerEvent: {}
+[5.844000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__rosidl_typesupport_fastrtps_cpp.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\Release\\ap_interfaces__rosidl_typesupport_fastrtps_cpp.dll\r\n'}
+[5.891000] (-) TimerEvent: {}
+[5.906000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__rosidl_typesupport_fastrtps_c.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\Release\\ap_interfaces__rosidl_typesupport_fastrtps_c.dll\r\n'}
+[5.984000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__rosidl_typesupport_introspection_c.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\Release\\ap_interfaces__rosidl_typesupport_introspection_c.dll\r\n'}
+[6.000000] (-) TimerEvent: {}
+[6.078000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__rosidl_typesupport_introspection_cpp.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\Release\\ap_interfaces__rosidl_typesupport_introspection_cpp.dll\r\n'}
+[6.109000] (-) TimerEvent: {}
+[6.219000] (-) TimerEvent: {}
+[6.328000] (-) TimerEvent: {}
+[6.391000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__python.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\rosidl_generator_py\\ap_interfaces\\ap_interfaces__python.dll\r\n'}
+[6.453000] (-) TimerEvent: {}
+[6.469000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__rosidl_typesupport_c__pyext.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\rosidl_generator_py\\ap_interfaces\\ap_interfaces_s__rosidl_typesupport_c.pyd\r\n'}
+[6.562000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__rosidl_typesupport_fastrtps_c__pyext.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\rosidl_generator_py\\ap_interfaces\\ap_interfaces_s__rosidl_typesupport_fastrtps_c.pyd\r\n'}
+[6.562000] (-) TimerEvent: {}
+[6.656000] (ap_interfaces) StdoutLine: {'line': b'  ap_interfaces__rosidl_typesupport_introspection_c__pyext.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\rosidl_generator_py\\ap_interfaces\\ap_interfaces_s__rosidl_typesupport_introspection_c.pyd\r\n'}
+[6.687000] (-) TimerEvent: {}
+[6.797000] (-) TimerEvent: {}
+[6.875000] (ap_interfaces) StdoutLine: {'line': b'  player_detection.cpp\r\n'}
+[6.906000] (-) TimerEvent: {}
+[7.016000] (-) TimerEvent: {}
+[7.125000] (-) TimerEvent: {}
+[7.234000] (-) TimerEvent: {}
+[7.312000] (ap_interfaces) StdoutLine: {'line': b'C:\\opt\\ros\\foxy\\x64\\include\\rmw/types.h(1,1): warning C4819: \xb8\xc3\xce\xc4\xbc\xfe\xb0\xfc\xba\xac\xb2\xbb\xc4\xdc\xd4\xda\xb5\xb1\xc7\xb0\xb4\xfa\xc2\xeb\xd2\xb3(936)\xd6\xd0\xb1\xed\xca\xbe\xb5\xc4\xd7\xd6\xb7\xfb\xa1\xa3\xc7\xeb\xbd\xab\xb8\xc3\xce\xc4\xbc\xfe\xb1\xa3\xb4\xe6\xce\xaa Unicode \xb8\xf1\xca\xbd\xd2\xd4\xb7\xc0\xd6\xb9\xca\xfd\xbe\xdd\xb6\xaa\xca\xa7 [C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\player_detection.vcxproj]\r\n'}
+[7.344000] (-) TimerEvent: {}
+[7.453000] (-) TimerEvent: {}
+[7.562000] (-) TimerEvent: {}
+[7.672000] (-) TimerEvent: {}
+[7.781000] (-) TimerEvent: {}
+[7.891000] (-) TimerEvent: {}
+[8.000000] (-) TimerEvent: {}
+[8.125000] (-) TimerEvent: {}
+[8.234000] (-) TimerEvent: {}
+[8.344000] (-) TimerEvent: {}
+[8.453000] (-) TimerEvent: {}
+[8.562000] (-) TimerEvent: {}
+[8.672000] (-) TimerEvent: {}
+[8.781000] (-) TimerEvent: {}
+[8.891000] (-) TimerEvent: {}
+[9.000000] (-) TimerEvent: {}
+[9.109000] (-) TimerEvent: {}
+[9.219000] (-) TimerEvent: {}
+[9.328000] (-) TimerEvent: {}
+[9.437000] (-) TimerEvent: {}
+[9.547000] (-) TimerEvent: {}
+[9.656000] (-) TimerEvent: {}
+[9.766000] (-) TimerEvent: {}
+[9.875000] (-) TimerEvent: {}
+[9.984000] (-) TimerEvent: {}
+[10.094000] (-) TimerEvent: {}
+[10.203000] (-) TimerEvent: {}
+[10.312000] (-) TimerEvent: {}
+[10.437000] (-) TimerEvent: {}
+[10.547000] (-) TimerEvent: {}
+[10.656000] (-) TimerEvent: {}
+[10.766000] (-) TimerEvent: {}
+[10.875000] (-) TimerEvent: {}
+[10.984000] (-) TimerEvent: {}
+[11.094000] (-) TimerEvent: {}
+[11.203000] (-) TimerEvent: {}
+[11.312000] (-) TimerEvent: {}
+[11.328000] (ap_interfaces) StdoutLine: {'line': b'  player_detection.vcxproj -> C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces\\Release\\player_detection.exe\r\n'}
+[11.406000] (ap_interfaces) CommandEnded: {'returncode': 0}
+[11.406000] (ap_interfaces) JobProgress: {'identifier': 'ap_interfaces', 'progress': 'install'}
+[11.422000] (-) TimerEvent: {}
+[11.531000] (-) TimerEvent: {}
+[11.547000] (ap_interfaces) Command: {'cmd': ['c:\\opt\\ros\\foxy\\x64\\Scripts\\cmake.EXE', '--install', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces', '--config', 'Release'], 'cwd': 'C:\\Users\\ifate\\Documents\\ros2_airplay\\build\\ap_interfaces', 'env': OrderedDict([('ALLUSERSPROFILE', 'C:\\ProgramData'), ('AMENT_PREFIX_PATH', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install;c:\\opt\\ros\\foxy\\x64'), ('APPDATA', 'C:\\Users\\ifate\\AppData\\Roaming'), ('BT_PANEL', 'C:\\BtSoft\\panel'), ('BT_PYTHON', 'C:\\Program Files\\python'), ('BT_SETUP', 'C:\\BtSoft'), ('ChocolateyInstall', 'C:\\ProgramData\\chocolatey'), ('ChocolateyLastPathUpdate', '132978260262394475'), ('chocolatey_bin_root', 'C:\\Tools'), ('CMAKE_PREFIX_PATH', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install;C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg\\installed\\x64-windows;c:\\opt\\ros\\foxy\\x64'), ('COLCON', '1'), ('COLCON_PREFIX_PATH', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install\\;c:\\opt\\ros\\foxy\\x64\\'), ('CommonProgramFiles', 'C:\\Program Files\\Common Files'), ('CommonProgramFiles(x86)', 'C:\\Program Files (x86)\\Common Files'), ('CommonProgramW6432', 'C:\\Program Files\\Common Files'), ('COMPUTERNAME', 'DESKTOP-15LOCBO'), ('ComSpec', 'C:\\WINDOWS\\system32\\cmd.exe'), ('DriverData', 'C:\\Windows\\System32\\Drivers\\DriverData'), ('GNUPLOT_LIB', 'C:\\Program Files\\gnuplot\\demo;C:\\Program Files\\gnuplot\\demo\\games;C:\\Program Files\\gnuplot\\share'), ('GSTREAMER_1_0_ROOT_X86_64', 'C:\\gstreamer\\1.0\\x86_64\\'), ('GST_PLUGIN_PATH_1_0', 'C:\\gstreamer\\1.0\\x86_64\\lib\\gstreamer-1.0'), ('Home', 'C:\\Users\\ifate'), ('HOMEDRIVE', 'C:'), ('HOMEPATH', '\\Users\\ifate'), ('INTEL_DEV_REDIST', 'C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\'), ('JAVA_HOME', 'C:\\Program Files\\Java\\jdk-11.0.7'), ('KEYSHOT9', 'C:\\Users\\Public\\Documents\\KeyShot 9'), ('LOCALAPPDATA', 'C:\\Users\\ifate\\AppData\\Local'), ('LOGONSERVER', '\\\\DESKTOP-15LOCBO'), ('MIC_LD_LIBRARY_PATH', 'C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\compiler\\lib\\mic'), ('NUMBER_OF_PROCESSORS', '8'), ('OneDrive', 'C:\\Users\\ifate\\OneDrive'), ('OneDriveConsumer', 'C:\\Users\\ifate\\OneDrive'), ('OnlineServices', 'Online Services'), ('OpenCV_DIR', 'C:\\opencv'), ('OPENSSL_CONF', 'C:\\Program Files\\OpenSSL-Win64\\bin\\openssl.cfg'), ('OS', 'Windows_NT'), ('Path', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install\\bin;c:\\opt\\ros\\foxy\\x64\\;c:\\opt\\ros\\foxy\\x64\\opt\\rviz_ogre_vendor\\bin;C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg\\installed\\x64-windows\\bin;C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg;c:\\opt\\ros\\foxy\\x64\\Scripts;c:\\opt\\ros\\foxy\\x64\\bin;C:\\Python38\\Scripts\\;C:\\Python38\\;C:\\Python310\\Scripts\\;C:\\Python310\\;C:\\Python35\\Scripts\\;C:\\Python35\\;C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\redist\\intel64\\compiler;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\Java\\jdk-11.0.7\\bin;C:\\Program Files\\python;C:\\Program Files\\python\\Scripts;C:\\BtSoft\\panel\\script;C:\\Program Files (x86)\\Calibre2\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\gstreamer\\1.0\\x86_64\\bin;C:\\mingw64\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\ProgramData\\chocolatey\\bin;C:\\Strawberry\\c\\bin;C:\\Strawberry\\perl\\site\\bin;C:\\Strawberry\\perl\\bin;C:\\Program Files\\Pandoc\\;C:\\Program Files\\OpenSSL-Win64\\bin\\;C:\\opencv\\x64\\vc16\\bin;C:\\Program Files\\CMake\\bin;C:\\ProgramData\\chocolatey\\lib\\cunit\\lib;C:\\ProgramData\\chocolatey\\lib\\tinyxml2\\lib;C:\\ProgramData\\chocolatey\\lib\\log4cxx\\lib;C:\\ProgramData\\chocolatey\\lib\\bullet\\lib;C:\\Program Files\\Graphviz\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\MATLAB\\R2022a\\bin;C:\\Users\\ifate\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\ifate\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\ifate\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\ifate\\AppData\\Roaming\\npm;C:\\Program Files (x86)\\Brackets\\;C:\\Users\\ifate\\AppData\\Roaming\\TinyTeX\\bin\\win32'), ('PATHEXT', '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW'), ('PKG_CONFIG_PATH', 'c:\\opt\\ros\\foxy\\x64\\lib\\pkgconfig'), ('platformcode', 'AN'), ('PROCESSOR_ARCHITECTURE', 'AMD64'), ('PROCESSOR_IDENTIFIER', 'Intel64 Family 6 Model 142 Stepping 12, GenuineIntel'), ('PROCESSOR_LEVEL', '6'), ('PROCESSOR_REVISION', '8e0c'), ('ProgramData', 'C:\\ProgramData'), ('ProgramFiles', 'C:\\Program Files'), ('ProgramFiles(x86)', 'C:\\Program Files (x86)'), ('ProgramW6432', 'C:\\Program Files'), ('PROMPT', '$P$G'), ('PSModulePath', 'C:\\Program Files\\WindowsPowerShell\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules'), ('PUBLIC', 'C:\\Users\\Public'), ('PYTHONPATH', 'C:\\Users\\ifate\\Documents\\ros2_airplay\\install\\Lib\\site-packages;c:\\opt\\ros\\foxy\\x64\\Lib\\site-packages'), ('RegionCode', 'APJ'), ('ROS_DISTRO', 'foxy'), ('ROS_ETC_DIR', 'C:\\opt\\ros\\foxy\\x64\\etc\\ros'), ('ROS_LOCALHOST_ONLY', '0'), ('ROS_PYTHON_VERSION', '3'), ('ROS_VERSION', '2'), ('SDF_PATH', 'C:\\opt\\ros\\foxy\\x64\\share\\sdformat\\1.6'), ('SESSIONNAME', 'Console'), ('SystemDrive', 'C:'), ('SystemRoot', 'C:\\WINDOWS'), ('TEMP', 'C:\\Users\\ifate\\AppData\\Local\\Temp'), ('TMP', 'C:\\Users\\ifate\\AppData\\Local\\Temp'), ('UNRAR_LIB_PATH', 'C:\\Program Files\\python\\Lib\\site-packages\\unrar\\UnRAR.dll'), ('USERDOMAIN', 'DESKTOP-15LOCBO'), ('USERDOMAIN_ROAMINGPROFILE', 'DESKTOP-15LOCBO'), ('USERNAME', 'ifate'), ('USERPROFILE', 'C:\\Users\\ifate'), ('VCPKG_DEFAULT_TRIPLET', 'x64-windows'), ('VCPKG_ROOT', 'C:\\opt\\ros\\foxy\\x64\\tools\\vcpkg'), ('windir', 'C:\\WINDOWS'), ('ZES_ENABLE_SYSMAN', '1')]), 'shell': False}
+[11.641000] (-) TimerEvent: {}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ament_index/resource_index/rosidl_interfaces/ap_interfaces\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__functions.c\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__functions.h\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__struct.h\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__type_support.h\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/pos.h\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/rosidl_generator_c__visibility_control.h\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/lib/ap_interfaces__rosidl_generator_c.lib\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/bin/ap_interfaces__rosidl_generator_c.dll\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces\n'}
+[11.703000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__rosidl_typesupport_fastrtps_c.h\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/lib/ap_interfaces__rosidl_typesupport_fastrtps_c.lib\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/bin/ap_interfaces__rosidl_typesupport_fastrtps_c.dll\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/dds_fastrtps\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/lib/ap_interfaces__rosidl_typesupport_fastrtps_cpp.lib\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/bin/ap_interfaces__rosidl_typesupport_fastrtps_cpp.dll\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__rosidl_typesupport_introspection_c.h\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__type_support.c\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/lib/ap_interfaces__rosidl_typesupport_introspection_c.lib\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/bin/ap_interfaces__rosidl_typesupport_introspection_c.dll\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/lib/ap_interfaces__rosidl_typesupport_c.lib\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/bin/ap_interfaces__rosidl_typesupport_c.dll\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg\n'}
+[11.719000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__builder.hpp\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__struct.hpp\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__traits.hpp\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/pos.hpp\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__rosidl_typesupport_introspection_cpp.hpp\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/include/ap_interfaces/msg/detail/pos__type_support.cpp\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/lib/ap_interfaces__rosidl_typesupport_introspection_cpp.lib\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/bin/ap_interfaces__rosidl_typesupport_introspection_cpp.dll\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/lib/ap_interfaces__rosidl_typesupport_cpp.lib\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/bin/ap_interfaces__rosidl_typesupport_cpp.dll\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/environment/pythonpath.bat\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/environment/pythonpath.dsv\n'}
+[11.734000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/__init__.py\n'}
+[11.750000] (-) TimerEvent: {}
+[11.828000] (ap_interfaces) StdoutLine: {'line': b"Compiling 'C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/__init__.py'...\r\n"}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/msg\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/msg/_pos.py\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/msg/_pos_s.c\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/msg/__init__.py\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/ap_interfaces_s__rosidl_typesupport_fastrtps_c.lib\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/ap_interfaces_s__rosidl_typesupport_fastrtps_c.pyd\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/ap_interfaces_s__rosidl_typesupport_introspection_c.lib\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/ap_interfaces_s__rosidl_typesupport_introspection_c.pyd\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/ap_interfaces_s__rosidl_typesupport_c.lib\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/Lib/site-packages/ap_interfaces/ap_interfaces_s__rosidl_typesupport_c.pyd\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/lib/ap_interfaces__python.lib\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/bin/ap_interfaces__python.dll\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/msg/Pos.idl\n'}
+[11.844000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/msg/Pos.msg\n'}
+[11.859000] (-) TimerEvent: {}
+[11.922000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/lib/ap_interfaces/player_detection.exe\n'}
+[11.922000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ament_index/resource_index/package_run_dependencies/ap_interfaces\n'}
+[11.922000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ament_index/resource_index/parent_prefix_path/ap_interfaces\n'}
+[11.922000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/environment/ament_prefix_path.bat\n'}
+[11.937000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/environment/ament_prefix_path.dsv\n'}
+[11.937000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/environment/path.bat\n'}
+[11.953000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/environment/path.dsv\n'}
+[11.953000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/local_setup.bat\n'}
+[11.953000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/local_setup.dsv\n'}
+[11.953000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/package.dsv\n'}
+[11.953000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ament_index/resource_index/packages/ap_interfaces\n'}
+[11.969000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_generator_cExport.cmake\n'}
+[11.969000] (-) TimerEvent: {}
+[11.969000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_generator_cExport-release.cmake\n'}
+[11.969000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_typesupport_introspection_cExport.cmake\n'}
+[11.969000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_typesupport_introspection_cExport-release.cmake\n'}
+[11.969000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_typesupport_cExport.cmake\n'}
+[11.969000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_typesupport_cExport-release.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_generator_cppExport.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_typesupport_introspection_cppExport-release.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_typesupport_cppExport.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Installing: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfaces__rosidl_typesupport_cppExport-release.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/rosidl_cmake-extras.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfacesConfig.cmake\n'}
+[11.984000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/cmake/ap_interfacesConfig-version.cmake\n'}
+[12.000000] (ap_interfaces) StdoutLine: {'line': b'-- Up-to-date: C:/Users/ifate/Documents/ros2_airplay/install/share/ap_interfaces/package.xml\n'}
+[12.031000] (ap_interfaces) CommandEnded: {'returncode': 0}
+[12.094000] (-) TimerEvent: {}
+[12.172000] (ap_interfaces) JobEnded: {'identifier': 'ap_interfaces', 'rc': 0}
+[12.172000] (-) EventReactorShutdown: {}

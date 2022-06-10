@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\CMakeFiles\bce26aaa7bd02a223ac2064ddc2f109c\pos.hpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\CMakeFiles\8aa0f424deceb95e134fe355c1c506eb\ap_interfaces__cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ifate\Documents\ros2_airplay\src\ap_interfaces\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\CMakeFiles\ap_interfaces__cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B938F891-FAFE-3DE8-A42C-7E9CC4D0CCD2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

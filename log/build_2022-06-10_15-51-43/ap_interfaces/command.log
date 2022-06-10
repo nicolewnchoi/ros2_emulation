@@ -1,0 +1,6 @@
+Invoking command in 'C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces': c:\opt\ros\foxy\x64\Scripts\cmake.EXE C:\Users\ifate\Documents\ros2_airplay\src\ap_interfaces -DCMAKE_INSTALL_PREFIX=C:\Users\ifate\Documents\ros2_airplay\install
+Invoked command in 'C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces' returned '0': c:\opt\ros\foxy\x64\Scripts\cmake.EXE C:\Users\ifate\Documents\ros2_airplay\src\ap_interfaces -DCMAKE_INSTALL_PREFIX=C:\Users\ifate\Documents\ros2_airplay\install
+Invoking command in 'C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces': CL=/MP c:\opt\ros\foxy\x64\Scripts\cmake.EXE --build C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces --config Release
+Invoked command in 'C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces' returned '0': CL=/MP c:\opt\ros\foxy\x64\Scripts\cmake.EXE --build C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces --config Release
+Invoking command in 'C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces': c:\opt\ros\foxy\x64\Scripts\cmake.EXE --install C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces --config Release
+Invoked command in 'C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces' returned '0': c:\opt\ros\foxy\x64\Scripts\cmake.EXE --install C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces --config Release

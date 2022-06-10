@@ -1,0 +1,19 @@
+{
+  "package_name": "ap_interfaces",
+  "output_dir": "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_typesupport_fastrtps_c/ap_interfaces",
+  "template_dir": "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_c/resource",
+  "idl_tuples": [
+    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Pos.idl"
+  ],
+  "target_dependencies": [
+    "C:/opt/ros/foxy/x64/lib/rosidl_typesupport_fastrtps_c/rosidl_typesupport_fastrtps_c",
+    "C:/opt/ros/foxy/x64/Lib/site-packages/rosidl_typesupport_fastrtps_c/__init__.py",
+    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_c/resource/idl__rosidl_typesupport_fastrtps_c.h.em",
+    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_c/resource/idl__type_support_c.cpp.em",
+    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_c/resource/msg__rosidl_typesupport_fastrtps_c.h.em",
+    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_c/resource/msg__type_support_c.cpp.em",
+    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_c/resource/srv__rosidl_typesupport_fastrtps_c.h.em",
+    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_c/resource/srv__type_support_c.cpp.em",
+    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Pos.idl"
+  ]
+}
