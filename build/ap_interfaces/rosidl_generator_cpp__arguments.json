@@ -3,7 +3,8 @@
   "output_dir": "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_generator_cpp/ap_interfaces",
   "template_dir": "C:/opt/ros/foxy/x64/share/rosidl_generator_cpp/cmake/../resource",
   "idl_tuples": [
-    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Pos.idl"
+    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Pos.idl",
+    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Score.idl"
   ],
   "target_dependencies": [
     "C:/opt/ros/foxy/x64/share/rosidl_generator_cpp/cmake/../../../lib/rosidl_generator_cpp/rosidl_generator_cpp",
@@ -21,6 +22,7 @@
     "C:/opt/ros/foxy/x64/share/rosidl_generator_cpp/cmake/../resource/srv__builder.hpp.em",
     "C:/opt/ros/foxy/x64/share/rosidl_generator_cpp/cmake/../resource/srv__struct.hpp.em",
     "C:/opt/ros/foxy/x64/share/rosidl_generator_cpp/cmake/../resource/srv__traits.hpp.em",
-    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Pos.idl"
+    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Pos.idl",
+    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Score.idl"
   ]
 }

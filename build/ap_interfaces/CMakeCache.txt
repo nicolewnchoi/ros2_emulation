@@ -360,6 +360,9 @@ ament_cppcheck_BIN:FILEPATH=C:/opt/ros/foxy/x64/Scripts/ament_cppcheck.exe
 //Path to a program.
 ament_cpplint_BIN:FILEPATH=C:/opt/ros/foxy/x64/Scripts/ament_cpplint.exe
 
+//Path to a program.
+ament_flake8_BIN:FILEPATH=C:/opt/ros/foxy/x64/Scripts/ament_flake8.exe
+
 //The directory containing a CMake configuration file for ament_lint_auto.
 ament_lint_auto_DIR:PATH=C:/opt/ros/foxy/x64/share/ament_lint_auto/cmake
 
@@ -368,6 +371,9 @@ ament_lint_cmake_BIN:FILEPATH=C:/opt/ros/foxy/x64/Scripts/ament_lint_cmake.exe
 
 //The directory containing a CMake configuration file for ament_lint_common.
 ament_lint_common_DIR:PATH=C:/opt/ros/foxy/x64/share/ament_lint_common/cmake
+
+//Path to a program.
+ament_pep257_BIN:FILEPATH=C:/opt/ros/foxy/x64/Scripts/ament_pep257.exe
 
 //Path to a program.
 ament_uncrustify_BIN:FILEPATH=C:/opt/ros/foxy/x64/Scripts/ament_uncrustify.exe

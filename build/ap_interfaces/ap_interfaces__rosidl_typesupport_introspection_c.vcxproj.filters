@@ -4,9 +4,15 @@
     <ClCompile Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_typesupport_introspection_c\ap_interfaces\msg\detail\pos__type_support.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_typesupport_introspection_c\ap_interfaces\msg\detail\score__type_support.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_typesupport_introspection_c\ap_interfaces\msg\detail\pos__rosidl_typesupport_introspection_c.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_typesupport_introspection_c\ap_interfaces\msg\detail\score__rosidl_typesupport_introspection_c.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

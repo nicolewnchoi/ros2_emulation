@@ -27,6 +27,7 @@ find_package(std_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Pos.msg"
+  "msg/Score.msg"
 )
 
 add_executable(player_detection src/player_detection.cpp)
@@ -34,9 +35,32 @@ ament_target_dependencies(player_detection rclcpp std_msgs)
 rosidl_target_interfaces(player_detection
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
+add_executable(rfid src/rfid.cpp)
+ament_target_dependencies(rfid rclcpp std_msgs)
+rosidl_target_interfaces(rfid
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+
+add_executable(unity src/unity.cpp)
+ament_target_dependencies(unity rclcpp std_msgs)
+rosidl_target_interfaces(unity
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+
+add_executable(ui src/ui.cpp)
+ament_target_dependencies(ui rclcpp std_msgs)
+rosidl_target_interfaces(ui
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+
+
 install(TARGETS
   player_detection
+  rfid
+  unity
+  ui
   DESTINATION lib/${PROJECT_NAME})
+
+
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

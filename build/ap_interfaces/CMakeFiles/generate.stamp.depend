@@ -14,6 +14,7 @@ C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_cmake/rosidl_cm
 C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
 C:/Users/ifate/Documents/ros2_airplay/src/ap_interfaces/CMakeLists.txt
 C:/Users/ifate/Documents/ros2_airplay/src/ap_interfaces/msg/Pos.msg
+C:/Users/ifate/Documents/ros2_airplay/src/ap_interfaces/msg/Score.msg
 C:/Users/ifate/Documents/ros2_airplay/src/ap_interfaces/package.xml
 C:/opt/ros/foxy/x64/CMake/yamlConfig.cmake
 C:/opt/ros/foxy/x64/CMake/yamlConfigVersion.cmake

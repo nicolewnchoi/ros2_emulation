@@ -8,6 +8,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\ifate\Documents\ros2_airplay\src\ap_interfaces\msg\Pos.msg" />
+    <None Include="C:\Users\ifate\Documents\ros2_airplay\src\ap_interfaces\msg\Score.msg" />
     <None Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\CMakeFiles\ap_interfaces" />
   </ItemGroup>
   <ItemGroup>

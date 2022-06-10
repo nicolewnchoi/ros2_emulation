@@ -4,6 +4,9 @@
     <ClCompile Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_generator_c\ap_interfaces\msg\detail\pos__functions.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_generator_c\ap_interfaces\msg\detail\score__functions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_generator_c\ap_interfaces\msg\pos.h">
@@ -16,6 +19,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_generator_c\ap_interfaces\msg\detail\pos__type_support.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_generator_c\ap_interfaces\msg\score.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_generator_c\ap_interfaces\msg\detail\score__functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_generator_c\ap_interfaces\msg\detail\score__struct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_generator_c\ap_interfaces\msg\detail\score__type_support.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

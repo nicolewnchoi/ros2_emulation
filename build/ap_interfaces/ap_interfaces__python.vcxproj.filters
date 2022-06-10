@@ -4,6 +4,9 @@
     <ClCompile Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_generator_py\ap_interfaces\msg\_pos_s.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_generator_py\ap_interfaces\msg\_score_s.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\ifate\Documents\ros2_airplay\src\ap_interfaces\CMakeLists.txt" />

@@ -3,7 +3,8 @@
   "output_dir": "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_typesupport_fastrtps_cpp/ap_interfaces",
   "template_dir": "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_cpp/resource",
   "idl_tuples": [
-    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Pos.idl"
+    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Pos.idl",
+    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Score.idl"
   ],
   "target_dependencies": [
     "C:/opt/ros/foxy/x64/lib/rosidl_typesupport_fastrtps_cpp/rosidl_typesupport_fastrtps_cpp",
@@ -14,6 +15,7 @@
     "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_cpp/resource/msg__type_support.cpp.em",
     "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_cpp/resource/srv__rosidl_typesupport_fastrtps_cpp.hpp.em",
     "C:/opt/ros/foxy/x64/share/rosidl_typesupport_fastrtps_cpp/resource/srv__type_support.cpp.em",
-    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Pos.idl"
+    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Pos.idl",
+    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Score.idl"
   ]
 }

@@ -15,6 +15,9 @@ C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/ap_interfac
 C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/ap_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir
 C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/ap_interfaces__rosidl_typesupport_c__pyext.dir
 C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/player_detection.dir
+C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/rfid.dir
+C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/unity.dir
+C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/ui.dir
 C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/RUN_TESTS.dir
 C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/ALL_BUILD.dir
 C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/CMakeFiles/ZERO_CHECK.dir

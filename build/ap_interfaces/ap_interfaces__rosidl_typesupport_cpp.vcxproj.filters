@@ -4,6 +4,9 @@
     <ClCompile Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_typesupport_cpp\ap_interfaces\msg\pos__type_support.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\rosidl_typesupport_cpp\ap_interfaces\msg\score__type_support.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\ifate\Documents\ros2_airplay\build\ap_interfaces\CMakeFiles\717ec557e92da2cb649416f9d4d59ca7\pos__type_support.cpp.rule">
