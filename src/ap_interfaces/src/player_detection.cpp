@@ -70,42 +70,23 @@ class DualThreadedNode : public rclcpp::Node
 {
 public:
     DualThreadedNode()
-        : Node("DualThreadedNode"), count_(0)
+        : Node("DualThreadedNode")
     {
         /* These define the callback groups
          * They don't really do much on their own, but they have to exist in order to
          * assign callbacks to them. They're also what the executor looks for when trying to run multiple threads
          */
-        callback_group_publisher_ = this->create_callback_group(
-            rclcpp::CallbackGroupType::MutuallyExclusive);
         callback_group_subscriber1_ = this->create_callback_group(
             rclcpp::CallbackGroupType::MutuallyExclusive);
         callback_group_subscriber2_ = this->create_callback_group(
             rclcpp::CallbackGroupType::MutuallyExclusive);
 
-
         // Each of these callback groups is basically a thread
         // Everything assigned to one of them gets bundled into the same thread
-        auto pub_opt = rclcpp::PublisherOptions();
-        pub_opt.callback_group = callback_group_publisher;
         auto sub1_opt = rclcpp::SubscriptionOptions();
         sub1_opt.callback_group = callback_group_subscriber1_;
         auto sub2_opt = rclcpp::SubscriptionOptions();
         sub2_opt.callback_group = callback_group_subscriber2_;
-
-        publisher_= this->create_publisher<std_msgs::msg::String>(
-            "topic",
-            rclcpp::QoS(10),
-            std::bind(
-                &DualThreadedNode::publisher_cb,  // First parameter is a reference to the function
-                this,                               // What the function should be bound to
-                std::placeholders::_1),             // At this point we're not positive of all the
-                                                    // parameters being passed
-                                                    // So we just put a generic placeholder
-                                                    // into the binder
-                                                    // (since we know we need ONE parameter)
-            sub1_opt
-            );
 
         subscription1_ = this->create_subscription<std_msgs::msg::String>(
             "topic",
