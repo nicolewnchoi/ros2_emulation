@@ -59,7 +59,7 @@ public:
                 curr_thread.c_str(), message.data.c_str());
             this->publisher_->publish(message);
         };
-        timer_ = this->create_wall_timer(500ms, timer_callback);
+        timer_ = this->create_wall_timer(20000ms, timer_callback);
     }
 
 private:
@@ -165,7 +165,7 @@ private:
         // Prep display message
         RCLCPP_INFO(
             this->get_logger(), "THREAD %s => Heard '%s' at %s",
-            string_thread_id().c_str(), msg->total, message_received_at.c_str());
+            string_thread_id().c_str(), std::to_string(msg->total).c_str(), message_received_at.c_str());
     }
 
     void subscriber3_cb(const std_msgs::msg::String::SharedPtr msg)
