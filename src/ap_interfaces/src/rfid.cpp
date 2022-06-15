@@ -25,24 +25,28 @@
 #include "ap_interfaces/msg/pos.hpp"
 
 using namespace std::chrono_literals;
-
+using namespace std;
 
 struct Pos1
 {
     int total;
     int timestamp;
-   /* int[18] x;
-    int[18] y;
-    int[18] player_id;
-    std::string[18] tag_id;
-    int[18] size;*/
+    int x[1];
+    int y[1];
+    int player_id[1];
+    std::string tag_id[1];
+    int size[1];
 
 };
 
 void randompos(Pos1* pos1) {
     while (true) {
-        pos1->total = rand() % 3;
-        pos1->timestamp = rand() % 10;
+        pos1->total = 1;
+        pos1->timestamp = (int)time(0);
+        (pos1->x)[0] = rand() % 1960;
+        (pos1->y)[0] = rand() % 1280;
+        (pos1->player_id)[0] = rand() % 3;
+        (pos1->size)[0] = rand() % 10;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
    
@@ -68,20 +72,28 @@ public:
     PublisherNode(Pos1* pos)
         : Node("RFIDPublisher"), count_(0),pos1(pos)
     {
-        publisher_ = this->create_publisher<ap_interfaces::msg::pos>("pos_true", 10);
+        publisher_ = this->create_publisher<ap_interfaces::msg::Pos>("pos_true", 10);
         auto timer_callback =
             [this]() -> void {
-            auto message = ap_interfaces::msg::pos();
+            auto message = ap_interfaces::msg::Pos();
             message.total = pos1->total;
             message.timestamp = pos1->timestamp;
+            (message.x)[0] = (pos1->x)[0];
+            (message.y)[0] = (pos1->y)[0];
 
             // Extract current thread
             auto curr_thread = string_thread_id();
-
+            std::string output = std::to_string(pos1->total);
+            output += " ";
+            output += std::to_string(pos1->timestamp);
+            output += " ";
+            output += std::to_string((pos1->x)[0]);
+            output += " ";
+            output += std::to_string((pos1->y)[0]);
             // Prep display message
             RCLCPP_INFO(
                 this->get_logger(), "\n<<THREAD %s>> Publishing '%s'",
-                curr_thread.c_str(), message.data.c_str());
+                curr_thread.c_str(), output.c_str());
             this->publisher_->publish(message);
         };
         timer_ = this->create_wall_timer(500ms, timer_callback);
@@ -89,7 +101,7 @@ public:
 
 private:
     rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<ap_interfaces::msg::pos>::SharedPtr publisher_;
+    rclcpp::Publisher<ap_interfaces::msg::Pos>::SharedPtr publisher_;
     size_t count_;
 };
 
@@ -191,7 +203,7 @@ int main(int argc, char* argv[])
 {
     Pos1 pos1;
     rclcpp::init(argc, argv);
-    thread th2(randompos,&pos1);
+    std::thread th2(randompos,&pos1);
     // You MUST use the MultiThreadedExecutor to use, well, multiple threads
     rclcpp::executors::MultiThreadedExecutor executor;
     auto rfid_pubnode = std::make_shared<PublisherNode>(&pos1);
@@ -201,6 +213,7 @@ int main(int argc, char* argv[])
     executor.add_node(rfid_pubnode);
     executor.add_node(rfid_subnode);
     executor.spin();
+    th2.join();
     rclcpp::shutdown();
     return 0;
 }

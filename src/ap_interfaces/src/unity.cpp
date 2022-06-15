@@ -110,7 +110,7 @@ public:
             sub1_opt);                  // This is where we set the callback group.
                                         // This subscription will run with callback group subscriber1
 
-        subscription2_ = this->create_subscription<ap_interfaces::msg::pos>(
+        subscription2_ = this->create_subscription<ap_interfaces::msg::Pos>(
             "pos_true",
             rclcpp::QoS(10),
             std::bind(
@@ -158,14 +158,14 @@ private:
      * This function gets called when Subscriber2 is poked
      * Since it's running on a separate thread than Subscriber 1, it will run at (more-or-less) the same time!
      */
-    void subscriber2_cb(const  ap_interfaces::msg::pos::SharedPtr msg)
+    void subscriber2_cb(const  ap_interfaces::msg::Pos::SharedPtr msg)
     {
         auto message_received_at = timing_string();
 
         // Prep display message
         RCLCPP_INFO(
             this->get_logger(), "THREAD %s => Heard '%s' at %s",
-            string_thread_id().c_str(), msg->data.c_str(), message_received_at.c_str());
+            string_thread_id().c_str(), msg->total, message_received_at.c_str());
     }
 
     void subscriber3_cb(const std_msgs::msg::String::SharedPtr msg)
@@ -182,7 +182,7 @@ private:
     rclcpp::CallbackGroup::SharedPtr callback_group_subscriber2_;
     rclcpp::CallbackGroup::SharedPtr callback_group_subscriber3_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription1_;
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription2_;
+    rclcpp::Subscription<ap_interfaces::msg::Pos>::SharedPtr subscription2_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription3_;
 };
 
