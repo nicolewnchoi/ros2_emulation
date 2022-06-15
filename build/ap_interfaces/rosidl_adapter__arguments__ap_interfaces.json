@@ -1,7 +1,0 @@
-{
-  "package_name": "ap_interfaces",
-  "non_idl_tuples": [
-    "/mnt/c/Users/18437/eecs281/ros2/src/ap_interfaces:msg/Pos.msg",
-    "/mnt/c/Users/18437/eecs281/ros2/src/ap_interfaces:msg/Score.msg"
-  ]
-}
