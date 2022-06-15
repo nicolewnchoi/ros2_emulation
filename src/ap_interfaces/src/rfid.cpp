@@ -16,6 +16,8 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <stdlib.h>
+#include <string>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -24,6 +26,27 @@
 
 using namespace std::chrono_literals;
 
+
+struct Pos1
+{
+    int total;
+    int timestamp;
+   /* int[18] x;
+    int[18] y;
+    int[18] player_id;
+    std::string[18] tag_id;
+    int[18] size;*/
+
+};
+
+void randompos(Pos1* pos1) {
+    while (true) {
+        pos1->total = rand() % 3;
+        pos1->timestamp = rand() % 10;
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+   
+}
 /**
  * A small convenience function for converting a thread ID to a string
  **/
@@ -40,15 +63,17 @@ std::string string_thread_id()
 
 class PublisherNode : public rclcpp::Node
 {
+    Pos1 * pos1;
 public:
-    PublisherNode()
-        : Node("RFIDPublisher"), count_(0)
+    PublisherNode(Pos1* pos)
+        : Node("RFIDPublisher"), count_(0),pos1(pos)
     {
-        publisher_ = this->create_publisher<std_msgs::msg::String>("pos_true", 10);
+        publisher_ = this->create_publisher<ap_interfaces::msg::pos>("pos_true", 10);
         auto timer_callback =
             [this]() -> void {
-            auto message = std_msgs::msg::String();
-            message.data = "True Position! " + std::to_string(this->count_++);
+            auto message = ap_interfaces::msg::pos();
+            message.total = pos1->total;
+            message.timestamp = pos1->timestamp;
 
             // Extract current thread
             auto curr_thread = string_thread_id();
@@ -64,12 +89,13 @@ public:
 
 private:
     rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+    rclcpp::Publisher<ap_interfaces::msg::pos>::SharedPtr publisher_;
     size_t count_;
 };
 
 class DualThreadedNode : public rclcpp::Node
 {
+    
 public:
     DualThreadedNode()
         : Node("RFIDSubscribers")
@@ -163,11 +189,12 @@ private:
 
 int main(int argc, char* argv[])
 {
+    Pos1 pos1;
     rclcpp::init(argc, argv);
-
+    thread th2(randompos,&pos1);
     // You MUST use the MultiThreadedExecutor to use, well, multiple threads
     rclcpp::executors::MultiThreadedExecutor executor;
-    auto rfid_pubnode = std::make_shared<PublisherNode>();
+    auto rfid_pubnode = std::make_shared<PublisherNode>(&pos1);
     auto rfid_subnode = std::make_shared<DualThreadedNode>();  // This contains BOTH subscriber callbacks.
                                                           // They will still run on different threads
                                                           // One Node. Two callbacks. Two Threads
@@ -177,3 +204,4 @@ int main(int argc, char* argv[])
     rclcpp::shutdown();
     return 0;
 }
+

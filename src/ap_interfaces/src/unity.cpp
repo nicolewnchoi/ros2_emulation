@@ -110,7 +110,7 @@ public:
             sub1_opt);                  // This is where we set the callback group.
                                         // This subscription will run with callback group subscriber1
 
-        subscription2_ = this->create_subscription<std_msgs::msg::String>(
+        subscription2_ = this->create_subscription<ap_interfaces::msg::pos>(
             "pos_true",
             rclcpp::QoS(10),
             std::bind(
@@ -158,7 +158,7 @@ private:
      * This function gets called when Subscriber2 is poked
      * Since it's running on a separate thread than Subscriber 1, it will run at (more-or-less) the same time!
      */
-    void subscriber2_cb(const std_msgs::msg::String::SharedPtr msg)
+    void subscriber2_cb(const  ap_interfaces::msg::pos::SharedPtr msg)
     {
         auto message_received_at = timing_string();
 
