@@ -1,5 +1,5 @@
 // generated from rosidl_typesupport_introspection_c/resource/idl__type_support.c.em
-// with input from ap_interfaces:msg\Pos.idl
+// with input from ap_interfaces:msg/Pos.idl
 // generated code does not contain a copyright notice
 
 #include <stddef.h>

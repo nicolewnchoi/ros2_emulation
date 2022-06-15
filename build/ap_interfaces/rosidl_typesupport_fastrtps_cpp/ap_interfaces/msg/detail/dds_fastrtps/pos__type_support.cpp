@@ -1,5 +1,5 @@
 // generated from rosidl_typesupport_fastrtps_cpp/resource/idl__type_support.cpp.em
-// with input from ap_interfaces:msg\Pos.idl
+// with input from ap_interfaces:msg/Pos.idl
 // generated code does not contain a copyright notice
 #include "ap_interfaces/msg/detail/pos__rosidl_typesupport_fastrtps_cpp.hpp"
 #include "ap_interfaces/msg/detail/pos__struct.hpp"

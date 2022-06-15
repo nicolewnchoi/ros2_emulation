@@ -1,5 +1,5 @@
 // generated from rosidl_generator_cpp/resource/idl__struct.hpp.em
-// with input from ap_interfaces:msg\Pos.idl
+// with input from ap_interfaces:msg/Pos.idl
 // generated code does not contain a copyright notice
 
 #ifndef AP_INTERFACES__MSG__DETAIL__POS__STRUCT_HPP_

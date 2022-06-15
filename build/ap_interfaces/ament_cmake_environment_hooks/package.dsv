@@ -1,2 +1,4 @@
-source;share/ap_interfaces/local_setup.bat
+source;share/ap_interfaces/local_setup.bash
 source;share/ap_interfaces/local_setup.dsv
+source;share/ap_interfaces/local_setup.sh
+source;share/ap_interfaces/local_setup.zsh

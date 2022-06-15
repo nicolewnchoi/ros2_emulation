@@ -1,5 +1,5 @@
 // generated from rosidl_typesupport_introspection_cpp/resource/idl__type_support.cpp.em
-// with input from ap_interfaces:msg\Score.idl
+// with input from ap_interfaces:msg/Score.idl
 // generated code does not contain a copyright notice
 
 #include "array"

@@ -1,5 +1,5 @@
 # generated from rosidl_generator_py/resource/_idl.py.em
-# with input from ap_interfaces:msg\Pos.idl
+# with input from ap_interfaces:msg/Pos.idl
 # generated code does not contain a copyright notice
 
 

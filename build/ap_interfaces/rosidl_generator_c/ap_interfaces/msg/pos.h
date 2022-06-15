@@ -1,5 +1,5 @@
 // generated from rosidl_generator_c/resource/idl.h.em
-// with input from ap_interfaces:msg\Pos.idl
+// with input from ap_interfaces:msg/Pos.idl
 // generated code does not contain a copyright notice
 
 #ifndef AP_INTERFACES__MSG__POS_H_

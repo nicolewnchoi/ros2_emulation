@@ -1,5 +1,5 @@
 // generated from rosidl_generator_py/resource/_idl_support.c.em
-// with input from ap_interfaces:msg\Score.idl
+// with input from ap_interfaces:msg/Score.idl
 // generated code does not contain a copyright notice
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include <Python.h>
@@ -58,21 +58,23 @@ bool ap_interfaces__msg__score__convert_from_py(PyObject * _pymsg, void * _ros_m
     if (!field) {
       return false;
     }
-    // TODO(dirk-thomas) use a better way to check the type before casting
-    assert(field->ob_type != NULL);
-    assert(field->ob_type->tp_name != NULL);
-    assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
-    PyArrayObject * seq_field = (PyArrayObject *)field;
-    Py_INCREF(seq_field);
-    assert(PyArray_NDIM(seq_field) == 1);
-    assert(PyArray_TYPE(seq_field) == NPY_INT16);
-    Py_ssize_t size = 18;
-    int16_t * dest = ros_message->player_score;
-    for (Py_ssize_t i = 0; i < size; ++i) {
-      int16_t tmp = *(npy_int16 *)PyArray_GETPTR1(seq_field, i);
-      memcpy(&dest[i], &tmp, sizeof(int16_t));
+    {
+      // TODO(dirk-thomas) use a better way to check the type before casting
+      assert(field->ob_type != NULL);
+      assert(field->ob_type->tp_name != NULL);
+      assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
+      PyArrayObject * seq_field = (PyArrayObject *)field;
+      Py_INCREF(seq_field);
+      assert(PyArray_NDIM(seq_field) == 1);
+      assert(PyArray_TYPE(seq_field) == NPY_INT16);
+      Py_ssize_t size = 18;
+      int16_t * dest = ros_message->player_score;
+      for (Py_ssize_t i = 0; i < size; ++i) {
+        int16_t tmp = *(npy_int16 *)PyArray_GETPTR1(seq_field, i);
+        memcpy(&dest[i], &tmp, sizeof(int16_t));
+      }
+      Py_DECREF(seq_field);
     }
-    Py_DECREF(seq_field);
     Py_DECREF(field);
   }
   {  // game_score
@@ -80,21 +82,23 @@ bool ap_interfaces__msg__score__convert_from_py(PyObject * _pymsg, void * _ros_m
     if (!field) {
       return false;
     }
-    // TODO(dirk-thomas) use a better way to check the type before casting
-    assert(field->ob_type != NULL);
-    assert(field->ob_type->tp_name != NULL);
-    assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
-    PyArrayObject * seq_field = (PyArrayObject *)field;
-    Py_INCREF(seq_field);
-    assert(PyArray_NDIM(seq_field) == 1);
-    assert(PyArray_TYPE(seq_field) == NPY_INT16);
-    Py_ssize_t size = 18;
-    int16_t * dest = ros_message->game_score;
-    for (Py_ssize_t i = 0; i < size; ++i) {
-      int16_t tmp = *(npy_int16 *)PyArray_GETPTR1(seq_field, i);
-      memcpy(&dest[i], &tmp, sizeof(int16_t));
+    {
+      // TODO(dirk-thomas) use a better way to check the type before casting
+      assert(field->ob_type != NULL);
+      assert(field->ob_type->tp_name != NULL);
+      assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
+      PyArrayObject * seq_field = (PyArrayObject *)field;
+      Py_INCREF(seq_field);
+      assert(PyArray_NDIM(seq_field) == 1);
+      assert(PyArray_TYPE(seq_field) == NPY_INT16);
+      Py_ssize_t size = 18;
+      int16_t * dest = ros_message->game_score;
+      for (Py_ssize_t i = 0; i < size; ++i) {
+        int16_t tmp = *(npy_int16 *)PyArray_GETPTR1(seq_field, i);
+        memcpy(&dest[i], &tmp, sizeof(int16_t));
+      }
+      Py_DECREF(seq_field);
     }
-    Py_DECREF(seq_field);
     Py_DECREF(field);
   }
 

@@ -1,5 +1,5 @@
 // generated from rosidl_typesupport_fastrtps_c/resource/idl__type_support_c.cpp.em
-// with input from ap_interfaces:msg\Score.idl
+// with input from ap_interfaces:msg/Score.idl
 // generated code does not contain a copyright notice
 #include "ap_interfaces/msg/detail/score__rosidl_typesupport_fastrtps_c.h"
 

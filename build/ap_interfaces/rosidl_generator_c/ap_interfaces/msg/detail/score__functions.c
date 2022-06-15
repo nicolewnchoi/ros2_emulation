@@ -1,5 +1,5 @@
 // generated from rosidl_generator_c/resource/idl__functions.c.em
-// with input from ap_interfaces:msg\Score.idl
+// with input from ap_interfaces:msg/Score.idl
 // generated code does not contain a copyright notice
 #include "ap_interfaces/msg/detail/score__functions.h"
 

@@ -1,21 +1,21 @@
 {
   "package_name": "ap_interfaces",
-  "output_dir": "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_typesupport_introspection_c/ap_interfaces",
-  "template_dir": "C:/opt/ros/foxy/x64/share/rosidl_typesupport_introspection_c/resource",
+  "output_dir": "/mnt/c/Users/18437/eecs281/ros2/build/ap_interfaces/rosidl_typesupport_introspection_c/ap_interfaces",
+  "template_dir": "/opt/ros/foxy/share/rosidl_typesupport_introspection_c/resource",
   "idl_tuples": [
-    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Pos.idl",
-    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Score.idl"
+    "/mnt/c/Users/18437/eecs281/ros2/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Pos.idl",
+    "/mnt/c/Users/18437/eecs281/ros2/build/ap_interfaces/rosidl_adapter/ap_interfaces:msg/Score.idl"
   ],
   "target_dependencies": [
-    "C:/opt/ros/foxy/x64/lib/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c",
-    "C:/opt/ros/foxy/x64/Lib/site-packages/rosidl_typesupport_introspection_c/__init__.py",
-    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_introspection_c/resource/idl__rosidl_typesupport_introspection_c.h.em",
-    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_introspection_c/resource/idl__type_support.c.em",
-    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_introspection_c/resource/msg__rosidl_typesupport_introspection_c.h.em",
-    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_introspection_c/resource/msg__type_support.c.em",
-    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_introspection_c/resource/srv__rosidl_typesupport_introspection_c.h.em",
-    "C:/opt/ros/foxy/x64/share/rosidl_typesupport_introspection_c/resource/srv__type_support.c.em",
-    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Pos.idl",
-    "C:/Users/ifate/Documents/ros2_airplay/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Score.idl"
+    "/opt/ros/foxy/lib/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c",
+    "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_typesupport_introspection_c/__init__.py",
+    "/opt/ros/foxy/share/rosidl_typesupport_introspection_c/resource/idl__rosidl_typesupport_introspection_c.h.em",
+    "/opt/ros/foxy/share/rosidl_typesupport_introspection_c/resource/idl__type_support.c.em",
+    "/opt/ros/foxy/share/rosidl_typesupport_introspection_c/resource/msg__rosidl_typesupport_introspection_c.h.em",
+    "/opt/ros/foxy/share/rosidl_typesupport_introspection_c/resource/msg__type_support.c.em",
+    "/opt/ros/foxy/share/rosidl_typesupport_introspection_c/resource/srv__rosidl_typesupport_introspection_c.h.em",
+    "/opt/ros/foxy/share/rosidl_typesupport_introspection_c/resource/srv__type_support.c.em",
+    "/mnt/c/Users/18437/eecs281/ros2/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Pos.idl",
+    "/mnt/c/Users/18437/eecs281/ros2/build/ap_interfaces/rosidl_adapter/ap_interfaces/msg/Score.idl"
   ]
 }

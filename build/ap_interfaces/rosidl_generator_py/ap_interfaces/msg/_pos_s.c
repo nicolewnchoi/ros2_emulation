@@ -1,5 +1,5 @@
 // generated from rosidl_generator_py/resource/_idl_support.c.em
-// with input from ap_interfaces:msg\Pos.idl
+// with input from ap_interfaces:msg/Pos.idl
 // generated code does not contain a copyright notice
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include <Python.h>
@@ -79,21 +79,23 @@ bool ap_interfaces__msg__pos__convert_from_py(PyObject * _pymsg, void * _ros_mes
     if (!field) {
       return false;
     }
-    // TODO(dirk-thomas) use a better way to check the type before casting
-    assert(field->ob_type != NULL);
-    assert(field->ob_type->tp_name != NULL);
-    assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
-    PyArrayObject * seq_field = (PyArrayObject *)field;
-    Py_INCREF(seq_field);
-    assert(PyArray_NDIM(seq_field) == 1);
-    assert(PyArray_TYPE(seq_field) == NPY_INT16);
-    Py_ssize_t size = 18;
-    int16_t * dest = ros_message->x;
-    for (Py_ssize_t i = 0; i < size; ++i) {
-      int16_t tmp = *(npy_int16 *)PyArray_GETPTR1(seq_field, i);
-      memcpy(&dest[i], &tmp, sizeof(int16_t));
+    {
+      // TODO(dirk-thomas) use a better way to check the type before casting
+      assert(field->ob_type != NULL);
+      assert(field->ob_type->tp_name != NULL);
+      assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
+      PyArrayObject * seq_field = (PyArrayObject *)field;
+      Py_INCREF(seq_field);
+      assert(PyArray_NDIM(seq_field) == 1);
+      assert(PyArray_TYPE(seq_field) == NPY_INT16);
+      Py_ssize_t size = 18;
+      int16_t * dest = ros_message->x;
+      for (Py_ssize_t i = 0; i < size; ++i) {
+        int16_t tmp = *(npy_int16 *)PyArray_GETPTR1(seq_field, i);
+        memcpy(&dest[i], &tmp, sizeof(int16_t));
+      }
+      Py_DECREF(seq_field);
     }
-    Py_DECREF(seq_field);
     Py_DECREF(field);
   }
   {  // y
@@ -101,21 +103,23 @@ bool ap_interfaces__msg__pos__convert_from_py(PyObject * _pymsg, void * _ros_mes
     if (!field) {
       return false;
     }
-    // TODO(dirk-thomas) use a better way to check the type before casting
-    assert(field->ob_type != NULL);
-    assert(field->ob_type->tp_name != NULL);
-    assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
-    PyArrayObject * seq_field = (PyArrayObject *)field;
-    Py_INCREF(seq_field);
-    assert(PyArray_NDIM(seq_field) == 1);
-    assert(PyArray_TYPE(seq_field) == NPY_INT16);
-    Py_ssize_t size = 18;
-    int16_t * dest = ros_message->y;
-    for (Py_ssize_t i = 0; i < size; ++i) {
-      int16_t tmp = *(npy_int16 *)PyArray_GETPTR1(seq_field, i);
-      memcpy(&dest[i], &tmp, sizeof(int16_t));
+    {
+      // TODO(dirk-thomas) use a better way to check the type before casting
+      assert(field->ob_type != NULL);
+      assert(field->ob_type->tp_name != NULL);
+      assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
+      PyArrayObject * seq_field = (PyArrayObject *)field;
+      Py_INCREF(seq_field);
+      assert(PyArray_NDIM(seq_field) == 1);
+      assert(PyArray_TYPE(seq_field) == NPY_INT16);
+      Py_ssize_t size = 18;
+      int16_t * dest = ros_message->y;
+      for (Py_ssize_t i = 0; i < size; ++i) {
+        int16_t tmp = *(npy_int16 *)PyArray_GETPTR1(seq_field, i);
+        memcpy(&dest[i], &tmp, sizeof(int16_t));
+      }
+      Py_DECREF(seq_field);
     }
-    Py_DECREF(seq_field);
     Py_DECREF(field);
   }
   {  // player_id
@@ -123,21 +127,23 @@ bool ap_interfaces__msg__pos__convert_from_py(PyObject * _pymsg, void * _ros_mes
     if (!field) {
       return false;
     }
-    // TODO(dirk-thomas) use a better way to check the type before casting
-    assert(field->ob_type != NULL);
-    assert(field->ob_type->tp_name != NULL);
-    assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
-    PyArrayObject * seq_field = (PyArrayObject *)field;
-    Py_INCREF(seq_field);
-    assert(PyArray_NDIM(seq_field) == 1);
-    assert(PyArray_TYPE(seq_field) == NPY_INT8);
-    Py_ssize_t size = 18;
-    int8_t * dest = ros_message->player_id;
-    for (Py_ssize_t i = 0; i < size; ++i) {
-      int8_t tmp = *(npy_int8 *)PyArray_GETPTR1(seq_field, i);
-      memcpy(&dest[i], &tmp, sizeof(int8_t));
+    {
+      // TODO(dirk-thomas) use a better way to check the type before casting
+      assert(field->ob_type != NULL);
+      assert(field->ob_type->tp_name != NULL);
+      assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
+      PyArrayObject * seq_field = (PyArrayObject *)field;
+      Py_INCREF(seq_field);
+      assert(PyArray_NDIM(seq_field) == 1);
+      assert(PyArray_TYPE(seq_field) == NPY_INT8);
+      Py_ssize_t size = 18;
+      int8_t * dest = ros_message->player_id;
+      for (Py_ssize_t i = 0; i < size; ++i) {
+        int8_t tmp = *(npy_int8 *)PyArray_GETPTR1(seq_field, i);
+        memcpy(&dest[i], &tmp, sizeof(int8_t));
+      }
+      Py_DECREF(seq_field);
     }
-    Py_DECREF(seq_field);
     Py_DECREF(field);
   }
   {  // tag_id
@@ -145,31 +151,33 @@ bool ap_interfaces__msg__pos__convert_from_py(PyObject * _pymsg, void * _ros_mes
     if (!field) {
       return false;
     }
-    PyObject * seq_field = PySequence_Fast(field, "expected a sequence in 'tag_id'");
-    if (!seq_field) {
-      Py_DECREF(field);
-      return false;
-    }
-    Py_ssize_t size = 18;
-    rosidl_runtime_c__String * dest = ros_message->tag_id;
-    for (Py_ssize_t i = 0; i < size; ++i) {
-      PyObject * item = PySequence_Fast_GET_ITEM(seq_field, i);
-      if (!item) {
-        Py_DECREF(seq_field);
+    {
+      PyObject * seq_field = PySequence_Fast(field, "expected a sequence in 'tag_id'");
+      if (!seq_field) {
         Py_DECREF(field);
         return false;
       }
-      assert(PyUnicode_Check(item));
-      PyObject * encoded_item = PyUnicode_AsUTF8String(item);
-      if (!encoded_item) {
-        Py_DECREF(seq_field);
-        Py_DECREF(field);
-        return false;
+      Py_ssize_t size = 18;
+      rosidl_runtime_c__String * dest = ros_message->tag_id;
+      for (Py_ssize_t i = 0; i < size; ++i) {
+        PyObject * item = PySequence_Fast_GET_ITEM(seq_field, i);
+        if (!item) {
+          Py_DECREF(seq_field);
+          Py_DECREF(field);
+          return false;
+        }
+        assert(PyUnicode_Check(item));
+        PyObject * encoded_item = PyUnicode_AsUTF8String(item);
+        if (!encoded_item) {
+          Py_DECREF(seq_field);
+          Py_DECREF(field);
+          return false;
+        }
+        rosidl_runtime_c__String__assign(&dest[i], PyBytes_AS_STRING(encoded_item));
+        Py_DECREF(encoded_item);
       }
-      rosidl_runtime_c__String__assign(&dest[i], PyBytes_AS_STRING(encoded_item));
-      Py_DECREF(encoded_item);
+      Py_DECREF(seq_field);
     }
-    Py_DECREF(seq_field);
     Py_DECREF(field);
   }
   {  // size
@@ -177,21 +185,23 @@ bool ap_interfaces__msg__pos__convert_from_py(PyObject * _pymsg, void * _ros_mes
     if (!field) {
       return false;
     }
-    // TODO(dirk-thomas) use a better way to check the type before casting
-    assert(field->ob_type != NULL);
-    assert(field->ob_type->tp_name != NULL);
-    assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
-    PyArrayObject * seq_field = (PyArrayObject *)field;
-    Py_INCREF(seq_field);
-    assert(PyArray_NDIM(seq_field) == 1);
-    assert(PyArray_TYPE(seq_field) == NPY_INT8);
-    Py_ssize_t size = 18;
-    int8_t * dest = ros_message->size;
-    for (Py_ssize_t i = 0; i < size; ++i) {
-      int8_t tmp = *(npy_int8 *)PyArray_GETPTR1(seq_field, i);
-      memcpy(&dest[i], &tmp, sizeof(int8_t));
+    {
+      // TODO(dirk-thomas) use a better way to check the type before casting
+      assert(field->ob_type != NULL);
+      assert(field->ob_type->tp_name != NULL);
+      assert(strcmp(field->ob_type->tp_name, "numpy.ndarray") == 0);
+      PyArrayObject * seq_field = (PyArrayObject *)field;
+      Py_INCREF(seq_field);
+      assert(PyArray_NDIM(seq_field) == 1);
+      assert(PyArray_TYPE(seq_field) == NPY_INT8);
+      Py_ssize_t size = 18;
+      int8_t * dest = ros_message->size;
+      for (Py_ssize_t i = 0; i < size; ++i) {
+        int8_t tmp = *(npy_int8 *)PyArray_GETPTR1(seq_field, i);
+        memcpy(&dest[i], &tmp, sizeof(int8_t));
+      }
+      Py_DECREF(seq_field);
     }
-    Py_DECREF(seq_field);
     Py_DECREF(field);
   }
 
