@@ -47,7 +47,7 @@ void randompos(Pos1* pos1) {
         (pos1->y)[0] = rand() % 1280;
         (pos1->player_id)[0] = rand() % 3;
         (pos1->size)[0] = rand() % 10;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(5ms);
     }
    
 }
@@ -96,7 +96,7 @@ public:
                 curr_thread.c_str(), output.c_str());
             this->publisher_->publish(message);
         };
-        timer_ = this->create_wall_timer(500ms, timer_callback);
+        timer_ = this->create_wall_timer(5ms, timer_callback);
     }
 
 private:
