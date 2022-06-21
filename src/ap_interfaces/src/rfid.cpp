@@ -87,16 +87,16 @@ public:
             output += " ";
             output += std::to_string(pos1->timestamp);
             output += " ";
-            output += std::to_string((pos1->x)[0]);
+            output += std::to_string((message.x)[0]);
             output += " ";
-            output += std::to_string((pos1->y)[0]);
+            output += std::to_string((message.y)[0]);
             // Prep display message
             RCLCPP_INFO(
                 this->get_logger(), "\n<<THREAD %s>> Publishing '%s'",
                 curr_thread.c_str(), output.c_str());
             this->publisher_->publish(message);
         };
-        timer_ = this->create_wall_timer(5ms, timer_callback);
+        timer_ = this->create_wall_timer(50ms, timer_callback);
     }
 
 private:
