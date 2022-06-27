@@ -30,7 +30,7 @@ using namespace std;
 struct Pos1
 {
     int total;
-    int timestamp;
+    double timestamp;
     int x[1];
     int y[1];
     int player_id[1];
@@ -42,7 +42,7 @@ struct Pos1
 void randompos(Pos1* pos1) {
     while (true) {
         pos1->total = 1;
-        pos1->timestamp = (int)time(0);
+        //pos1->timestamp = static_cast<double>(time.nano);
         (pos1->x)[0] = rand() % 1960;
         (pos1->y)[0] = rand() % 1280;
         (pos1->player_id)[0] = rand() % 3;
@@ -77,7 +77,8 @@ public:
             [this]() -> void {
             auto message = ap_interfaces::msg::Pos();
             message.total = pos1->total;
-            message.timestamp = pos1->timestamp;
+            rclcpp::Time time = this->now();
+            message.timestamp = time.nanoseconds();
             (message.x)[0] = (pos1->x)[0];
             (message.y)[0] = (pos1->y)[0];
 
@@ -96,7 +97,7 @@ public:
                 curr_thread.c_str(), output.c_str());
             this->publisher_->publish(message);
         };
-        timer_ = this->create_wall_timer(50ms, timer_callback);
+        timer_ = this->create_wall_timer(6ms, timer_callback);
     }
 
 private:
