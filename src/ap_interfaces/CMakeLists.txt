@@ -22,6 +22,7 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 find_package(rosidl_default_generators REQUIRED)
+find_package(OpenCV 4.3.0 REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
@@ -31,7 +32,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 )
 
 add_executable(player_detection src/player_detection.cpp)
-ament_target_dependencies(player_detection rclcpp std_msgs)
+ament_target_dependencies(player_detection OpenCV rclcpp std_msgs)
 rosidl_target_interfaces(player_detection
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
