@@ -22,8 +22,18 @@
 #include "ap_interfaces/msg/score.hpp"
 #include "ap_interfaces/msg/pos.hpp"
 
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/videoio.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/video.hpp>
+
+#include "image_transport/image_transport.hpp"
+#include "sensor_msgs/image_encodings.hpp"
 
 using namespace std::chrono_literals;
+using namespace cv;
 
 /**
  * A small convenience function for converting a thread ID to a string
@@ -43,13 +53,32 @@ class PublisherNode : public rclcpp::Node
 {
 public:
     PublisherNode()
-        : Node("PlayerDetectionPublisher"), count_(0)
+        : Node("PlayerDetectionPublisher"), count_(0), deviceID(0), apiID(cv::CAP_ANY)
     {
+
+        // opencv example 
+        cap.open(deviceID, apiID);
+
         publisher_ = this->create_publisher<std_msgs::msg::String>("pos_raw", 10);
         auto timer_callback =
             [this]() -> void {
             auto message = std_msgs::msg::String();
-            message.data = "Raw Position! " + std::to_string(this->count_++);
+            cap.read(frame);
+            if(cap.isOpened()){
+                if (frame.empty()) {
+                message.data = "not get frame! " + std::to_string(count_++);
+                } else {
+                imshow("Live", frame);
+                waitKey(1);
+                message.data = "get frame! " + std::to_string(count_++);
+                }
+                
+
+            }else{
+                message.data = "not opened! " + std::to_string(count_++);
+
+            }
+            //message.data = "Raw Position! " + std::to_string(this->count_++);
 
             // Extract current thread
             auto curr_thread = string_thread_id();
@@ -67,6 +96,12 @@ private:
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
     size_t count_;
+    
+    //opencv example
+    Mat frame;
+    VideoCapture cap;
+    int deviceID;   // 0 = open default camera
+    int apiID;      // 0 = autodetect default API
 };
 
 class SingleThreadedNode : public rclcpp::Node
