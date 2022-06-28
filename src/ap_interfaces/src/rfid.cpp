@@ -26,11 +26,12 @@
 
 using namespace std::chrono_literals;
 using namespace std;
+using namespace std::chrono;
 
 struct Pos1
 {
     int total;
-    double timestamp;
+    long long timestamp;
     int x[1];
     int y[1];
     int player_id[1];
@@ -70,7 +71,7 @@ class PublisherNode : public rclcpp::Node
     Pos1 * pos1;
 public:
     PublisherNode(Pos1* pos)
-        : Node("RFIDPublisher"), count_(0),pos1(pos)
+        : Node("RFIDPublisher"),pos1(pos)
     {
         publisher_ = this->create_publisher<ap_interfaces::msg::Pos>("pos_true", 10);
         auto timer_callback =
@@ -78,7 +79,7 @@ public:
             auto message = ap_interfaces::msg::Pos();
             message.total = pos1->total;
             rclcpp::Time time = this->now();
-            message.timestamp = time.nanoseconds();
+            message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             (message.x)[0] = (pos1->x)[0];
             (message.y)[0] = (pos1->y)[0];
 
@@ -86,7 +87,7 @@ public:
             auto curr_thread = string_thread_id();
             std::string output = std::to_string(pos1->total);
             output += " ";
-            output += std::to_string(pos1->timestamp);
+            output += std::to_string(message.timestamp);
             output += " ";
             output += std::to_string((message.x)[0]);
             output += " ";
@@ -103,7 +104,6 @@ public:
 private:
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<ap_interfaces::msg::Pos>::SharedPtr publisher_;
-    size_t count_;
 };
 
 class DualThreadedNode : public rclcpp::Node
@@ -163,7 +163,7 @@ private:
     std::string timing_string()
     {
         rclcpp::Time time = this->now();
-        return std::to_string(time.nanoseconds());
+        return std::to_string(time.nanoseconds() / (1000LL * 1000LL));
     }
 
     /**

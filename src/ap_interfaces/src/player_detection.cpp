@@ -29,8 +29,8 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/video.hpp>
 
-#include "image_transport/image_transport.hpp"
-#include "sensor_msgs/image_encodings.hpp"
+//#include "image_transport/image_transport.hpp"
+//#include "sensor_msgs/image_encodings.hpp"
 
 using namespace std::chrono_literals;
 using namespace cv;
