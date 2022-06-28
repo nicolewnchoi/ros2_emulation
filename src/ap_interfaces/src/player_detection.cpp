@@ -16,6 +16,8 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <stdlib.h>
+#include <string>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -32,9 +34,55 @@
 #include "image_transport/image_transport.hpp"
 #include "sensor_msgs/image_encodings.hpp"
 
+using namespace std;
 using namespace std::chrono_literals;
 using namespace cv;
 
+
+struct Pos_raw1
+{
+    int total;
+    double timestamp;
+    int x[1];
+    int y[1];
+    int player_id[1];
+    std::string tag_id[1];
+    int size[1];
+
+};
+
+void detect_pos(Pos_raw1* pos_raw) {
+    //opencv example
+    Mat frame;
+    VideoCapture cap;
+    int deviceID = 0;   // 0 = open default camera
+    int apiID = cv::CAP_ANY;      // 0 = autodetect default API
+    // opencv example 
+    cap.open(deviceID, apiID);
+
+
+    while (true) {
+        
+        cap.read(frame);
+        if(cap.isOpened()){
+            if (frame.empty()) {
+            } else {
+                pos_raw->total = 1;
+                //pos1->timestamp = static_cast<double>(time.nano);
+                (pos_raw->x)[0] = 1;
+                (pos_raw->y)[0] = 1;
+                (pos_raw->player_id)[0] = 1;
+                (pos_raw->size)[0] = 1;
+
+                imshow("live", frame);
+                waitKey(1);
+            }
+
+        }else{
+        }
+    }
+   
+}
 /**
  * A small convenience function for converting a thread ID to a string
  **/
@@ -51,57 +99,51 @@ std::string string_thread_id()
 
 class PublisherNode : public rclcpp::Node
 {
+    Pos_raw1 * pos_raw;
 public:
-    PublisherNode()
-        : Node("PlayerDetectionPublisher"), count_(0), deviceID(0), apiID(cv::CAP_ANY)
+    PublisherNode(Pos_raw1 * pos)
+        : Node("PlayerDetectionPublisher"), count_(0), pos_raw(pos)
     {
 
-        // opencv example 
-        cap.open(deviceID, apiID);
-
-        publisher_ = this->create_publisher<std_msgs::msg::String>("pos_raw", 10);
+        publisher_ = this->create_publisher<ap_interfaces::msg::Pos>("pos_raw", 10);
         auto timer_callback =
             [this]() -> void {
-            auto message = std_msgs::msg::String();
-            cap.read(frame);
-            if(cap.isOpened()){
-                if (frame.empty()) {
-                message.data = "not get frame! " + std::to_string(count_++);
-                } else {
-                imshow("Live", frame);
-                waitKey(1);
-                message.data = "get frame! " + std::to_string(count_++);
-                }
-                
-
-            }else{
-                message.data = "not opened! " + std::to_string(count_++);
-
-            }
+            auto message = ap_interfaces::msg::Pos();
+            
             //message.data = "Raw Position! " + std::to_string(this->count_++);
 
             // Extract current thread
+            message.total = pos_raw->total;
+            rclcpp::Time time = this->now();
+            message.timestamp = time.nanoseconds();
+            (message.x)[0] = (pos_raw->x)[0];
+            (message.y)[0] = (pos_raw->y)[0];
+
+            // Extract current thread
             auto curr_thread = string_thread_id();
+            
+            std::string output = std::to_string(pos_raw->total);
+            output += " ";
+            output += std::to_string(pos_raw->timestamp);
+            output += " ";
+            output += std::to_string((message.x)[0]);
+            output += " ";
+            output += std::to_string((message.y)[0]);
 
             // Prep display message
             RCLCPP_INFO(
                 this->get_logger(), "\n<<THREAD %s>> Publishing '%s'",
-                curr_thread.c_str(), message.data.c_str());
+                curr_thread.c_str(), output.c_str());
             this->publisher_->publish(message);
         };
-        timer_ = this->create_wall_timer(500ms, timer_callback);
+        timer_ = this->create_wall_timer(6ms, timer_callback);
     }
 
 private:
     rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+    rclcpp::Publisher<ap_interfaces::msg::Pos>::SharedPtr publisher_;
     size_t count_;
     
-    //opencv example
-    Mat frame;
-    VideoCapture cap;
-    int deviceID;   // 0 = open default camera
-    int apiID;      // 0 = autodetect default API
 };
 
 class SingleThreadedNode : public rclcpp::Node
@@ -171,17 +213,21 @@ private:
 
 int main(int argc, char* argv[])
 {
+    Pos_raw1 pos_raw;
     rclcpp::init(argc, argv);
+
+    std::thread th_detect(detect_pos,&pos_raw);
 
     // You MUST use the MultiThreadedExecutor to use, well, multiple threads
     rclcpp::executors::MultiThreadedExecutor executor;
-    auto player_detection_pubnode = std::make_shared<PublisherNode>();
+    auto player_detection_pubnode = std::make_shared<PublisherNode>(&pos_raw);
     auto player_detection_subnode = std::make_shared<SingleThreadedNode>();  // This contains BOTH subscriber callbacks.
                                                           // They will still run on different threads
                                                           // One Node. Two callbacks. Two Threads
     executor.add_node(player_detection_pubnode);
     executor.add_node(player_detection_subnode);
     executor.spin();
+    th_detect.join();
     rclcpp::shutdown();
     return 0;
 }

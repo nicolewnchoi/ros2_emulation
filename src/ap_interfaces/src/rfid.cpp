@@ -129,7 +129,7 @@ public:
         auto sub2_opt = rclcpp::SubscriptionOptions();
         sub2_opt.callback_group = callback_group_subscriber2_;
 
-        subscription1_ = this->create_subscription<std_msgs::msg::String>(
+        subscription1_ = this->create_subscription<ap_interfaces::msg::Pos>(
             "pos_raw",
             rclcpp::QoS(10),
             // std::bind is sort of C++'s way of passing a function
@@ -170,14 +170,14 @@ private:
      * Every time the Publisher publishes something, all subscribers to the topic get poked
      * This function gets called when Subscriber1 is poked (due to the std::bind we used when defining it)
      */
-    void subscriber1_cb(const std_msgs::msg::String::SharedPtr msg)
+    void subscriber1_cb(const ap_interfaces::msg::Pos::SharedPtr msg)
     {
         auto message_received_at = timing_string();
 
         // Extract current thread
         RCLCPP_INFO(
             this->get_logger(), "THREAD %s => Heard '%s' at %s",
-            string_thread_id().c_str(), msg->data.c_str(), message_received_at.c_str());
+            string_thread_id().c_str(), std::to_string(msg->total).c_str(), message_received_at.c_str());
     }
 
     /**
@@ -196,7 +196,7 @@ private:
 
     rclcpp::CallbackGroup::SharedPtr callback_group_subscriber1_;
     rclcpp::CallbackGroup::SharedPtr callback_group_subscriber2_;
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription1_;
+    rclcpp::Subscription<ap_interfaces::msg::Pos>::SharedPtr subscription1_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription2_;
 };
 
