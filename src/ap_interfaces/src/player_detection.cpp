@@ -18,6 +18,8 @@
 #include <thread>
 #include <stdlib.h>
 #include <string>
+#include <iostream>
+#include <fstream>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -100,9 +102,10 @@ std::string string_thread_id()
 class PublisherNode : public rclcpp::Node
 {
     Pos_raw1 * pos_raw;
+    ofstream myfile;
 public:
-    PublisherNode(Pos_raw1 * pos)
-        : Node("PlayerDetectionPublisher"), count_(0), pos_raw(pos)
+    PublisherNode(Pos_raw1 * pos, ofstream& file)
+        : Node("PlayerDetectionPublisher"), count_(0), pos_raw(pos), flag(0), myfile(&file)
     {
 
         publisher_ = this->create_publisher<ap_interfaces::msg::Pos>("pos_raw", 10);
@@ -116,19 +119,33 @@ public:
             message.total = pos_raw->total;
             rclcpp::Time time = this->now();
             message.timestamp = time.nanoseconds();
+            //cout << (double)time_prev << endl;
+            if (flag != 0){
+
+                duration_arr.push_back((double)(time.nanoseconds() - time_prev.nanoseconds()));
+                myfile << time.nanoseconds()<<endl;
+                time_prev = time;
+                sum = std::accumulate(std::begin(duration_arr), std::end(duration_arr), 0.0);
+                mean_time =  sum / duration_arr.size(); 
+
+            }else{
+                time_prev = time;
+                flag++;
+            }
+            
             (message.x)[0] = (pos_raw->x)[0];
             (message.y)[0] = (pos_raw->y)[0];
 
             // Extract current thread
             auto curr_thread = string_thread_id();
             
-            std::string output = std::to_string(pos_raw->total);
-            output += " ";
-            output += std::to_string(pos_raw->timestamp);
-            output += " ";
-            output += std::to_string((message.x)[0]);
-            output += " ";
-            output += std::to_string((message.y)[0]);
+            std::string output = std::to_string(mean_time);
+            // output += " ";
+            // output += std::to_string(pos_raw->timestamp);
+            // output += " ";
+            // output += std::to_string((message.x)[0]);
+            // output += " ";
+            // output += std::to_string((message.y)[0]);
 
             // Prep display message
             RCLCPP_INFO(
@@ -136,14 +153,19 @@ public:
                 curr_thread.c_str(), output.c_str());
             this->publisher_->publish(message);
         };
-        timer_ = this->create_wall_timer(6ms, timer_callback);
+        timer_ = this->create_wall_timer(16.67ms, timer_callback);
     }
 
 private:
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<ap_interfaces::msg::Pos>::SharedPtr publisher_;
     size_t count_;
-    
+    rclcpp::Time time_prev;
+    vector<double> duration_arr;
+    double sum;
+    double mean_time;
+    int flag;
+
 };
 
 class SingleThreadedNode : public rclcpp::Node
@@ -214,13 +236,16 @@ private:
 int main(int argc, char* argv[])
 {
     Pos_raw1 pos_raw;
+    ofstream myfile;
+    myfile.open ("result.txt", ios::out);
+
     rclcpp::init(argc, argv);
 
     std::thread th_detect(detect_pos,&pos_raw);
 
     // You MUST use the MultiThreadedExecutor to use, well, multiple threads
     rclcpp::executors::MultiThreadedExecutor executor;
-    auto player_detection_pubnode = std::make_shared<PublisherNode>(&pos_raw);
+    auto player_detection_pubnode = std::make_shared<PublisherNode>(&pos_raw, &myfile);
     auto player_detection_subnode = std::make_shared<SingleThreadedNode>();  // This contains BOTH subscriber callbacks.
                                                           // They will still run on different threads
                                                           // One Node. Two callbacks. Two Threads
@@ -229,5 +254,6 @@ int main(int argc, char* argv[])
     executor.spin();
     th_detect.join();
     rclcpp::shutdown();
+    myfile.close();
     return 0;
 }
