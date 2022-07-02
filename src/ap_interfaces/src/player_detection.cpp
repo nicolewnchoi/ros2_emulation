@@ -18,6 +18,8 @@
 #include <thread>
 #include <stdlib.h>
 #include <string>
+
+//print to file
 #include <iostream>
 #include <fstream>
 
@@ -44,7 +46,7 @@ using namespace cv;
 struct Pos_raw1
 {
     int total;
-    double timestamp;
+    std::string timestamp;
     int x[1];
     int y[1];
     int player_id[1];
@@ -102,31 +104,30 @@ std::string string_thread_id()
 class PublisherNode : public rclcpp::Node
 {
     Pos_raw1 * pos_raw;
-    ofstream myfile;
+    ofstream & myfile;
 public:
     PublisherNode(Pos_raw1 * pos, ofstream& file)
-        : Node("PlayerDetectionPublisher"), count_(0), pos_raw(pos), flag(0), myfile(&file)
+        : Node("PlayerDetectionPublisher"), count_(0), pos_raw(pos), flag(0), myfile(file), mean_time(0)
     {
 
         publisher_ = this->create_publisher<ap_interfaces::msg::Pos>("pos_raw", 10);
         auto timer_callback =
             [this]() -> void {
             auto message = ap_interfaces::msg::Pos();
-            
-            //message.data = "Raw Position! " + std::to_string(this->count_++);
 
             // Extract current thread
             message.total = pos_raw->total;
             rclcpp::Time time = this->now();
-            message.timestamp = time.nanoseconds();
+            message.timestamp = std::to_string(time.nanoseconds());
             //cout << (double)time_prev << endl;
             if (flag != 0){
 
                 duration_arr.push_back((double)(time.nanoseconds() - time_prev.nanoseconds()));
-                myfile << time.nanoseconds()<<endl;
+                //myfile << mean_time <<endl;
+                //myfile << duration_arr.size() <<endl;
                 time_prev = time;
-                sum = std::accumulate(std::begin(duration_arr), std::end(duration_arr), 0.0);
-                mean_time =  sum / duration_arr.size(); 
+                //sum = std::accumulate(std::begin(duration_arr), std::end(duration_arr), 0.0);
+                //mean_time =  sum / duration_arr.size(); 
 
             }else{
                 time_prev = time;
@@ -237,7 +238,7 @@ int main(int argc, char* argv[])
 {
     Pos_raw1 pos_raw;
     ofstream myfile;
-    myfile.open ("result.txt", ios::out);
+    myfile.open ("pub_diff.txt", ios::out);
 
     rclcpp::init(argc, argv);
 
@@ -245,7 +246,7 @@ int main(int argc, char* argv[])
 
     // You MUST use the MultiThreadedExecutor to use, well, multiple threads
     rclcpp::executors::MultiThreadedExecutor executor;
-    auto player_detection_pubnode = std::make_shared<PublisherNode>(&pos_raw, &myfile);
+    auto player_detection_pubnode = std::make_shared<PublisherNode>(&pos_raw, myfile);
     auto player_detection_subnode = std::make_shared<SingleThreadedNode>();  // This contains BOTH subscriber callbacks.
                                                           // They will still run on different threads
                                                           // One Node. Two callbacks. Two Threads

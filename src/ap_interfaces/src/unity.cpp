@@ -147,11 +147,13 @@ private:
     void subscriber1_cb(const ap_interfaces::msg::Pos::SharedPtr msg)
     {
         auto message_received_at = timing_string();
+        
+
 
         // Extract current thread
         RCLCPP_INFO(
             this->get_logger(), "THREAD %s => Heard '%s' at %s",
-            string_thread_id().c_str(), std::to_string(msg->timestamp).c_str(), message_received_at.c_str());
+            string_thread_id().c_str(), msg->timestamp.c_str(), message_received_at.c_str());
     }
 
     /**
