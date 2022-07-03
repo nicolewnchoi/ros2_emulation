@@ -35,12 +35,13 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/video.hpp>
 
-#include "image_transport/image_transport.hpp"
-#include "sensor_msgs/image_encodings.hpp"
+//#include "image_transport/image_transport.hpp"
+//#include "sensor_msgs/image_encodings.hpp"
 
 using namespace std;
 using namespace std::chrono_literals;
 using namespace cv;
+using namespace std::chrono;
 
 
 struct Pos_raw1
@@ -118,7 +119,7 @@ public:
             // Extract current thread
             message.total = pos_raw->total;
             rclcpp::Time time = this->now();
-            message.timestamp = std::to_string(time.nanoseconds());
+            message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             //cout << (double)time_prev << endl;
             if (flag != 0){
 

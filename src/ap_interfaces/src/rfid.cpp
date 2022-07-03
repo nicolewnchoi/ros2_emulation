@@ -29,6 +29,7 @@
 
 using namespace std::chrono_literals;
 using namespace std;
+using namespace std::chrono;
 
 struct Pos1
 {
@@ -81,7 +82,7 @@ public:
             auto message = ap_interfaces::msg::Pos();
             message.total = pos1->total;
             rclcpp::Time time = this->now();
-            message.timestamp = std::to_string(time.nanoseconds());
+            message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             (message.x)[0] = (pos1->x)[0];
             (message.y)[0] = (pos1->y)[0];
 
@@ -176,14 +177,10 @@ private:
     void subscriber1_cb(const ap_interfaces::msg::Pos::SharedPtr msg)
     {
         auto message_received_at = timing_string();
-        rclcpp::Time time_sub = this->now();
-        double time_pub = std::stod(msg->timestamp);
-        double delta_time = std::stod(std::to_string(time_sub.nanoseconds())) - time_pub;
-        duration_arr1.push_back(delta_time);
-        sum1 = std::accumulate(std::begin(duration_arr1), std::end(duration_arr1), 0.0);
-        mean_time1 =  sum1 / duration_arr1.size(); 
-        myfile1 << mean_time1 <<endl;
-        myfile1 << duration_arr1.size() <<endl;
+        auto timenow =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+        double time_pub = msg->timestamp;
+        double delta_time = timenow - time_pub;
+        myfile1 << delta_time <<endl;
         // debug in terminal
         // cout << std::stod(std::to_string(time_sub.nanoseconds())) << endl;
         // cout << time_pub << endl;
