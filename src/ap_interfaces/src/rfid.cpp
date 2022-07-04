@@ -178,9 +178,25 @@ private:
     {
         auto message_received_at = timing_string();
         auto timenow =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-        double time_pub = msg->timestamp;
-        double delta_time = timenow - time_pub;
-        myfile1 << delta_time <<endl;
+        time_pub = msg->timestamp;
+        if (flag){
+            pub_interval = time_pub - time_pub_prev;
+            if (pub_interval > 20){
+                myfile1 << "miss message!" <<endl;
+                time_pub_prev = time_pub;
+            }else{
+                delta_time = timenow - time_pub;
+                myfile1 << delta_time <<endl;
+                time_pub_prev = time_pub;
+            }
+
+        }else{
+            time_pub_prev = time_pub;
+            delta_time = timenow - time_pub;
+            myfile1 << delta_time <<endl;
+            flag++;
+        }
+        
         // debug in terminal
         // cout << std::stod(std::to_string(time_sub.nanoseconds())) << endl;
         // cout << time_pub << endl;
@@ -213,6 +229,11 @@ private:
     vector<double> duration_arr1;
     double sum1;
     double mean_time1;
+    double time_pub;
+    double time_pub_prev;
+    double delta_time;
+    double pub_interval;
+    int flag = 0;
 
 };
 
