@@ -57,35 +57,104 @@ struct Pos_raw1
 };
 
 void detect_pos(Pos_raw1* pos_raw) {
-    //opencv example
-    Mat frame;
+    // read from file
+    Mat frame, fgMask, fgMask_gray, final_view;
+    Mat fgMask_erode, fgMask_dilate;
     VideoCapture cap;
-    int deviceID = 0;   // 0 = open default camera
-    int apiID = cv::CAP_ANY;      // 0 = autodetect default API
-    // opencv example 
-    cap.open(deviceID, apiID);
+    Ptr<BackgroundSubtractor> pBackSub;
 
+    cap.open("D:/airplay_ros/src/camera_test/src/Bigigym.avi");
+    pBackSub = createBackgroundSubtractorKNN();
 
-    while (true) {
-        
+    while(true){
         cap.read(frame);
-        if(cap.isOpened()){
-            if (frame.empty()) {
-            } else {
-                pos_raw->total = 1;
-                //pos1->timestamp = static_cast<double>(time.nano);
-                (pos_raw->x)[0] = 1;
-                (pos_raw->y)[0] = 1;
-                (pos_raw->player_id)[0] = 1;
-                (pos_raw->size)[0] = 1;
-
-                imshow("live", frame);
-                waitKey(1);
-            }
+        if(frame.empty()){
+            pos_raw->total = -1;
+            //pos1->timestamp = static_cast<double>(time.nano);
+            (pos_raw->x)[0] = -1;
+            (pos_raw->y)[0] = -1;
+            (pos_raw->player_id)[0] = -1;
+            (pos_raw->size)[0] = -1;
 
         }else{
+            //update the background model
+            pBackSub->apply(frame, fgMask);
+            
+            // erode and dilate
+            Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 5 + 1, 2 * 5 + 1));
+            erode(fgMask, fgMask_erode, elementErosion);
+            Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,	Size(2 * 6 + 1, 2 * 6 + 1));
+	        dilate(fgMask_erode, fgMask_dilate, elementDilate);
+
+            // threshold to binary
+            int threshold_value = 120;
+            int threshold_type = 0; //0 Binary
+            int const max_binary_value = 255;
+            threshold( fgMask_dilate, final_view, threshold_value, max_binary_value, threshold_type );
+
+            // extract contours and find blob
+            vector<vector<Point> > contours;
+            vector<Vec4i> hierarchy;
+            findContours(final_view, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+            vector<vector<Point> > contours_poly( contours.size() );
+            vector<Point2f>centers( contours.size() );
+            vector<float>radius( contours.size() );
+            //cout << contours.size() << endl;
+            for( size_t k = 0; k < contours.size(); k++ ){
+                if (contourArea(contours[k]) > 2000){
+                    approxPolyDP( contours[k], contours_poly[k], 3, true );
+                    minEnclosingCircle( contours_poly[k], centers[k], radius[k] );
+                    // drawing circles for debug
+                    //circle( final_view, centers[k], (int)radius[k], (255,0,0), 10);
+                }
+            }
+            if (!centers.empty()){
+                (pos_raw->x)[0] = (int)centers[0].x;
+                (pos_raw->y)[0] = (int)centers[0].y;
+                (pos_raw->size)[0] = (int)radius[0];
+
+            }
+
+            
+
+
+            //imshow("Live", frame);
+            imshow("reduce noise", fgMask_dilate);
+            imshow("Mask", final_view);
+            waitKey(1);
+
         }
+
     }
+
+    //default cam example
+    // Mat frame;
+    // VideoCapture cap;
+    // int deviceID = 0;   // 0 = open default camera
+    // int apiID = cv::CAP_ANY;      // 0 = autodetect default API
+    // cap.open(deviceID, apiID);
+
+
+    // while (true) {
+        
+    //     cap.read(frame);
+    //     if(cap.isOpened()){
+    //         if (frame.empty()) {
+    //         } else {
+    //             pos_raw->total = 1;
+    //             //pos1->timestamp = static_cast<double>(time.nano);
+    //             (pos_raw->x)[0] = 1;
+    //             (pos_raw->y)[0] = 1;
+    //             (pos_raw->player_id)[0] = 1;
+    //             (pos_raw->size)[0] = 1;
+
+    //             imshow("live", frame);
+    //             waitKey(1);
+    //         }
+
+    //     }else{
+    //     }
+    // }
    
 }
 /**
@@ -144,10 +213,10 @@ public:
             std::string output = std::to_string(mean_time);
             // output += " ";
             // output += std::to_string(pos_raw->timestamp);
-            // output += " ";
-            // output += std::to_string((message.x)[0]);
-            // output += " ";
-            // output += std::to_string((message.y)[0]);
+            output += " ";
+            output += std::to_string((message.x)[0]);
+            output += " ";
+            output += std::to_string((message.y)[0]);
 
             // Prep display message
             RCLCPP_INFO(
