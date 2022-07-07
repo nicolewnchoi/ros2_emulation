@@ -179,13 +179,19 @@ private:
         auto message_received_at = timing_string();
         auto timenow =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
         time_pub = msg->timestamp;
+        // total for debug
+        time_num = msg->total;
         if (flag){
             pub_interval = time_pub - time_pub_prev;
             if (pub_interval > 20){
-                myfile1 << "miss message!" <<endl;
+                myfile1 << time_num << ": ";
+                myfile1 << "miss message!time: ";
+                delta_time = timenow - time_pub;
+                myfile1 << delta_time <<endl;
                 time_pub_prev = time_pub;
             }else{
                 delta_time = timenow - time_pub;
+                myfile1 << time_num << ": ";
                 myfile1 << delta_time <<endl;
                 time_pub_prev = time_pub;
             }
@@ -233,6 +239,7 @@ private:
     double time_pub_prev;
     double delta_time;
     double pub_interval;
+    int time_num;
     int flag = 0;
 
 };

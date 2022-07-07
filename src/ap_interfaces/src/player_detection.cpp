@@ -57,6 +57,10 @@ struct Pos_raw1
 };
 
 void detect_pos(Pos_raw1* pos_raw) {
+
+    ofstream myfile_detect;
+    myfile_detect.open ("detect_duration.txt", ios::out);
+    
     // read from file
     Mat frame, fgMask, fgMask_gray, final_view;
     Mat fgMask_erode, fgMask_dilate;
@@ -77,6 +81,10 @@ void detect_pos(Pos_raw1* pos_raw) {
             (pos_raw->size)[0] = -1;
 
         }else{
+            // start time
+            auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+
+
             //update the background model
             pBackSub->apply(frame, fgMask);
             
@@ -115,7 +123,9 @@ void detect_pos(Pos_raw1* pos_raw) {
 
             }
 
-            
+            auto timeend =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+            auto d_time = timeend - timestart;
+            myfile_detect << d_time <<endl;
 
 
             //imshow("Live", frame);
@@ -124,8 +134,10 @@ void detect_pos(Pos_raw1* pos_raw) {
             waitKey(1);
 
         }
+        
 
     }
+    myfile_detect.close();
 
     //default cam example
     // Mat frame;
@@ -177,7 +189,7 @@ class PublisherNode : public rclcpp::Node
     ofstream & myfile;
 public:
     PublisherNode(Pos_raw1 * pos, ofstream& file)
-        : Node("PlayerDetectionPublisher"), count_(0), pos_raw(pos), flag(0), myfile(file), mean_time(0)
+        : Node("PlayerDetectionPublisher"), count_(0), pos_raw(pos), flag(0), myfile(file)
     {
 
         publisher_ = this->create_publisher<ap_interfaces::msg::Pos>("pos_raw", 10);
@@ -186,31 +198,38 @@ public:
             auto message = ap_interfaces::msg::Pos();
 
             // Extract current thread
-            message.total = pos_raw->total;
+            
+            //message.total = pos_raw->total;
             rclcpp::Time time = this->now();
             message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-            //cout << (double)time_prev << endl;
+            unsigned long timenow_pub = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             if (flag != 0){
+                duration_pub = timenow_pub - time_prev_pub;
+                myfile << count_ << ": ";
+                myfile << duration_pub <<endl;
+                time_prev_pub = timenow_pub;
 
-                duration_arr.push_back((double)(time.nanoseconds() - time_prev.nanoseconds()));
-                //myfile << mean_time <<endl;
-                //myfile << duration_arr.size() <<endl;
-                time_prev = time;
-                //sum = std::accumulate(std::begin(duration_arr), std::end(duration_arr), 0.0);
-                //mean_time =  sum / duration_arr.size(); 
+                // myfile << count_ << ": ";
+                // myfile << (double)(time.nanoseconds() - time_prev.nanoseconds()) <<endl;
+                // time_prev = time;
+               
+                count_++;
 
             }else{
-                time_prev = time;
+                // time_prev = time;
+                time_prev_pub = timenow_pub;
+                count_++;
                 flag++;
             }
-            
+            // currently use total for debug
+            message.total = count_;
             (message.x)[0] = (pos_raw->x)[0];
             (message.y)[0] = (pos_raw->y)[0];
 
             // Extract current thread
             auto curr_thread = string_thread_id();
             
-            std::string output = std::to_string(mean_time);
+            std::string output;
             // output += " ";
             // output += std::to_string(pos_raw->timestamp);
             output += " ";
@@ -231,10 +250,9 @@ private:
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<ap_interfaces::msg::Pos>::SharedPtr publisher_;
     size_t count_;
-    rclcpp::Time time_prev;
-    vector<double> duration_arr;
-    double sum;
-    double mean_time;
+    //rclcpp::Time time_prev;
+    unsigned long duration_pub;
+    unsigned long time_prev_pub;
     int flag;
 
 };
@@ -308,6 +326,7 @@ int main(int argc, char* argv[])
 {
     Pos_raw1 pos_raw;
     ofstream myfile;
+    
     myfile.open ("pub_diff.txt", ios::out);
 
     rclcpp::init(argc, argv);
@@ -325,6 +344,7 @@ int main(int argc, char* argv[])
     executor.spin();
     th_detect.join();
     rclcpp::shutdown();
+    // myfile_detect.close();
     myfile.close();
     return 0;
 }
