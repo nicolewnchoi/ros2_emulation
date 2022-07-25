@@ -15,6 +15,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
@@ -25,6 +27,7 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(OpenCV 4.3.0 REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(Spinnaker REQUIRED)
 
 set(msg_files
   "msg/Pos.msg"
@@ -36,9 +39,24 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Score.msg"
 )
 
-
-add_executable(player_detection src/player_detection.cpp)
+include_directories(include/ap_interfaces)
+add_executable(player_detection src/player_detection.cpp src/CameraFLIR.cpp)
 ament_target_dependencies(player_detection OpenCV rclcpp std_msgs)
+target_link_libraries(player_detection ${Spinnaker_LIBRARIES1}
+	              ${Spinnaker_LIBRARIES2}
+	              ${Spinnaker_LIBRARIES3}
+	              ${Spinnaker_LIBRARIES4}
+	              ${Spinnaker_LIBRARIES5}
+	              ${Spinnaker_LIBRARIES6}
+	              ${Spinnaker_LIBRARIES7}
+	              ${Spinnaker_LIBRARIES8}
+	              ${Spinnaker_LIBRARIES9}
+	              ${Spinnaker_LIBRARIES10}
+	              ${Spinnaker_LIBRARIES11}
+	              ${Spinnaker_LIBRARIES12}
+	              ${Spinnaker_LIBRARIES13}
+                              )
+
 rosidl_target_interfaces(player_detection
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 

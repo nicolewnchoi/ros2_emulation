@@ -35,6 +35,10 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/video.hpp>
 
+#include "Spinnaker.h"
+#include "SpinGenApi/SpinnakerGenApi.h"
+#include "CameraFLIR.h"
+
 //#include "image_transport/image_transport.hpp"
 //#include "sensor_msgs/image_encodings.hpp"
 
@@ -42,7 +46,9 @@ using namespace std;
 using namespace std::chrono_literals;
 using namespace cv;
 using namespace std::chrono;
-
+using namespace Spinnaker;
+using namespace Spinnaker::GenApi;
+using namespace Spinnaker::GenICam;
 
 struct Pos_raw1
 {
@@ -64,14 +70,14 @@ void detect_pos(Pos_raw1* pos_raw) {
     // read from file
     Mat frame, fgMask, fgMask_gray, final_view;
     Mat fgMask_erode, fgMask_dilate;
-    VideoCapture cap;
-    Ptr<BackgroundSubtractor> pBackSub;
 
-    cap.open("D:/airplay_ros/src/camera_test/src/Bigigym.avi");
+    Ptr<BackgroundSubtractor> pBackSub;
     pBackSub = createBackgroundSubtractorKNN();
+    CameraFLIR theFLIRCamera;
+    theFLIRCamera.Initialize();
 
     while(true){
-        cap.read(frame);
+        frame = theFLIRCamera.GrabFrame(0);
         if(frame.empty()){
             pos_raw->total = -1;
             //pos1->timestamp = static_cast<double>(time.nano);
@@ -328,6 +334,14 @@ int main(int argc, char* argv[])
     ofstream myfile;
     
     myfile.open ("pub_diff.txt", ios::out);
+
+    // Mat frame1;
+
+    // CameraFLIR theFLIRCamera;
+    // theFLIRCamera.Initialize();
+    // frame1 = theFLIRCamera.GrabFrame(0);
+    // imshow("Live", frame1);
+    // waitKey(1);
 
     rclcpp::init(argc, argv);
 
