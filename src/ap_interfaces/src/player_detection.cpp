@@ -17,7 +17,6 @@
 #include <string>
 #include <thread>
 #include <stdlib.h>
-#include <string>
 
 //print to file
 #include <iostream>
@@ -56,7 +55,46 @@ struct Pos_raw1
 
 };
 
+// judge whether the center_still is detected again or not; or whether detected_center is put inside 
+int near_center(Point2f a, Point2f b, float thres) {
+
+    Point2f diff = a - b;
+    float result = sqrt(diff.x*diff.x + diff.y*diff.y);
+    cout<<"center_diff: "<< result << endl;
+    if (result <= thres) return 1;
+    //cout<<"not near_center"<<endl;
+    return 0;
+
+}
+
+void judge_centerstill(vector<Point2f>& still_centers, vector<Point2f>& detected_centers, vector<float>& still_radius) {
+    if (still_centers.empty() || detected_centers.empty()){
+        return;
+    }
+    auto k = still_radius.begin();
+
+    for (auto i = still_centers.begin(); i != still_centers.end();) {
+        for (auto j = detected_centers.begin(); j != detected_centers.end(); j++) {
+
+            if (near_center(*i, *j, 500.0)) {
+                //cout << "erase element" << endl;
+                i = still_centers.erase(i);
+                k = still_radius.erase(k);
+                break;
+            }
+            if ((j + 1) == detected_centers.end()) {
+                i++;
+                k++;
+            }
+                
+        }
+    }
+
+}
+
+// detect algorithm
 void detect_pos(Pos_raw1* pos_raw) {
+    int first_flag = 1;
 
     ofstream myfile_detect;
     myfile_detect.open ("detect_duration.txt", ios::out);
@@ -67,8 +105,14 @@ void detect_pos(Pos_raw1* pos_raw) {
     VideoCapture cap;
     Ptr<BackgroundSubtractor> pBackSub;
 
-    cap.open("D:/airplay_ros/src/camera_test/src/Bigigym.avi");
+    cap.open("D:/umich_course/Airplay/video/still.avi");
     pBackSub = createBackgroundSubtractorKNN();
+
+    // initialize para
+    vector<Point2f> centers_still;
+    vector<float> radius_still;
+    vector<Point2f> centers_still_prev;
+    vector<float> radius_still_prev;
 
     while(true){
         cap.read(frame);
@@ -106,30 +150,63 @@ void detect_pos(Pos_raw1* pos_raw) {
             findContours(final_view, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
             vector<vector<Point> > contours_poly( contours.size() );
             vector<Point2f>centers( contours.size() );
+            
             vector<float>radius( contours.size() );
+            // field rect
+            // int left_side = 46;
+            // int right_side = 936;
+            // int up_side = 83;
+            // int down_side = 684;
             //cout << contours.size() << endl;
             for( size_t k = 0; k < contours.size(); k++ ){
                 if (contourArea(contours[k]) > 2000){
                     approxPolyDP( contours[k], contours_poly[k], 3, true );
                     minEnclosingCircle( contours_poly[k], centers[k], radius[k] );
-                    // drawing circles for debug
-                    //circle( final_view, centers[k], (int)radius[k], (255,0,0), 10);
+                    if (radius[k] > 100 ) {continue;}
+                    cout << "find contour" <<endl;
+                    cout << "detected centers:"<<centers[k] <<endl;
+                    centers_still.push_back(centers[k]);
+                    radius_still.push_back(radius[k]);
+
                 }
             }
-            if (!centers.empty()){
-                (pos_raw->x)[0] = (int)centers[0].x;
-                (pos_raw->y)[0] = (int)centers[0].y;
-                (pos_raw->size)[0] = (int)radius[0];
+            cout << "center size: "<< centers.size() <<endl;
 
+            if (first_flag){
+                centers_still_prev = centers_still;
+                radius_still_prev = radius_still;
+                first_flag = 0;
             }
+            // judge whether the player is still
+            judge_centerstill(centers_still_prev, centers, radius_still_prev);
+            // update prev centers with current centers
+            radius_still_prev.insert(radius_still_prev.end(), radius_still.begin(), radius_still.end());
+            centers_still_prev.insert(centers_still_prev.end(), centers_still.begin(), centers_still.end());
+            
 
+            cout << "center still prev size: " << centers_still_prev.size() << endl;
+
+            if (!centers_still.empty()){
+                circle( final_view, centers_still[0], (int)radius_still[0], (0,0,255), 20);
+                (pos_raw->x)[0] = (int)centers_still[0].x;
+                (pos_raw->y)[0] = (int)centers_still[0].y;
+                (pos_raw->size)[0] = (int)radius_still[0];
+            }else if(!centers_still_prev.empty()){
+                circle( final_view, centers_still_prev[0], (int)radius_still_prev[0], (0,0,255), 20);
+                (pos_raw->x)[0] = (int)centers_still_prev[0].x;
+                (pos_raw->y)[0] = (int)centers_still_prev[0].y;
+                (pos_raw->size)[0] = (int)radius_still_prev[0];
+            }
+            // clear valid centers and radius and prepare for the next frame
+            centers_still.clear();
+            radius_still.clear();
             auto timeend =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             auto d_time = timeend - timestart;
             myfile_detect << d_time <<endl;
 
 
-            //imshow("Live", frame);
-            imshow("reduce noise", fgMask_dilate);
+            imshow("Live", frame);
+            //imshow("reduce noise", fgMask_dilate);
             imshow("Mask", final_view);
             waitKey(1);
 

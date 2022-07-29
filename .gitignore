@@ -2,3 +2,5 @@ log/
 install/
 build/
 .vs/
+src/pub_diff.txt
+src/detect_duration.txt
