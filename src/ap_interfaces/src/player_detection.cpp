@@ -15,6 +15,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <deque>
 #include <thread>
 #include <stdlib.h>
 
@@ -55,45 +56,130 @@ struct Pos_raw1
 
 };
 
-// judge whether the center_still is detected again or not; or whether detected_center is put inside 
-int near_center(Point2f a, Point2f b, float thres) {
+Mat Init_mask(){
+    int img_height = 750;
+    int img_width = 960;
+    int ball_radius = 15;
+    int goalSize_p1 = 100;
+    int goalSize_p2 = 100;
+    int LINE_THICKNESS = 14;
 
-    Point2f diff = a - b;
-    float result = sqrt(diff.x*diff.x + diff.y*diff.y);
-    cout<<"center_diff: "<< result << endl;
-    if (result <= thres) return 1;
-    //cout<<"not near_center"<<endl;
-    return 0;
+    Mat mask_raw = Mat::zeros(Size(960, 750), CV_8UC1);
+	mask_raw = Scalar(255);
+	ellipse(mask_raw, Point(70, img_height / 2 - 4), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p1 - 1.5 * ball_radius) * 7 / 3000)), 0, -90, 90, Scalar(0), LINE_THICKNESS + 3, 12);
+	ellipse(mask_raw, Point(img_width - 63, img_height / 2 + 1), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p2 - 1.5 * ball_radius) * 7 / 3000)), 0, 90, 270, Scalar(0), LINE_THICKNESS + 3, 12);
+	
+	// Rect rec(Point(301, 220), Point(320, 275));
+	// Rect rec2(Point(353, 222), Point(380, 275));
+	// Rect rec3(Point(0, 0), Point(670, 80));
+
+	circle(mask_raw, Point(img_width / 2, img_height / 2), 80, Scalar(0), 12, 9, 0);
+	// Mat temp = mask_raw(rec);
+	// temp.setTo(0);
+	// temp = mask_raw(rec2);
+	// temp.setTo(0);
+	// temp = mask_raw(rec3);
+	// temp.setTo(0);
+
+	// Rect rec5(Point(0, 430), Point(50, 500));
+	// temp = mask_raw(rec5);
+	// temp.setTo(0);
+    return mask_raw;
+
+}
+
+Mat Init_background(){
+    // int img_height = 500;
+    // int img_width = 670;
+    int img_height = 750;
+    int img_width = 960;
+	// goalSize_p1 = 100;
+	// goalSize_p2 = 100;
+	// PC_coefficient = 1000;
+	// PC_coefficient1 = 1000;
+	// PC_coefficient2 = 1000;
+	// goal_appear_counter = 0;
+	// goal_counter = 0;
+	// reset_flag = 0;
+	// circle_flag = true;
+
+	// black = imread("black.png");
+	// resize(black, black, Size(disp_width, disp_height), INTER_LINEAR);
+	// flip(black, black, 1);
+	// line(black, Point(LINE_OFFSET, LINE_OFFSET), Point(LINE_OFFSET, disp_height - LINE_OFFSET), Scalar(theSettings.R, theSettings.G, theSettings.B), LINE_THICKNESS, 8, 0);
+	// line(black, Point(LINE_OFFSET, LINE_OFFSET), Point(disp_width - LINE_OFFSET, LINE_OFFSET), Scalar(theSettings.R, theSettings.G, theSettings.B), LINE_THICKNESS, 8, 0);
+	// line(black, Point(disp_width - LINE_OFFSET, LINE_OFFSET), Point(disp_width - LINE_OFFSET, disp_height - LINE_OFFSET), Scalar(theSettings.R, theSettings.G, theSettings.B), LINE_THICKNESS, 8, 0);
+	// line(black, Point(LINE_OFFSET, disp_height - LINE_OFFSET), Point(disp_width - LINE_OFFSET, disp_height - LINE_OFFSET), Scalar(theSettings.R, theSettings.G, theSettings.B), LINE_THICKNESS + 3, 8, 0);
+	
+    // line(black, Point(disp_width / 2, LINE_OFFSET), Point(disp_width / 2, disp_height - LINE_OFFSET), Scalar(theSettings.R, theSettings.G, theSettings.B), LINE_THICKNESS - 5, 8, 0);
+
+	// blackraw = black.clone();
+
+	//  //real-time
+    // splitDisp(black, output1, output2);
+    //Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background.png");
+    Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background960_750.jpg");
+
+	return background_raw;
+
+	// black = imread("black.png");
+	// resize(black, black, Size(150 * DIS_COEFICIENT, 90 * DIS_COEFICIENT), INTER_LINEAR);
+	// scoreraw = black.clone();
 
 }
 
-void judge_centerstill(vector<Point2f>& still_centers, vector<Point2f>& detected_centers, vector<float>& still_radius) {
-    if (still_centers.empty() || detected_centers.empty()){
-        return;
-    }
-    auto k = still_radius.begin();
+deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_input){
 
-    for (auto i = still_centers.begin(); i != still_centers.end();) {
-        for (auto j = detected_centers.begin(); j != detected_centers.end(); j++) {
+    Mat recording;
+	Mat result;
+	Mat result_hsv;
+	Mat testmat;
 
-            if (near_center(*i, *j, 500.0)) {
-                //cout << "erase element" << endl;
-                i = still_centers.erase(i);
-                k = still_radius.erase(k);
-                break;
-            }
-            if ((j + 1) == detected_centers.end()) {
-                i++;
-                k++;
-            }
-                
-        }
+    int img_height = 750;
+    int img_width = 960;
+	// int cut_start_x = 320;
+	// int cut_start_y = 110;
+    int cut_start_x = 171;
+	int cut_start_y = 143;
+    int high_H = 360 / 2;
+	int high_S = 235;
+	int high_V = 255;
+
+	Mat result_hsv_copy;
+	Mat result_final;
+	vector<Mat> channels;
+
+    deque<Mat> Buffer;
+
+    Mat current(frame_input, Rect(cut_start_x, cut_start_y, img_width, img_height));
+
+    absdiff(current, background_input, result);
+
+    cvtColor(result, result_hsv, COLOR_BGR2HSV);
+    result_hsv_copy = result_hsv.clone();
+    split(result_hsv, channels);
+
+    if (!frame_input.empty())
+    {
+        testmat = channels[1];
+
+        //bitwise_and(mask, channels[2], channels[2]);
+        merge(channels, result_hsv);
+        inRange(result_hsv, Scalar(0, 0, 60), Scalar(high_H, high_S, high_V), result_final);
+        Buffer.push_back(result_final);
     }
+
+    return Buffer;
+	
 
 }
+
+
+
 
 // detect algorithm
 void detect_pos(Pos_raw1* pos_raw) {
+
     int first_flag = 1;
 
     ofstream myfile_detect;
@@ -102,20 +188,26 @@ void detect_pos(Pos_raw1* pos_raw) {
     // read from file
     Mat frame, fgMask, fgMask_gray, final_view;
     Mat fgMask_erode, fgMask_dilate;
+    Mat frame_diff;
+    Mat input, input_erode, input_dilate;
     VideoCapture cap;
-    Ptr<BackgroundSubtractor> pBackSub;
 
     cap.open("D:/umich_course/Airplay/video/still.avi");
-    pBackSub = createBackgroundSubtractorKNN();
 
     // initialize para
-    vector<Point2f> centers_still;
-    vector<float> radius_still;
-    vector<Point2f> centers_still_prev;
-    vector<float> radius_still_prev;
+    // int input_height = 720;
+    // int input_width = 1280;
+    Mat Mask = Init_mask();
+    //cout<< "mask size: " << Mask.size()<< endl;
+    Mat Background = Init_background();
+    //cout << "background size: " << Background.size() <<endl;
+    deque<Mat> buffer;
+
 
     while(true){
+        
         cap.read(frame);
+
         if(frame.empty()){
             pos_raw->total = -1;
             //pos1->timestamp = static_cast<double>(time.nano);
@@ -127,31 +219,45 @@ void detect_pos(Pos_raw1* pos_raw) {
         }else{
             // start time
             auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+            cout << "frame size: " << frame.size()<< endl;
+            //resize(frame, frame, Size(input_width, input_height), INTER_LINEAR);
+            //background subtraction
+            buffer = background_subtraction(frame, Mask, Background);
+            //check whether there are available frames in buffer
+			if (!buffer.empty())
+			{
+				frame_diff = static_cast<int>(buffer.size());
+				input = buffer.back().clone(); //choose the most recent frame as input
+				buffer.clear();
+			}
+            // if (frame_diff != 0)
+			// {
 
 
-            //update the background model
-            pBackSub->apply(frame, fgMask);
-            
+            // }
+
             // erode and dilate
             Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 5 + 1, 2 * 5 + 1));
-            erode(fgMask, fgMask_erode, elementErosion);
-            Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,	Size(2 * 6 + 1, 2 * 6 + 1));
-	        dilate(fgMask_erode, fgMask_dilate, elementDilate);
+            erode(input, input_erode, elementErosion);
+            Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
+	        dilate(input, input_dilate, elementDilate);
 
             // threshold to binary
-            int threshold_value = 120;
-            int threshold_type = 0; //0 Binary
-            int const max_binary_value = 255;
-            threshold( fgMask_dilate, final_view, threshold_value, max_binary_value, threshold_type );
+            // int threshold_value = 120;
+            // int threshold_type = 0; //0 Binary
+            // int const max_binary_value = 255;
+            // threshold( frame, final_view, threshold_value, max_binary_value, threshold_type );
 
             // extract contours and find blob
             vector<vector<Point> > contours;
             vector<Vec4i> hierarchy;
-            findContours(final_view, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+            findContours(input_dilate, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
             vector<vector<Point> > contours_poly( contours.size() );
-            vector<Point2f>centers( contours.size() );
+            vector<Point2f>centers_contours( contours.size() );
+            vector<float>radius_contours(contours.size());
+            vector<Point2f>centers;
+            vector<float>radius;
             
-            vector<float>radius( contours.size() );
             // field rect
             // int left_side = 46;
             // int right_side = 936;
@@ -159,55 +265,41 @@ void detect_pos(Pos_raw1* pos_raw) {
             // int down_side = 684;
             //cout << contours.size() << endl;
             for( size_t k = 0; k < contours.size(); k++ ){
-                if (contourArea(contours[k]) > 2000){
+                if (contourArea(contours[k]) > 100){
                     approxPolyDP( contours[k], contours_poly[k], 3, true );
-                    minEnclosingCircle( contours_poly[k], centers[k], radius[k] );
-                    if (radius[k] > 100 ) {continue;}
-                    cout << "find contour" <<endl;
-                    cout << "detected centers:"<<centers[k] <<endl;
-                    centers_still.push_back(centers[k]);
-                    radius_still.push_back(radius[k]);
-
+                    minEnclosingCircle( contours_poly[k], centers_contours[k], radius_contours[k] );
+                    if (radius_contours[k] > 100 || radius_contours[k] < 20) {continue;}
+                    // cout << "find contour" <<endl;
+                    // cout << "detected centers:"<<centers[k] <<endl;
+                    centers.push_back(centers_contours[k]);
+                    radius.push_back(radius_contours[k]);
+                    
                 }
             }
-            cout << "center size: "<< centers.size() <<endl;
 
-            if (first_flag){
-                centers_still_prev = centers_still;
-                radius_still_prev = radius_still;
-                first_flag = 0;
+            for(int i = 0; i < centers.size(); i++){
+                circle( input_dilate, centers[i], (int)radius[i] + 10, (0,0,255), 8);
             }
-            // judge whether the player is still
-            judge_centerstill(centers_still_prev, centers, radius_still_prev);
-            // update prev centers with current centers
-            radius_still_prev.insert(radius_still_prev.end(), radius_still.begin(), radius_still.end());
-            centers_still_prev.insert(centers_still_prev.end(), centers_still.begin(), centers_still.end());
-            
 
-            cout << "center still prev size: " << centers_still_prev.size() << endl;
-
-            if (!centers_still.empty()){
-                circle( final_view, centers_still[0], (int)radius_still[0], (0,0,255), 20);
-                (pos_raw->x)[0] = (int)centers_still[0].x;
-                (pos_raw->y)[0] = (int)centers_still[0].y;
-                (pos_raw->size)[0] = (int)radius_still[0];
-            }else if(!centers_still_prev.empty()){
-                circle( final_view, centers_still_prev[0], (int)radius_still_prev[0], (0,0,255), 20);
-                (pos_raw->x)[0] = (int)centers_still_prev[0].x;
-                (pos_raw->y)[0] = (int)centers_still_prev[0].y;
-                (pos_raw->size)[0] = (int)radius_still_prev[0];
+            if (!centers.empty()){
+                
+                (pos_raw->x)[0] = (int)centers[0].x;
+                (pos_raw->y)[0] = (int)centers[0].y;
+                (pos_raw->size)[0] = (int)radius[0];
             }
-            // clear valid centers and radius and prepare for the next frame
-            centers_still.clear();
-            radius_still.clear();
+
+
+
             auto timeend =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             auto d_time = timeend - timestart;
             myfile_detect << d_time <<endl;
 
-
+            imshow("input", input);
+            //imshow("Background", Background);
+            imshow("mask_display", Mask);
             imshow("Live", frame);
-            //imshow("reduce noise", fgMask_dilate);
-            imshow("Mask", final_view);
+            imshow("reduce noise", input_dilate);
+            //imshow("final_view", final_view);
             waitKey(1);
 
         }
@@ -216,35 +308,6 @@ void detect_pos(Pos_raw1* pos_raw) {
     }
     myfile_detect.close();
 
-    //default cam example
-    // Mat frame;
-    // VideoCapture cap;
-    // int deviceID = 0;   // 0 = open default camera
-    // int apiID = cv::CAP_ANY;      // 0 = autodetect default API
-    // cap.open(deviceID, apiID);
-
-
-    // while (true) {
-        
-    //     cap.read(frame);
-    //     if(cap.isOpened()){
-    //         if (frame.empty()) {
-    //         } else {
-    //             pos_raw->total = 1;
-    //             //pos1->timestamp = static_cast<double>(time.nano);
-    //             (pos_raw->x)[0] = 1;
-    //             (pos_raw->y)[0] = 1;
-    //             (pos_raw->player_id)[0] = 1;
-    //             (pos_raw->size)[0] = 1;
-
-    //             imshow("live", frame);
-    //             waitKey(1);
-    //         }
-
-    //     }else{
-    //     }
-    // }
-   
 }
 /**
  * A small convenience function for converting a thread ID to a string
