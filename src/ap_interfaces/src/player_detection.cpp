@@ -46,13 +46,14 @@ using namespace std::chrono;
 
 struct Pos_raw1
 {
+
     int total;
     std::string timestamp;
-    int x[1];
-    int y[1];
-    int player_id[1];
-    std::string tag_id[1];
-    int size[1];
+    int x[32];
+    int y[32];
+    int player_id[32];
+    std::string tag_id[32];
+    int size[32];
 
 };
 
@@ -192,7 +193,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     Mat input, input_erode, input_dilate;
     VideoCapture cap;
 
-    cap.open("D:/umich_course/Airplay/video/still.avi");
+    cap.open("D:/umich_course/Airplay/video/multiplayer.avi");
 
     // initialize para
     // int input_height = 720;
@@ -219,7 +220,7 @@ void detect_pos(Pos_raw1* pos_raw) {
         }else{
             // start time
             auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-            cout << "frame size: " << frame.size()<< endl;
+            //cout << "frame size: " << frame.size()<< endl;
             //resize(frame, frame, Size(input_width, input_height), INTER_LINEAR);
             //background subtraction
             buffer = background_subtraction(frame, Mask, Background);
@@ -277,15 +278,18 @@ void detect_pos(Pos_raw1* pos_raw) {
                 }
             }
 
-            for(int i = 0; i < centers.size(); i++){
-                circle( input_dilate, centers[i], (int)radius[i] + 10, (0,0,255), 8);
-            }
+            
 
             if (!centers.empty()){
-                
-                (pos_raw->x)[0] = (int)centers[0].x;
-                (pos_raw->y)[0] = (int)centers[0].y;
-                (pos_raw->size)[0] = (int)radius[0];
+                (pos_raw->total) = centers.size();
+                for(int i = 0; i < centers.size(); i++){
+                    circle( input_dilate, centers[i], (int)radius[i] + 10, (0,0,255), 8);
+                    (pos_raw->x)[i] = (int)centers[i].x;
+                    (pos_raw->y)[i] = (int)centers[i].y;
+                    (pos_raw->size)[i] = (int)radius[i];
+                    
+                }
+               
             }
 
 
@@ -361,10 +365,7 @@ public:
                 count_++;
                 flag++;
             }
-            // currently use total for debug
-            message.total = count_;
-            (message.x)[0] = (pos_raw->x)[0];
-            (message.y)[0] = (pos_raw->y)[0];
+        
 
             // Extract current thread
             auto curr_thread = string_thread_id();
@@ -373,9 +374,11 @@ public:
             // output += " ";
             // output += std::to_string(pos_raw->timestamp);
             output += " ";
-            output += std::to_string((message.x)[0]);
+            output += std::to_string(pos_raw->total);
             output += " ";
-            output += std::to_string((message.y)[0]);
+            output += std::to_string((pos_raw->x)[0]);
+            output += " ";
+            output += std::to_string((pos_raw->y)[0]);
 
             // Prep display message
             RCLCPP_INFO(
