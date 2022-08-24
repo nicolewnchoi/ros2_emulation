@@ -144,6 +144,35 @@ deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_inp
 
 }
 
+void perspectivetransform_vector(vector<Point2f>& center)
+{
+    float img_center_x = 643.56;
+    float img_center_y = 536.71;
+    // perspective_x = ; // percent
+    // perspective_y = ;
+    float focal_x = 1143;
+    float focal_y = 1145;
+    float transform_x = -3.02;
+    float transform_y = 0.0;
+    vector<Point2f> cam_coordinate(center.size());
+    vector<Point2f> world_coordinate(center.size());
+
+    
+    for(int i = 0; i < center.size(); i++){
+        //image coordinate to camera coordinate
+        cam_coordinate[i].x = (center[i].x - img_center_x) / focal_x;
+        cam_coordinate[i].y = (center[i].y - img_center_y) / focal_y;
+
+        // camera coordinate to world coordinate
+        world_coordinate[i].x = cam_coordinate[i].x - transform_x;
+        world_coordinate[i].y =  cam_coordinate[i].y - transform_y;
+
+        // igym version
+        // center[i].x = (center[i].x - img_center_x * perspective_x / 100) / (1 - perspective_x / 100);
+        // center[i].y = (center[i].y - img_center_y * perspective_y / 100) / (1 - perspective_y / 100);
+    }
+}
+
 void detect_pos(Pos_raw1* pos_raw) {
 
     int first_flag = 0;
