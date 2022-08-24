@@ -88,12 +88,12 @@ Mat Init_background(Mat first_frame){
     // int img_width = 960;
     // Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background960_750.jpg");
 
-    // get the first frame in reality(raw_frame)
+    // get the first frame in reality(raw_frame 1280*1024)
     int bg_height = 750;
     int bg_width = 960;
-    int bg_cut_start_x = 171;
-	int bg_start_y = 143;
-    Mat background_raw = first_frame;
+    int bg_cut_start_x = 160;
+	int bg_cut_start_y = 137;
+    Mat background_raw(first_frame, Rect(bg_cut_start_x, bg_cut_start_y, bg_width, bg_height));
 
 
 	return background_raw;
@@ -161,9 +161,9 @@ void detect_pos(Pos_raw1* pos_raw) {
     theFLIRCamera.Initialize();
 
     Mat Mask = Init_mask();
+    Mat Background;
     //cout<< "mask size: " << Mask.size()<< endl;
-    Mat Background = Init_background();
-    //cout << "background size: " << Background.size() <<endl;
+    
     deque<Mat> buffer;
 
     while(true){
@@ -180,8 +180,10 @@ void detect_pos(Pos_raw1* pos_raw) {
             // start time
             auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 
-            if (first_flag){
-
+            if (first_flag == 0){
+                Background = Init_background(frame);
+                first_flag++;
+                //cout << "background size: " << Background.size() <<endl;
             }
 
             buffer = background_subtraction(frame, Mask, Background);
