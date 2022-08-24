@@ -52,29 +52,119 @@ using namespace Spinnaker::GenICam;
 
 struct Pos_raw1
 {
+
     int total;
     std::string timestamp;
-    int x[1];
-    int y[1];
-    int player_id[1];
-    std::string tag_id[1];
-    int size[1];
+    float x[32];
+    float y[32];
+    int player_id[32];
+    std::string tag_id[32];
+    float size[32];
 
 };
 
+Mat Init_mask(){
+    int img_height = 750;
+    int img_width = 960;
+    int ball_radius = 15;
+    int goalSize_p1 = 100;
+    int goalSize_p2 = 100;
+    int LINE_THICKNESS = 14;
+
+    Mat mask_raw = Mat::zeros(Size(960, 750), CV_8UC1);
+	mask_raw = Scalar(255);
+	ellipse(mask_raw, Point(70, img_height / 2 - 4), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p1 - 1.5 * ball_radius) * 7 / 3000)), 0, -90, 90, Scalar(0), LINE_THICKNESS + 3, 12);
+	ellipse(mask_raw, Point(img_width - 63, img_height / 2 + 1), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p2 - 1.5 * ball_radius) * 7 / 3000)), 0, 90, 270, Scalar(0), LINE_THICKNESS + 3, 12);
+
+	circle(mask_raw, Point(img_width / 2, img_height / 2), 80, Scalar(0), 12, 9, 0);
+	
+    return mask_raw;
+
+}
+
+Mat Init_background(Mat first_frame){
+    // read from file
+    // int img_height = 750;
+    // int img_width = 960;
+    // Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background960_750.jpg");
+
+    // get the first frame in reality(raw_frame)
+    int bg_height = 750;
+    int bg_width = 960;
+    int bg_cut_start_x = 171;
+	int bg_start_y = 143;
+    Mat background_raw = first_frame;
+
+
+	return background_raw;
+
+}
+
+deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_input){
+
+    Mat recording;
+	Mat result;
+	Mat result_hsv;
+	Mat testmat;
+
+    int img_height = 750;
+    int img_width = 960;
+	// int cut_start_x = 320;
+	// int cut_start_y = 110;
+    int cut_start_x = 171;
+	int cut_start_y = 143;
+    int high_H = 360 / 2;
+	int high_S = 235;
+	int high_V = 255;
+
+	Mat result_hsv_copy;
+	Mat result_final;
+	vector<Mat> channels;
+
+    deque<Mat> Buffer;
+
+    Mat current(frame_input, Rect(cut_start_x, cut_start_y, img_width, img_height));
+
+    absdiff(current, background_input, result);
+
+    cvtColor(result, result_hsv, COLOR_BGR2HSV);
+    split(result_hsv, channels);
+
+    if (!frame_input.empty())
+    {
+
+        //bitwise_and(mask, channels[2], channels[2]);
+        merge(channels, result_hsv);
+        inRange(result_hsv, Scalar(0, 0, 60), Scalar(high_H, high_S, high_V), result_final);
+        Buffer.push_back(result_final);
+    }
+
+    return Buffer;
+	
+
+}
+
 void detect_pos(Pos_raw1* pos_raw) {
+
+    int first_flag = 0;
 
     ofstream myfile_detect;
     myfile_detect.open ("detect_duration.txt", ios::out);
-    
-    // read from file
+
     Mat frame, fgMask, fgMask_gray, final_view;
     Mat fgMask_erode, fgMask_dilate;
+    Mat frame_diff;
+    Mat input, input_erode, input_dilate;
 
-    Ptr<BackgroundSubtractor> pBackSub;
-    pBackSub = createBackgroundSubtractorKNN();
+
     CameraFLIR theFLIRCamera;
     theFLIRCamera.Initialize();
+
+    Mat Mask = Init_mask();
+    //cout<< "mask size: " << Mask.size()<< endl;
+    Mat Background = Init_background();
+    //cout << "background size: " << Background.size() <<endl;
+    deque<Mat> buffer;
 
     while(true){
         frame = theFLIRCamera.GrabFrame(0);
@@ -90,54 +180,89 @@ void detect_pos(Pos_raw1* pos_raw) {
             // start time
             auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 
+            if (first_flag){
 
-            //update the background model
-            pBackSub->apply(frame, fgMask);
-            
+            }
+
+            buffer = background_subtraction(frame, Mask, Background);
+            //check whether there are available frames in buffer
+			if (!buffer.empty())
+			{
+				frame_diff = static_cast<int>(buffer.size());
+				input = buffer.back().clone(); //choose the most recent frame as input
+				buffer.clear();
+			}
+
             // erode and dilate
             Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 5 + 1, 2 * 5 + 1));
-            erode(fgMask, fgMask_erode, elementErosion);
-            Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,	Size(2 * 6 + 1, 2 * 6 + 1));
-	        dilate(fgMask_erode, fgMask_dilate, elementDilate);
+            erode(input, input_erode, elementErosion);
+            Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
+	        dilate(input, input_dilate, elementDilate);
 
             // threshold to binary
-            int threshold_value = 120;
-            int threshold_type = 0; //0 Binary
-            int const max_binary_value = 255;
-            threshold( fgMask_dilate, final_view, threshold_value, max_binary_value, threshold_type );
+            // int threshold_value = 120;
+            // int threshold_type = 0; //0 Binary
+            // int const max_binary_value = 255;
+            // threshold( frame, final_view, threshold_value, max_binary_value, threshold_type );
 
             // extract contours and find blob
             vector<vector<Point> > contours;
             vector<Vec4i> hierarchy;
-            findContours(final_view, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+            findContours(input_dilate, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
             vector<vector<Point> > contours_poly( contours.size() );
-            vector<Point2f>centers( contours.size() );
-            vector<float>radius( contours.size() );
+            vector<Point2f>centers_contours( contours.size() );
+            vector<float>radius_contours(contours.size());
+            vector<Point2f>centers;
+            vector<float>radius;
+            
+            // field rect
+            // int left_side = 46;
+            // int right_side = 936;
+            // int up_side = 83;
+            // int down_side = 684;
             //cout << contours.size() << endl;
             for( size_t k = 0; k < contours.size(); k++ ){
-                if (contourArea(contours[k]) > 2000){
+                if (contourArea(contours[k]) > 100){
                     approxPolyDP( contours[k], contours_poly[k], 3, true );
-                    minEnclosingCircle( contours_poly[k], centers[k], radius[k] );
-                    // drawing circles for debug
-                    //circle( final_view, centers[k], (int)radius[k], (255,0,0), 10);
+                    minEnclosingCircle( contours_poly[k], centers_contours[k], radius_contours[k] );
+                    if (radius_contours[k] > 100 || radius_contours[k] < 20) {continue;}
+                    // cout << "find contour" <<endl;
+                    // cout << "detected centers:"<<centers[k] <<endl;
+                    centers.push_back(centers_contours[k]);
+                    radius.push_back(radius_contours[k]);
+                    
                 }
             }
-            if (!centers.empty()){
-                (pos_raw->x)[0] = (int)centers[0].x;
-                (pos_raw->y)[0] = (int)centers[0].y;
-                (pos_raw->size)[0] = (int)radius[0];
 
+            
+
+            if (!centers.empty()){
+                (pos_raw->total) = centers.size();
+                for(int i = 0; i < centers.size(); i++){
+                    circle( input_dilate, centers[i], (int)radius[i] + 10, (0,0,255), 8);
+                    (pos_raw->x)[i] = (float)centers[i].x;
+                    (pos_raw->y)[i] = (float)centers[i].y;
+                    (pos_raw->size)[i] = (float)radius[i];
+                    
+                }
+               
             }
+
+
+            
 
             auto timeend =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             auto d_time = timeend - timestart;
             myfile_detect << d_time <<endl;
 
-
-            //imshow("Live", frame);
-            imshow("reduce noise", fgMask_dilate);
-            imshow("Mask", final_view);
+            imshow("input", input);
+            //imshow("Background", Background);
+            imshow("mask_display", Mask);
+            imshow("Live", frame);
+            imshow("reduce noise", input_dilate);
+            //imshow("final_view", final_view);
             waitKey(1);
+
 
         }
         
@@ -207,30 +332,36 @@ public:
             
             //message.total = pos_raw->total;
             rclcpp::Time time = this->now();
-            message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-            unsigned long timenow_pub = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-            if (flag != 0){
-                duration_pub = timenow_pub - time_prev_pub;
-                myfile << count_ << ": ";
-                myfile << duration_pub <<endl;
-                time_prev_pub = timenow_pub;
 
-                // myfile << count_ << ": ";
-                // myfile << (double)(time.nanoseconds() - time_prev.nanoseconds()) <<endl;
-                // time_prev = time;
+            // test time duration
+            // message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+            // unsigned long timenow_pub = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+            // if (flag != 0){
+            //     duration_pub = timenow_pub - time_prev_pub;
+            //     myfile << count_ << ": ";
+            //     myfile << duration_pub <<endl;
+            //     time_prev_pub = timenow_pub;
+
+            //     // myfile << count_ << ": ";
+            //     // myfile << (double)(time.nanoseconds() - time_prev.nanoseconds()) <<endl;
+            //     // time_prev = time;
                
-                count_++;
+            //     count_++;
 
-            }else{
-                // time_prev = time;
-                time_prev_pub = timenow_pub;
-                count_++;
-                flag++;
+            // }else{
+            //     // time_prev = time;
+            //     time_prev_pub = timenow_pub;
+            //     count_++;
+            //     flag++;
+            // }
+            int temp_num = pos_raw->total;
+            for(int i = 0; i < temp_num; i++){
+                (message.x)[i] = (pos_raw->x)[i];
+                (message.y)[i] = (pos_raw->y)[i];
+                (message.size)[i] = (pos_raw->size)[i];
             }
-            // currently use total for debug
-            message.total = count_;
-            (message.x)[0] = (pos_raw->x)[0];
-            (message.y)[0] = (pos_raw->y)[0];
+            message.total = pos_raw->total;
+
 
             // Extract current thread
             auto curr_thread = string_thread_id();
@@ -239,9 +370,11 @@ public:
             // output += " ";
             // output += std::to_string(pos_raw->timestamp);
             output += " ";
-            output += std::to_string((message.x)[0]);
+            output += std::to_string(pos_raw->total);
             output += " ";
-            output += std::to_string((message.y)[0]);
+            output += std::to_string((pos_raw->x)[1]);
+            output += " ";
+            output += std::to_string((pos_raw->y)[1]);
 
             // Prep display message
             RCLCPP_INFO(
