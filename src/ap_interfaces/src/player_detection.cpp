@@ -180,7 +180,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     ofstream myfile_detect;
     myfile_detect.open ("detect_duration.txt", ios::out);
 
-    Mat frame, fgMask, fgMask_gray, final_view;
+    Mat frame, fgMask, fgMask_gray;
     Mat fgMask_erode, fgMask_dilate;
     Mat frame_diff;
     Mat input, input_erode, input_dilate;
@@ -196,6 +196,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     deque<Mat> buffer;
 
     while(true){
+        auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
         frame = theFLIRCamera.GrabFrame(0);
         if(frame.empty()){
             pos_raw->total = -1;
@@ -207,9 +208,9 @@ void detect_pos(Pos_raw1* pos_raw) {
 
         }else{
             // start time
-            auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+            
 
-            if (first_flag == 0){
+            if (first_flag < 10){
                 Background = Init_background(frame);
                 first_flag++;
                 //cout << "background size: " << Background.size() <<endl;
@@ -286,10 +287,11 @@ void detect_pos(Pos_raw1* pos_raw) {
             auto d_time = timeend - timestart;
             myfile_detect << d_time <<endl;
 
-            imshow("input", input);
+            // imshow("input", input);
             //imshow("Background", Background);
-            imshow("mask_display", Mask);
+            //imshow("mask_display", Mask);
             imshow("Live", frame);
+            moveWindow("Live", 10, 10);
             imshow("reduce noise", input_dilate);
             //imshow("final_view", final_view);
             waitKey(1);
@@ -403,9 +405,9 @@ public:
             output += " ";
             output += std::to_string(pos_raw->total);
             output += " ";
-            output += std::to_string((pos_raw->x)[1]);
+            output += std::to_string((pos_raw->x)[0]);
             output += " ";
-            output += std::to_string((pos_raw->y)[1]);
+            output += std::to_string((pos_raw->y)[0]);
 
             // Prep display message
             RCLCPP_INFO(
@@ -498,14 +500,6 @@ int main(int argc, char* argv[])
     ofstream myfile;
     
     myfile.open ("pub_diff.txt", ios::out);
-
-    // Mat frame1;
-
-    // CameraFLIR theFLIRCamera;
-    // theFLIRCamera.Initialize();
-    // frame1 = theFLIRCamera.GrabFrame(0);
-    // imshow("Live", frame1);
-    // waitKey(1);
 
     rclcpp::init(argc, argv);
 
