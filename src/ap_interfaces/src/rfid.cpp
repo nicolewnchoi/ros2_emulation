@@ -35,11 +35,11 @@ struct Pos1
 {
     int total;
     std::string timestamp;
-    int x[1];
-    int y[1];
+    float x[1];
+    float y[1];
     int player_id[1];
     std::string tag_id[1];
-    int size[1];
+    float size[1];
 
 };
 

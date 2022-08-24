@@ -1,16 +1,3 @@
-// Copyright 2020 Open Source Robotics Foundation, Inc.
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 #include <chrono>
 #include <functional>
 #include <memory>
@@ -49,11 +36,11 @@ struct Pos_raw1
 
     int total;
     std::string timestamp;
-    int x[32];
-    int y[32];
+    float x[32];
+    float y[32];
     int player_id[32];
     std::string tag_id[32];
-    int size[32];
+    float size[32];
 
 };
 
@@ -94,38 +81,9 @@ Mat Init_background(){
     // int img_width = 670;
     int img_height = 750;
     int img_width = 960;
-	// goalSize_p1 = 100;
-	// goalSize_p2 = 100;
-	// PC_coefficient = 1000;
-	// PC_coefficient1 = 1000;
-	// PC_coefficient2 = 1000;
-	// goal_appear_counter = 0;
-	// goal_counter = 0;
-	// reset_flag = 0;
-	// circle_flag = true;
-
-	// black = imread("black.png");
-	// resize(black, black, Size(disp_width, disp_height), INTER_LINEAR);
-	// flip(black, black, 1);
-	// line(black, Point(LINE_OFFSET, LINE_OFFSET), Point(LINE_OFFSET, disp_height - LINE_OFFSET), Scalar(theSettings.R, theSettings.G, theSettings.B), LINE_THICKNESS, 8, 0);
-	// line(black, Point(LINE_OFFSET, LINE_OFFSET), Point(disp_width - LINE_OFFSET, LINE_OFFSET), Scalar(theSettings.R, theSettings.G, theSettings.B), LINE_THICKNESS, 8, 0);
-	// line(black, Point(disp_width - LINE_OFFSET, LINE_OFFSET), Point(disp_width - LINE_OFFSET, disp_height - LINE_OFFSET), Scalar(theSettings.R, theSettings.G, theSettings.B), LINE_THICKNESS, 8, 0);
-	// line(black, Point(LINE_OFFSET, disp_height - LINE_OFFSET), Point(disp_width - LINE_OFFSET, disp_height - LINE_OFFSET), Scalar(theSettings.R, theSettings.G, theSettings.B), LINE_THICKNESS + 3, 8, 0);
-	
-    // line(black, Point(disp_width / 2, LINE_OFFSET), Point(disp_width / 2, disp_height - LINE_OFFSET), Scalar(theSettings.R, theSettings.G, theSettings.B), LINE_THICKNESS - 5, 8, 0);
-
-	// blackraw = black.clone();
-
-	//  //real-time
-    // splitDisp(black, output1, output2);
-    //Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background.png");
     Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background960_750.jpg");
 
 	return background_raw;
-
-	// black = imread("black.png");
-	// resize(black, black, Size(150 * DIS_COEFICIENT, 90 * DIS_COEFICIENT), INTER_LINEAR);
-	// scoreraw = black.clone();
 
 }
 
@@ -157,12 +115,10 @@ deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_inp
     absdiff(current, background_input, result);
 
     cvtColor(result, result_hsv, COLOR_BGR2HSV);
-    result_hsv_copy = result_hsv.clone();
     split(result_hsv, channels);
 
     if (!frame_input.empty())
     {
-        testmat = channels[1];
 
         //bitwise_and(mask, channels[2], channels[2]);
         merge(channels, result_hsv);
@@ -173,6 +129,35 @@ deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_inp
     return Buffer;
 	
 
+}
+
+void perspectivetransform_vector(vector<Point2f>& center)
+{
+    float img_center_x = 643.56;
+    float img_center_y = 536.71;
+    // perspective_x = ; // percent
+    // perspective_y = ;
+    float focal_x = 1143;
+    float focal_y = 1145;
+    float transform_x = -3.02;
+    float transform_y = 0.0;
+    vector<Point2f> cam_coordinate(center.size());
+    vector<Point2f> world_coordinate(center.size());
+
+    
+    for(int i = 0; i < center.size(); i++){
+        //image coordinate to camera coordinate
+        cam_coordinate[i].x = (center[i].x - img_center_x) / focal_x;
+        cam_coordinate[i].y = (center[i].y - img_center_y) / focal_y;
+
+        // camera coordinate to world coordinate
+        world_coordinate[i].x = cam_coordinate[i].x - transform_x;
+        world_coordinate[i].y =  cam_coordinate[i].y - transform_y;
+
+        // igym version
+        // center[i].x = (center[i].x - img_center_x * perspective_x / 100) / (1 - perspective_x / 100);
+        // center[i].y = (center[i].y - img_center_y * perspective_y / 100) / (1 - perspective_y / 100);
+    }
 }
 
 
@@ -284,9 +269,9 @@ void detect_pos(Pos_raw1* pos_raw) {
                 (pos_raw->total) = centers.size();
                 for(int i = 0; i < centers.size(); i++){
                     circle( input_dilate, centers[i], (int)radius[i] + 10, (0,0,255), 8);
-                    (pos_raw->x)[i] = (int)centers[i].x;
-                    (pos_raw->y)[i] = (int)centers[i].y;
-                    (pos_raw->size)[i] = (int)radius[i];
+                    (pos_raw->x)[i] = (float)centers[i].x;
+                    (pos_raw->y)[i] = (float)centers[i].y;
+                    (pos_raw->size)[i] = (float)radius[i];
                     
                 }
                
@@ -342,8 +327,14 @@ public:
             auto message = ap_interfaces::msg::Pos();
 
             // Extract current thread
-            
-            //message.total = pos_raw->total;
+            int temp_num = pos_raw->total;
+            for(int i = 0; i < temp_num; i++){
+                (message.x)[i] = (pos_raw->x)[i];
+                (message.y)[i] = (pos_raw->y)[i];
+                (message.size)[i] = (pos_raw->size)[i];
+            }
+            message.total = pos_raw->total;
+
             rclcpp::Time time = this->now();
             message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             unsigned long timenow_pub = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
@@ -376,9 +367,9 @@ public:
             output += " ";
             output += std::to_string(pos_raw->total);
             output += " ";
-            output += std::to_string((pos_raw->x)[0]);
+            output += std::to_string((pos_raw->x)[1]);
             output += " ";
-            output += std::to_string((pos_raw->y)[0]);
+            output += std::to_string((pos_raw->y)[1]);
 
             // Prep display message
             RCLCPP_INFO(
