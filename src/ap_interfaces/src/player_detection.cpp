@@ -270,7 +270,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                 for(int i = 0; i < centers.size(); i++){
                     circle( input_dilate, centers[i], (int)radius[i] + 10, (0,0,255), 8);
                     (pos_raw->x)[i] = (float)centers[i].x;
-                    (pos_raw->y)[i] = (float)centers[i].y;
+                    (pos_raw->y)[i] = (float)(1024 - centers[i].y);
                     (pos_raw->size)[i] = (float)radius[i];
                     
                 }
