@@ -154,23 +154,70 @@ void perspectivetransform_vector(vector<Point2f>& center)
     float focal_y = 1145;
     float transform_x = -3.02;
     float transform_y = 0.0;
+    float z_dis = 1000;
     vector<Point2f> cam_coordinate(center.size());
     vector<Point2f> world_coordinate(center.size());
 
     
     for(int i = 0; i < center.size(); i++){
+        // simplified 
         //image coordinate to camera coordinate
-        cam_coordinate[i].x = (center[i].x - img_center_x) / focal_x;
-        cam_coordinate[i].y = (center[i].y - img_center_y) / focal_y;
+        cam_coordinate[i].x = (center[i].x - img_center_x) * z_dis / focal_x;
+        cam_coordinate[i].y = (center[i].y - img_center_y) * z_dis / focal_y;
 
         // camera coordinate to world coordinate
         world_coordinate[i].x = cam_coordinate[i].x - transform_x;
         world_coordinate[i].y =  cam_coordinate[i].y - transform_y;
 
+        // apply perspective transformation
+        // center[i].x = world_coordinate[i].x;
+        // center[i].y = world_coordinate[i].y;
+
         // igym version
         // center[i].x = (center[i].x - img_center_x * perspective_x / 100) / (1 - perspective_x / 100);
         // center[i].y = (center[i].y - img_center_y * perspective_y / 100) / (1 - perspective_y / 100);
     }
+
+    // //Matrix close form
+    // // input points
+    // float in_p11 = ,
+    // in_p12 = ,
+    // in_p13 = ,
+    // in_p21 = ,
+    // in_p22 = ,
+    // in_p23 = ,
+    // in_p31 = ,
+    // in_p32 = ,
+    // in_p33 = ,
+    // R_p11 = ,
+    // R_p12 = ,
+    // R_p13 = ,
+    // R_p21 = ,
+    // R_p22 = ,
+    // R_p23 = ,
+    // R_p31 = ,
+    // R_p32 = ,
+    // R_p33 = ,
+    // T_p11 = ,
+    // T_p12 = ,
+    // T_p13 = ;
+
+    // // matrix
+    // intrinsicsMatrix = (Mat_<float>(3, 4) << in_p11, in_p12, in_p13, 0.0f, in_p21, in_p22, in_p23, 0.0f, in_p31, in_p32, in_p33, 0.0f);
+    // invinMatrix = intrinsicsMatrix.inv();
+    // extrinsicsMatrix = (Mat_<float>(4, 4) << R_p11, R_p12, R_p13, T_p11, R_p21, R_p22, R_p23, T_p12, R_p31, R_p32, R_p33, T_p13, 0.0f, 0.0f, 0.0f, 1.0f);
+    // invexMatrix = extrinsicsMatrix.inv();
+
+    // //image to world
+    // Mat image_point = (Mat_<float>(3, 1) << centers[0].x, centers[0].y, 1.0f)
+    // Mat world_pointwithweight = invexMatrix * invinMatrix * image_point;
+
+
+
+
+
+    
+    
 }
 
 void detect_pos(Pos_raw1* pos_raw) {
@@ -188,6 +235,7 @@ void detect_pos(Pos_raw1* pos_raw) {
 
     CameraFLIR theFLIRCamera;
     theFLIRCamera.Initialize();
+    //cout<< "2222"<<endl;
 
     Mat Mask = Init_mask();
     Mat Background;
@@ -213,6 +261,7 @@ void detect_pos(Pos_raw1* pos_raw) {
             if (first_flag < 10){
                 Background = Init_background(frame);
                 first_flag++;
+                imwrite("test.jpg", Background);
                 //cout << "background size: " << Background.size() <<endl;
             }
 
@@ -290,9 +339,9 @@ void detect_pos(Pos_raw1* pos_raw) {
             // imshow("input", input);
             //imshow("Background", Background);
             //imshow("mask_display", Mask);
-            imshow("Live", frame);
-            moveWindow("Live", 10, 10);
-            imshow("reduce noise", input_dilate);
+            // imshow("Live", frame);
+            // moveWindow("Live", 10, 10);
+            // imshow("reduce noise", input_dilate);
             //imshow("final_view", final_view);
             waitKey(1);
 
@@ -366,27 +415,27 @@ public:
             //message.total = pos_raw->total;
             rclcpp::Time time = this->now();
 
-            // test time duration
-            // message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-            // unsigned long timenow_pub = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-            // if (flag != 0){
-            //     duration_pub = timenow_pub - time_prev_pub;
-            //     myfile << count_ << ": ";
-            //     myfile << duration_pub <<endl;
-            //     time_prev_pub = timenow_pub;
+            //test time duration
+            message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+            unsigned long timenow_pub = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+            if (flag != 0){
+                duration_pub = timenow_pub - time_prev_pub;
+                myfile << duration_pub <<endl;
+                time_prev_pub = timenow_pub;
 
-            //     // myfile << count_ << ": ";
-            //     // myfile << (double)(time.nanoseconds() - time_prev.nanoseconds()) <<endl;
-            //     // time_prev = time;
+                // myfile << count_ << ": ";
+                // myfile << (double)(time.nanoseconds() - time_prev.nanoseconds()) <<endl;
+                // time_prev = time;
                
-            //     count_++;
+                count_++;
 
-            // }else{
-            //     // time_prev = time;
-            //     time_prev_pub = timenow_pub;
-            //     count_++;
-            //     flag++;
-            // }
+            }else{
+                // time_prev = time;
+                time_prev_pub = timenow_pub;
+                count_++;
+                flag++;
+            }
+
             int temp_num = pos_raw->total;
             for(int i = 0; i < temp_num; i++){
                 (message.x)[i] = (pos_raw->x)[i];
