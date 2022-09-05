@@ -224,10 +224,10 @@ void detect_pos(Pos_raw1* pos_raw) {
 
             // erode and dilate
             //GaussianBlur(input, input_erode, Size(3, 3), 0, 0);
-            Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 5 + 1, 2 * 5 + 1));
-            erode(input, input_erode, elementErosion);
+            //Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 5 + 1, 2 * 5 + 1));
+            //erode(input, input_erode, elementErosion);
             Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
-	        dilate(input_erode, input_dilate, elementDilate);
+	        dilate(input, input_dilate, elementDilate);
 
             // threshold to binary
             // int threshold_value = 120;
@@ -286,7 +286,7 @@ void detect_pos(Pos_raw1* pos_raw) {
 
             imshow("input", input);
             //imshow("Background", Background);
-            imshow("erode", input_erode);
+            //imshow("erode", input_erode);
             imshow("Live", frame);
             imshow("reduce noise", input_dilate);
             //imshow("final_view", final_view);
