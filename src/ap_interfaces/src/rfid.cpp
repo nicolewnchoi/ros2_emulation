@@ -37,6 +37,7 @@ struct Pos1
     std::string timestamp;
     float x[1];
     float y[1];
+
     int player_id[1];
     std::string tag_id[1];
     float size[1];
@@ -74,7 +75,7 @@ class PublisherNode : public rclcpp::Node
     Pos1 * pos1;
 public:
     PublisherNode(Pos1* pos)
-        : Node("RFIDPublisher"), count_(0),pos1(pos)
+        : Node("RFIDPublisher"),pos1(pos)
     {
         publisher_ = this->create_publisher<ap_interfaces::msg::Pos>("pos_true", 10);
         auto timer_callback =
@@ -107,7 +108,6 @@ public:
 private:
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<ap_interfaces::msg::Pos>::SharedPtr publisher_;
-    size_t count_;
 };
 
 class DualThreadedNode : public rclcpp::Node
@@ -167,7 +167,7 @@ private:
     std::string timing_string()
     {
         rclcpp::Time time = this->now();
-        return std::to_string(time.nanoseconds());
+        return std::to_string(time.nanoseconds() / (1000LL * 1000LL));
     }
 
     /**
