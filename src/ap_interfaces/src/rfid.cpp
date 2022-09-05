@@ -18,6 +18,9 @@
 #include <thread>
 #include <stdlib.h>
 #include <string>
+//print to file
+#include <fstream>
+#include <iostream>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -31,12 +34,13 @@ using namespace std::chrono;
 struct Pos1
 {
     int total;
-    long long timestamp;
-    int x[1];
-    int y[1];
+    std::string timestamp;
+    float x[1];
+    float y[1];
+
     int player_id[1];
     std::string tag_id[1];
-    int size[1];
+    float size[1];
 
 };
 
@@ -86,12 +90,12 @@ public:
             // Extract current thread
             auto curr_thread = string_thread_id();
             std::string output = std::to_string(pos1->total);
-            output += " ";
-            output += std::to_string(message.timestamp);
-            output += " ";
-            output += std::to_string((message.x)[0]);
-            output += " ";
-            output += std::to_string((message.y)[0]);
+            // output += " ";
+            // output += std::to_string(pos1->timestamp);
+            // output += " ";
+            // output += std::to_string((message.x)[0]);
+            // output += " ";
+            // output += std::to_string((message.y)[0]);
             // Prep display message
             RCLCPP_INFO(
                 this->get_logger(), "\n<<THREAD %s>> Publishing '%s'",
@@ -108,10 +112,10 @@ private:
 
 class DualThreadedNode : public rclcpp::Node
 {
-    
+    ofstream & myfile1;
 public:
-    DualThreadedNode()
-        : Node("RFIDSubscribers")
+    DualThreadedNode(ofstream& file)
+        : Node("RFIDSubscribers"),  myfile1(file)
     {
         /* These define the callback groups
          * They don't really do much on their own, but they have to exist in order to
@@ -129,7 +133,7 @@ public:
         auto sub2_opt = rclcpp::SubscriptionOptions();
         sub2_opt.callback_group = callback_group_subscriber2_;
 
-        subscription1_ = this->create_subscription<std_msgs::msg::String>(
+        subscription1_ = this->create_subscription<ap_interfaces::msg::Pos>(
             "pos_raw",
             rclcpp::QoS(10),
             // std::bind is sort of C++'s way of passing a function
@@ -170,14 +174,44 @@ private:
      * Every time the Publisher publishes something, all subscribers to the topic get poked
      * This function gets called when Subscriber1 is poked (due to the std::bind we used when defining it)
      */
-    void subscriber1_cb(const std_msgs::msg::String::SharedPtr msg)
+    void subscriber1_cb(const ap_interfaces::msg::Pos::SharedPtr msg)
     {
         auto message_received_at = timing_string();
+        auto timenow =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+        time_pub = msg->timestamp;
+        // total for debug
+        time_num = msg->total;
+        if (flag){
+            pub_interval = time_pub - time_pub_prev;
+            if (pub_interval > 20){
+                myfile1 << time_num << ": ";
+                myfile1 << "miss message!time: ";
+                delta_time = timenow - time_pub;
+                myfile1 << delta_time <<endl;
+                time_pub_prev = time_pub;
+            }else{
+                delta_time = timenow - time_pub;
+                myfile1 << time_num << ": ";
+                myfile1 << delta_time <<endl;
+                time_pub_prev = time_pub;
+            }
+
+        }else{
+            time_pub_prev = time_pub;
+            delta_time = timenow - time_pub;
+            myfile1 << delta_time <<endl;
+            flag++;
+        }
+        
+        // debug in terminal
+        // cout << std::stod(std::to_string(time_sub.nanoseconds())) << endl;
+        // cout << time_pub << endl;
+        // cout << delta_time << endl;
 
         // Extract current thread
         RCLCPP_INFO(
             this->get_logger(), "THREAD %s => Heard '%s' at %s",
-            string_thread_id().c_str(), msg->data.c_str(), message_received_at.c_str());
+            string_thread_id().c_str(), std::to_string(msg->total).c_str(), message_received_at.c_str());
     }
 
     /**
@@ -196,19 +230,33 @@ private:
 
     rclcpp::CallbackGroup::SharedPtr callback_group_subscriber1_;
     rclcpp::CallbackGroup::SharedPtr callback_group_subscriber2_;
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription1_;
+    rclcpp::Subscription<ap_interfaces::msg::Pos>::SharedPtr subscription1_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription2_;
+    vector<double> duration_arr1;
+    double sum1;
+    double mean_time1;
+    double time_pub;
+    double time_pub_prev;
+    double delta_time;
+    double pub_interval;
+    int time_num;
+    int flag = 0;
+
 };
 
 int main(int argc, char* argv[])
 {
+    //print to file
+    ofstream myfile1;
+    myfile1.open ("pub_sub_diff.txt", ios::out);
+
     Pos1 pos1;
     rclcpp::init(argc, argv);
     std::thread th2(randompos,&pos1);
     // You MUST use the MultiThreadedExecutor to use, well, multiple threads
     rclcpp::executors::MultiThreadedExecutor executor;
     auto rfid_pubnode = std::make_shared<PublisherNode>(&pos1);
-    auto rfid_subnode = std::make_shared<DualThreadedNode>();  // This contains BOTH subscriber callbacks.
+    auto rfid_subnode = std::make_shared<DualThreadedNode>(myfile1);  // This contains BOTH subscriber callbacks.
                                                           // They will still run on different threads
                                                           // One Node. Two callbacks. Two Threads
     executor.add_node(rfid_pubnode);

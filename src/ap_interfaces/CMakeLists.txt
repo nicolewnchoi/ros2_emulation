@@ -26,10 +26,16 @@ find_package(OpenCV REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
+set(msg_files
+  "msg/Pos.msg"
+  "msg/Score.msg"
+)
+
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Pos.msg"
   "msg/Score.msg"
 )
+
 
 add_executable(player_detection src/player_detection.cpp)
 ament_target_dependencies(player_detection OpenCV rclcpp std_msgs)
