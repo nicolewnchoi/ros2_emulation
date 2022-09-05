@@ -22,5 +22,10 @@ def generate_launch_description():
             package='ap_interfaces',
             executable='ui',
             name='ui'
+        ),
+        Node(
+            package='ap_interfaces',
+            executable='button',
+            name='button'
         )
     ])

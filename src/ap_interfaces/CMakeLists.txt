@@ -29,11 +29,13 @@ find_package(std_msgs REQUIRED)
 set(msg_files
   "msg/Pos.msg"
   "msg/Score.msg"
+  "msg/Button.msg"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Pos.msg"
   "msg/Score.msg"
+  "msg/Button.msg"
 )
 
 
@@ -57,12 +59,18 @@ ament_target_dependencies(ui rclcpp std_msgs)
 rosidl_target_interfaces(ui
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
+add_executable(button src/button.cpp)
+ament_target_dependencies(button rclcpp std_msgs)
+rosidl_target_interfaces(button
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+
 
 install(TARGETS
   player_detection
   rfid
   unity
   ui
+  button
   DESTINATION lib/${PROJECT_NAME})
 
 
