@@ -144,6 +144,17 @@ deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_inp
 
 }
 
+Mat AverageFrame(vector<Mat> frames){
+
+    Mat avgImg;
+    for(int i = 0 ; i < frames.size(); i++){
+        avgImg += frames[i];
+    }
+    avgImg = avgImg / frames.size();
+    return avgImg;
+
+}
+
 void perspectivetransform_vector(vector<Point2f>& center)
 {
     float img_center_x = 643.56;
@@ -231,7 +242,8 @@ void detect_pos(Pos_raw1* pos_raw) {
     Mat fgMask_erode, fgMask_dilate;
     Mat frame_diff;
     Mat input, input_erode, input_dilate;
-
+    vector<Mat> captured_frames;
+    Mat avgframe;
 
     CameraFLIR theFLIRCamera;
     theFLIRCamera.Initialize();
@@ -258,10 +270,14 @@ void detect_pos(Pos_raw1* pos_raw) {
             // start time
             
 
-            if (first_flag < 10){
-                Background = Init_background(frame);
+            if (first_flag < 101){
+                captured_frames.push_back(frame);
+                avgframe = AverageFrame(captured_frames);
+                if (first_flag == 100){
+                    Background = Init_background(avgframe);
+                    imwrite("test.jpg", Background);
+                }
                 first_flag++;
-                imwrite("test.jpg", Background);
                 //cout << "background size: " << Background.size() <<endl;
             }
 
