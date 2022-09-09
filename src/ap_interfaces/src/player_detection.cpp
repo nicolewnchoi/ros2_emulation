@@ -145,13 +145,27 @@ deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_inp
 }
 
 Mat AverageFrame(vector<Mat> frames){
+    Mat temp;
+    Mat result;
+    frames[0].convertTo(temp, CV_64FC3);
+    Mat avgImg = temp;
+    //Mat captured_img;
+    cout<< "frames size:" << frames.size() << endl;
+    if (frames.size() > 1){
 
-    Mat avgImg;
-    for(int i = 0 ; i < frames.size(); i++){
-        avgImg += frames[i];
+        for(int i = 1 ; i < frames.size(); i++){
+            // captured_img = frames[i];
+            // accumulate(captured_img, avgImg);
+            frames[i].convertTo(temp, CV_64FC3);
+            avgImg += temp;
+        }
+
     }
     avgImg = avgImg / frames.size();
-    return avgImg;
+    avgImg.convertTo(result, CV_8UC3);
+
+    cout << "result size: " << avgImg.size() << endl;
+    return result;
 
 }
 
@@ -231,6 +245,30 @@ void perspectivetransform_vector(vector<Point2f>& center)
     
 }
 
+// DEBUG for mat's type
+// string type2str(int type) {
+//   string r;
+
+//   uchar depth = type & CV_MAT_DEPTH_MASK;
+//   uchar chans = 1 + (type >> CV_CN_SHIFT);
+
+//   switch ( depth ) {
+//     case CV_8U:  r = "8U"; break;
+//     case CV_8S:  r = "8S"; break;
+//     case CV_16U: r = "16U"; break;
+//     case CV_16S: r = "16S"; break;
+//     case CV_32S: r = "32S"; break;
+//     case CV_32F: r = "32F"; break;
+//     case CV_64F: r = "64F"; break;
+//     default:     r = "User"; break;
+//   }
+
+//   r += "C";
+//   r += (chans+'0');
+
+//   return r;
+// }
+
 void detect_pos(Pos_raw1* pos_raw) {
 
     int first_flag = 0;
@@ -270,12 +308,27 @@ void detect_pos(Pos_raw1* pos_raw) {
             // start time
             
 
-            if (first_flag < 101){
+            if (first_flag < 11){
+                //cout<< "frame type: " << type2str(frame.type()) << endl;
+                cout<< "first_flag: "<<first_flag << endl;
                 captured_frames.push_back(frame);
                 avgframe = AverageFrame(captured_frames);
-                if (first_flag == 100){
-                    Background = Init_background(avgframe);
+                Background = Init_background(avgframe);
+                if (first_flag == 0){
+
                     imwrite("test.jpg", Background);
+                }
+                if (first_flag == 2){
+
+                    imwrite("result2.jpg", Background);
+                }
+                if (first_flag == 4){
+
+                    imwrite("result4.jpg", Background);
+                }
+                if (first_flag == 6){
+
+                    imwrite("result6.jpg", Background);
                 }
                 first_flag++;
                 //cout << "background size: " << Background.size() <<endl;
