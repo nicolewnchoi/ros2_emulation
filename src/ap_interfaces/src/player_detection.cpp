@@ -147,24 +147,27 @@ deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_inp
 Mat AverageFrame(vector<Mat> frames){
     Mat temp;
     Mat result;
-    frames[0].convertTo(temp, CV_64FC3);
+    frames[0].convertTo(temp, CV_32FC3);
     Mat avgImg = temp;
     //Mat captured_img;
-    cout<< "frames size:" << frames.size() << endl;
+    //cout<< "frames size:" << frames.size() << endl;
     if (frames.size() > 1){
 
-        for(int i = 1 ; i < frames.size(); i++){
+        for(int i = 1 ; i < 1; i++){
             // captured_img = frames[i];
             // accumulate(captured_img, avgImg);
-            frames[i].convertTo(temp, CV_64FC3);
-            avgImg += temp;
+            frames[i].convertTo(temp, CV_32FC3);
+            accumulate(temp, avgImg);
+            
+            //avgImg += temp;
+            cout<< i << endl;
         }
 
     }
-    avgImg = avgImg / frames.size();
+    // avgImg = avgImg / frames.size();
     avgImg.convertTo(result, CV_8UC3);
 
-    cout << "result size: " << avgImg.size() << endl;
+    //cout << "result size: " << avgImg.size() << endl;
     return result;
 
 }
@@ -288,7 +291,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     //cout<< "2222"<<endl;
 
     Mat Mask = Init_mask();
-    Mat Background;
+    Mat Background(750, 960, CV_8UC3, Scalar());
     //cout<< "mask size: " << Mask.size()<< endl;
     
     deque<Mat> buffer;
@@ -312,11 +315,14 @@ void detect_pos(Pos_raw1* pos_raw) {
                 //cout<< "frame type: " << type2str(frame.type()) << endl;
                 cout<< "first_flag: "<<first_flag << endl;
                 captured_frames.push_back(frame);
-                avgframe = AverageFrame(captured_frames);
-                Background = Init_background(avgframe);
+                if (captured_frames.size() == 11){
+                    avgframe = AverageFrame(captured_frames);
+                    Background = Init_background(avgframe);
+
+                }
                 if (first_flag == 0){
 
-                    imwrite("test.jpg", Background);
+                    imwrite("first.jpg", Background);
                 }
                 if (first_flag == 2){
 
@@ -326,9 +332,22 @@ void detect_pos(Pos_raw1* pos_raw) {
 
                     imwrite("result4.jpg", Background);
                 }
-                if (first_flag == 6){
+                if (first_flag == 10){
 
-                    imwrite("result6.jpg", Background);
+                    imwrite("result.jpg", Background);
+                }
+                if (first_flag == 10){
+                    Mat temp;
+                    std::ostringstream name;
+                    int i;
+                    name << "captured_frames_";
+                    for(i = 0 ; i < captured_frames.size(); i++){
+                        name << i << ".jpg";
+                        // captured_img = frames[i];
+                        // accumulate(captured_img, avgImg);
+                        captured_frames[i].convertTo(temp, CV_64FC3);
+                        imwrite(name.str(), temp);                    
+                    }
                 }
                 first_flag++;
                 //cout << "background size: " << Background.size() <<endl;
