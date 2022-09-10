@@ -427,9 +427,9 @@ void detect_pos(Pos_raw1* pos_raw) {
             // imshow("input", input);
             //imshow("Background", Background);
             //imshow("mask_display", Mask);
-            // imshow("Live", frame);
+            imshow("Live", frame);
             // moveWindow("Live", 10, 10);
-            // imshow("reduce noise", input_dilate);
+            imshow("reduce noise", input_dilate);
             //imshow("final_view", final_view);
             waitKey(1);
 
