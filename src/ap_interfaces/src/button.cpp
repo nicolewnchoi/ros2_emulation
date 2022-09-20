@@ -16,6 +16,10 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <iostream>
+#include <SFML/Graphics.hpp>
+#include <fstream>
+#include <stdlib.h>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -23,14 +27,57 @@
 #include "ap_interfaces/msg/pos.hpp"
 #include "ap_interfaces/msg/button.hpp"
 
+using namespace std;
 using namespace std::chrono_literals;
 
-// detect algorithm
+void kick_control(bool * p) {
 
-void kick_size(bool * p) {
+    ofstream myfile;
+    myfile.open("kick_duration.txt", ios::out);
+    myfile.close();
 
     for (int i = 0; i < 32; i++) {
         *(p + i) = 1;
+    }
+
+    sf::RenderWindow window(sf::VideoMode(500, 500), "Please move the mouse here!");
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            switch (event.type)
+            {
+                // window closed
+            case sf::Event::Closed:
+                window.close();
+                break;
+
+                // key pressed
+            case sf::Event::MouseButtonPressed:
+                if (event.mouseButton.button == sf::Mouse::Right)
+                {
+                    std::cout << "the right button was pressed" << std::endl;
+                    std::cout << "mouse x: " << event.mouseButton.x << std::endl;
+                    std::cout << "mouse y: " << event.mouseButton.y << std::endl;
+                }
+                else if (event.mouseButton.button == sf::Mouse::Left)
+                {
+                    std::cout << "the left button was pressed" << std::endl;
+                    std::cout << "mouse x: " << event.mouseButton.x << std::endl;
+                    std::cout << "mouse y: " << event.mouseButton.y << std::endl;
+                }
+                break;
+
+                // we don't process other types of events
+            default:
+                break;
+            }
+        }
+
+        window.clear();
+        window.display();
     }
 }
 
@@ -60,6 +107,7 @@ public:
         auto timer_callback =
             [this]() -> void {
             auto message = ap_interfaces::msg::Button();
+
             for (int i = 0; i < 32; i++) {
                 message.kick[i] = *(pp + i);
             }
@@ -70,8 +118,8 @@ public:
             // output += " ";
             // output += std::to_string(pos_raw->timestamp);
             output += " ";
-            for (int i=0;i<32;i++){
-                output += *(pp + i);
+            for (int i = 0; i<32; i++) {
+                output += std::to_string(*(pp + i));
             }
 
             // Prep display message
@@ -164,7 +212,7 @@ int main(int argc, char* argv[])
 
     rclcpp::init(argc, argv);
 
-    std::thread th_detect(kick_size, p);
+    std::thread th_kick(kick_control, p);
 
     // You MUST use the MultiThreadedExecutor to use, well, multiple threads
     rclcpp::executors::MultiThreadedExecutor executor;
@@ -175,6 +223,7 @@ int main(int argc, char* argv[])
     executor.add_node(button_pubnode);
     executor.add_node(button_subnode);
     executor.spin();
+    th_kick.join();
     rclcpp::shutdown();
     return 0;
 }

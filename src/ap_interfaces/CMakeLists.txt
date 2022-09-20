@@ -15,6 +15,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+#set(SFML_DIR "${CMAKE_SOURCE_DIR}/library/SFML-2.5.1/lib/cmake/SFML")
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
@@ -25,6 +27,13 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+#find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+
+include(FetchContent)
+FetchContent_Declare(SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 2.6.x)
+FetchContent_MakeAvailable(SFML)
 
 set(msg_files
   "msg/Pos.msg"
@@ -60,6 +69,7 @@ rosidl_target_interfaces(ui
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 add_executable(button src/button.cpp)
+target_link_libraries(button sfml-graphics)
 ament_target_dependencies(button rclcpp std_msgs)
 rosidl_target_interfaces(button
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
