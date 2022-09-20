@@ -15,11 +15,6 @@ def generate_launch_description():
         ),
         Node(
             package='ap_interfaces',
-            executable='unity',
-            name='unity'
-        ),
-        Node(
-            package='ap_interfaces',
             executable='ui',
             name='ui'
         ),

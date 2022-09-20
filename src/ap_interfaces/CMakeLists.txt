@@ -24,7 +24,7 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 find_package(rosidl_default_generators REQUIRED)
-find_package(OpenCV REQUIRED)
+find_package(OpenCV 4.3.0 REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 #find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
@@ -58,9 +58,10 @@ ament_target_dependencies(rfid rclcpp std_msgs)
 rosidl_target_interfaces(rfid
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-add_executable(unity src/unity.cpp)
-ament_target_dependencies(unity rclcpp std_msgs)
-rosidl_target_interfaces(unity
+add_executable(button src/button.cpp)
+target_link_libraries(button sfml-graphics)
+ament_target_dependencies(button rclcpp std_msgs)
+rosidl_target_interfaces(button
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 add_executable(ui src/ui.cpp)
@@ -68,19 +69,11 @@ ament_target_dependencies(ui rclcpp std_msgs)
 rosidl_target_interfaces(ui
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-add_executable(button src/button.cpp)
-target_link_libraries(button sfml-graphics)
-ament_target_dependencies(button rclcpp std_msgs)
-rosidl_target_interfaces(button
-  ${PROJECT_NAME} "rosidl_typesupport_cpp")
-
-
 install(TARGETS
   player_detection
   rfid
-  unity
-  ui
   button
+  ui
   DESTINATION lib/${PROJECT_NAME})
 
 
