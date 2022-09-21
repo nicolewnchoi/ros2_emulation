@@ -77,11 +77,12 @@ Mat Init_mask(){
 }
 
 Mat Init_background(){
-    // int img_height = 500;
-    // int img_width = 670;
-    int img_height = 750;
+    
+    // int img_height = 750;
+    // int img_width = 960;
+    int img_height = 640;
     int img_width = 960;
-    Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background960_750.jpg");
+    Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background960_640.jpg");
 
 	return background_raw;
 
@@ -94,12 +95,17 @@ deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_inp
 	Mat result_hsv;
 	Mat testmat;
 
-    int img_height = 750;
+    // 960*750
+    // int img_height = 750;
+    // int img_width = 960;
+    // int cut_start_x = 171;
+	// int cut_start_y = 143;
+    //960*640
+    int img_height = 640;
     int img_width = 960;
-	// int cut_start_x = 320;
-	// int cut_start_y = 110;
-    int cut_start_x = 171;
-	int cut_start_y = 143;
+    int cut_start_x = 160;
+	int cut_start_y = 192;
+
     int high_H = 360 / 2;
 	int high_S = 235;
 	int high_V = 255;
