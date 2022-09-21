@@ -71,7 +71,7 @@ Mat Init_mask(){
     int goalSize_p2 = 100;
     int LINE_THICKNESS = 14;
 
-    Mat mask_raw = Mat::zeros(Size(960, 750), CV_8UC1);
+    Mat mask_raw = Mat::zeros(Size(960, 750), CV_8UC3);
 	mask_raw = Scalar(255);
 	ellipse(mask_raw, Point(70, img_height / 2 - 4), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p1 - 1.5 * ball_radius) * 7 / 3000)), 0, -90, 90, Scalar(0), LINE_THICKNESS + 3, 12);
 	ellipse(mask_raw, Point(img_width - 63, img_height / 2 + 1), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p2 - 1.5 * ball_radius) * 7 / 3000)), 0, 90, 270, Scalar(0), LINE_THICKNESS + 3, 12);
@@ -149,23 +149,26 @@ Mat AverageFrame(vector<Mat> frames){
     Mat result;
     frames[0].convertTo(temp, CV_32FC3);
     Mat avgImg = temp;
+    int count = 1;
     //Mat captured_img;
-    //cout<< "frames size:" << frames.size() << endl;
+    cout<< "frames size:" << frames.size() << endl;
     if (frames.size() > 1){
 
-        for(int i = 1 ; i < 1; i++){
+        for(int i = 1 ; i < frames.size(); i++){
             // captured_img = frames[i];
             // accumulate(captured_img, avgImg);
             frames[i].convertTo(temp, CV_32FC3);
             accumulate(temp, avgImg);
-            
+            count += 1;
             //avgImg += temp;
-            cout<< i << endl;
+            //cout<< i << endl;
         }
 
     }
-    // avgImg = avgImg / frames.size();
+    cout<<"count:"<<count<<endl;
+    avgImg = avgImg / float(frames.size());
     avgImg.convertTo(result, CV_8UC3);
+    // result = result / float(frames.size());
 
     //cout << "result size: " << avgImg.size() << endl;
     return result;
@@ -312,29 +315,41 @@ void detect_pos(Pos_raw1* pos_raw) {
             
 
             if (first_flag < 11){
-                //cout<< "frame type: " << type2str(frame.type()) << endl;
+                // cout<< "frame type: " << type2str(frame.type()) << endl;
                 cout<< "first_flag: "<<first_flag << endl;
                 captured_frames.push_back(frame);
-                if (captured_frames.size() == 11){
-                    avgframe = AverageFrame(captured_frames);
-                    Background = Init_background(avgframe);
+                // cout <<"captured_frames: "<< captured_frames.size() << endl;
+                avgframe = AverageFrame(captured_frames);
+                Background = Init_background(avgframe);
 
-                }
+                // if (captured_frames.size() == 11){
+                //     avgframe = AverageFrame(captured_frames);
+                //     Background = Init_background(avgframe);
+
+                // }
                 if (first_flag == 0){
 
                     imwrite("first.jpg", Background);
                 }
+                if (first_flag == 1){
+
+                    imwrite("result1.jpg", avgframe);
+                }
                 if (first_flag == 2){
 
-                    imwrite("result2.jpg", Background);
+                    imwrite("result2.jpg", avgframe);
+                }
+                if (first_flag == 3){
+
+                    imwrite("result3.jpg", avgframe);
                 }
                 if (first_flag == 4){
 
-                    imwrite("result4.jpg", Background);
+                    imwrite("result4.jpg", avgframe);
                 }
                 if (first_flag == 10){
 
-                    imwrite("result.jpg", Background);
+                    imwrite("result.jpg", avgframe);
                 }
                 if (first_flag == 10){
                     Mat temp;
@@ -345,7 +360,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                         name << i << ".jpg";
                         // captured_img = frames[i];
                         // accumulate(captured_img, avgImg);
-                        captured_frames[i].convertTo(temp, CV_64FC3);
+                        captured_frames[i].convertTo(temp, CV_32FC3);
                         imwrite(name.str(), temp);                    
                     }
                 }
@@ -427,7 +442,7 @@ void detect_pos(Pos_raw1* pos_raw) {
             // imshow("input", input);
             //imshow("Background", Background);
             //imshow("mask_display", Mask);
-            //imshow("Live", frame);
+            imshow("Live", frame);
             // moveWindow("Live", 10, 10);
             //imshow("reduce noise", input_dilate);
             //imshow("final_view", final_view);
