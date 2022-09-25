@@ -36,10 +36,6 @@ void kick_control(bool * p) {
     myfile.open("kick_duration.txt", ios::out);
     myfile.close();
 
-    for (int i = 0; i < 32; i++) {
-        *(p + i) = 1;
-    }
-
     sf::RenderWindow window(sf::VideoMode(500, 500), "Please move the mouse here!");
 
     while (window.isOpen())
@@ -47,6 +43,8 @@ void kick_control(bool * p) {
         sf::Event event;
         while (window.pollEvent(event))
         {
+            *(p) = NULL;
+            *(p + 1) = NULL;
             switch (event.type)
             {
                 // window closed
@@ -56,15 +54,17 @@ void kick_control(bool * p) {
 
                 // key pressed
             case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button == sf::Mouse::Right)
-                {
-                    std::cout << "the right button was pressed" << std::endl;
+                if (event.mouseButton.button == sf::Mouse::Left)
+                {   
+                    *(p) = 1;
+                    std::cout << "the left button was pressed" << std::endl;
                     std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                     std::cout << "mouse y: " << event.mouseButton.y << std::endl;
                 }
-                else if (event.mouseButton.button == sf::Mouse::Left)
-                {
-                    std::cout << "the left button was pressed" << std::endl;
+                else if (event.mouseButton.button == sf::Mouse::Right)
+                {   
+                    *(p+1) = 1;
+                    std::cout << "the right button was pressed" << std::endl;
                     std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                     std::cout << "mouse y: " << event.mouseButton.y << std::endl;
                 }
@@ -74,6 +74,7 @@ void kick_control(bool * p) {
             default:
                 break;
             }
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));;
         }
 
         window.clear();
@@ -108,7 +109,7 @@ public:
             [this]() -> void {
             auto message = ap_interfaces::msg::Button();
 
-            for (int i = 0; i < 32; i++) {
+            for (int i = 0; i < 2; i++) {
                 message.kick[i] = *(pp + i);
             }
             // Extract current thread
@@ -118,7 +119,7 @@ public:
             // output += " ";
             // output += std::to_string(pos_raw->timestamp);
             output += " ";
-            for (int i = 0; i<32; i++) {
+            for (int i = 0; i<2; i++) {
                 output += std::to_string(*(pp + i));
             }
 
