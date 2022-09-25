@@ -44,37 +44,6 @@ struct Pos_raw1
 
 };
 
-Mat Init_mask(){
-    int img_height = 750;
-    int img_width = 960;
-    int ball_radius = 15;
-    int goalSize_p1 = 100;
-    int goalSize_p2 = 100;
-    int LINE_THICKNESS = 14;
-
-    Mat mask_raw = Mat::zeros(Size(960, 750), CV_8UC1);
-	mask_raw = Scalar(255);
-	ellipse(mask_raw, Point(70, img_height / 2 - 4), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p1 - 1.5 * ball_radius) * 7 / 3000)), 0, -90, 90, Scalar(0), LINE_THICKNESS + 3, 12);
-	ellipse(mask_raw, Point(img_width - 63, img_height / 2 + 1), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p2 - 1.5 * ball_radius) * 7 / 3000)), 0, 90, 270, Scalar(0), LINE_THICKNESS + 3, 12);
-	
-	// Rect rec(Point(301, 220), Point(320, 275));
-	// Rect rec2(Point(353, 222), Point(380, 275));
-	// Rect rec3(Point(0, 0), Point(670, 80));
-
-	circle(mask_raw, Point(img_width / 2, img_height / 2), 80, Scalar(0), 12, 9, 0);
-	// Mat temp = mask_raw(rec);
-	// temp.setTo(0);
-	// temp = mask_raw(rec2);
-	// temp.setTo(0);
-	// temp = mask_raw(rec3);
-	// temp.setTo(0);
-
-	// Rect rec5(Point(0, 430), Point(50, 500));
-	// temp = mask_raw(rec5);
-	// temp.setTo(0);
-    return mask_raw;
-
-}
 
 Mat Init_background(){
     
@@ -88,7 +57,7 @@ Mat Init_background(){
 
 }
 
-deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_input){
+deque<Mat> background_subtraction(Mat frame_input , Mat background_input){
 
     Mat recording;
 	Mat result;
@@ -186,11 +155,6 @@ void detect_pos(Pos_raw1* pos_raw) {
 
     cap.open("D:/umich_course/Airplay/video/multiplayer.avi");
 
-    // initialize para
-    // int input_height = 720;
-    // int input_width = 1280;
-    Mat Mask = Init_mask();
-    //cout<< "mask size: " << Mask.size()<< endl;
     Mat Background = Init_background();
     //cout << "background size: " << Background.size() <<endl;
     deque<Mat> buffer;
@@ -214,7 +178,7 @@ void detect_pos(Pos_raw1* pos_raw) {
             //cout << "frame size: " << frame.size()<< endl;
             //resize(frame, frame, Size(input_width, input_height), INTER_LINEAR);
             //background subtraction
-            buffer = background_subtraction(frame, Mask, Background);
+            buffer = background_subtraction(frame, Background);
             //check whether there are available frames in buffer
 			if (!buffer.empty())
 			{
@@ -230,8 +194,8 @@ void detect_pos(Pos_raw1* pos_raw) {
 
             // erode and dilate
             //GaussianBlur(input, input_erode, Size(3, 3), 0, 0);
-            //Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 5 + 1, 2 * 5 + 1));
-            //erode(input, input_erode, elementErosion);
+            Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 5 + 1, 2 * 5 + 1));
+            erode(input, input_erode, elementErosion);
             Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
 	        dilate(input, input_dilate, elementDilate);
 
@@ -245,9 +209,10 @@ void detect_pos(Pos_raw1* pos_raw) {
             vector<vector<Point> > contours;
             vector<Vec4i> hierarchy;
             findContours(input_dilate, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
-            vector<vector<Point> > contours_poly( contours.size() );
-            vector<Point2f>centers_contours( contours.size() );
-            vector<float>radius_contours(contours.size());
+            size_t size_contours = contours.size();
+            vector<vector<Point> > contours_poly( size_contours );
+            vector<Point2f>centers_contours( size_contours );
+            vector<float>radius_contours(size_contours);
             vector<Point2f>centers;
             vector<float>radius;
             
