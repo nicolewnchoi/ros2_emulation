@@ -63,25 +63,6 @@ struct Pos_raw1
 
 };
 
-Mat Init_mask(){
-    int img_height = 750;
-    int img_width = 960;
-    int ball_radius = 15;
-    int goalSize_p1 = 100;
-    int goalSize_p2 = 100;
-    int LINE_THICKNESS = 14;
-
-    Mat mask_raw = Mat::zeros(Size(960, 750), CV_8UC3);
-	mask_raw = Scalar(255);
-	ellipse(mask_raw, Point(70, img_height / 2 - 4), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p1 - 1.5 * ball_radius) * 7 / 3000)), 0, -90, 90, Scalar(0), LINE_THICKNESS + 3, 12);
-	ellipse(mask_raw, Point(img_width - 63, img_height / 2 + 1), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p2 - 1.5 * ball_radius) * 7 / 3000)), 0, 90, 270, Scalar(0), LINE_THICKNESS + 3, 12);
-
-	circle(mask_raw, Point(img_width / 2, img_height / 2), 80, Scalar(0), 12, 9, 0);
-	
-    return mask_raw;
-
-}
-
 Mat Init_background(Mat first_frame){
     // read from file
     // int img_height = 750;
@@ -106,7 +87,7 @@ Mat Init_background(Mat first_frame){
 
 }
 
-deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_input){
+deque<Mat> background_subtraction(Mat frame_input, Mat background_input){
 
     Mat recording;
 	Mat result;
@@ -185,73 +166,73 @@ Mat AverageFrame(vector<Mat> frames){
 
 }
 
-void perspectivetransform_vector(vector<Point2f>& center)
-{
-    float img_center_x = 643.56;
-    float img_center_y = 536.71;
-    // perspective_x = ; // percent
-    // perspective_y = ;
-    float focal_x = 1143;
-    float focal_y = 1145;
-    float transform_x = -3.02;
-    float transform_y = 0.0;
-    float z_dis = 1000;
-    vector<Point2f> cam_coordinate(center.size());
-    vector<Point2f> world_coordinate(center.size());
+// void perspectivetransform_vector(vector<Point2f>& center)
+// {
+//     float img_center_x = 643.56;
+//     float img_center_y = 536.71;
+//     // perspective_x = ; // percent
+//     // perspective_y = ;
+//     float focal_x = 1143;
+//     float focal_y = 1145;
+//     float transform_x = -3.02;
+//     float transform_y = 0.0;
+//     float z_dis = 1000;
+//     vector<Point2f> cam_coordinate(center.size());
+//     vector<Point2f> world_coordinate(center.size());
 
     
-    for(int i = 0; i < center.size(); i++){
-        // simplified 
-        //image coordinate to camera coordinate
-        cam_coordinate[i].x = (center[i].x - img_center_x) * z_dis / focal_x;
-        cam_coordinate[i].y = (center[i].y - img_center_y) * z_dis / focal_y;
+//     for(int i = 0; i < center.size(); i++){
+//         // simplified 
+//         //image coordinate to camera coordinate
+//         cam_coordinate[i].x = (center[i].x - img_center_x) * z_dis / focal_x;
+//         cam_coordinate[i].y = (center[i].y - img_center_y) * z_dis / focal_y;
 
-        // camera coordinate to world coordinate
-        world_coordinate[i].x = cam_coordinate[i].x - transform_x;
-        world_coordinate[i].y =  cam_coordinate[i].y - transform_y;
+//         // camera coordinate to world coordinate
+//         world_coordinate[i].x = cam_coordinate[i].x - transform_x;
+//         world_coordinate[i].y =  cam_coordinate[i].y - transform_y;
 
-        // apply perspective transformation
-        // center[i].x = world_coordinate[i].x;
-        // center[i].y = world_coordinate[i].y;
+//         // apply perspective transformation
+//         // center[i].x = world_coordinate[i].x;
+//         // center[i].y = world_coordinate[i].y;
 
-        // igym version
-        // center[i].x = (center[i].x - img_center_x * perspective_x / 100) / (1 - perspective_x / 100);
-        // center[i].y = (center[i].y - img_center_y * perspective_y / 100) / (1 - perspective_y / 100);
-    }
+//         // igym version
+//         // center[i].x = (center[i].x - img_center_x * perspective_x / 100) / (1 - perspective_x / 100);
+//         // center[i].y = (center[i].y - img_center_y * perspective_y / 100) / (1 - perspective_y / 100);
+//     }
 
-    // //Matrix close form
-    // // input points
-    // float in_p11 = ,
-    // in_p12 = ,
-    // in_p13 = ,
-    // in_p21 = ,
-    // in_p22 = ,
-    // in_p23 = ,
-    // in_p31 = ,
-    // in_p32 = ,
-    // in_p33 = ,
-    // R_p11 = ,
-    // R_p12 = ,
-    // R_p13 = ,
-    // R_p21 = ,
-    // R_p22 = ,
-    // R_p23 = ,
-    // R_p31 = ,
-    // R_p32 = ,
-    // R_p33 = ,
-    // T_p11 = ,
-    // T_p12 = ,
-    // T_p13 = ;
+//     // //Matrix close form
+//     // // input points
+//     // float in_p11 = ,
+//     // in_p12 = ,
+//     // in_p13 = ,
+//     // in_p21 = ,
+//     // in_p22 = ,
+//     // in_p23 = ,
+//     // in_p31 = ,
+//     // in_p32 = ,
+//     // in_p33 = ,
+//     // R_p11 = ,
+//     // R_p12 = ,
+//     // R_p13 = ,
+//     // R_p21 = ,
+//     // R_p22 = ,
+//     // R_p23 = ,
+//     // R_p31 = ,
+//     // R_p32 = ,
+//     // R_p33 = ,
+//     // T_p11 = ,
+//     // T_p12 = ,
+//     // T_p13 = ;
 
-    // // matrix
-    // intrinsicsMatrix = (Mat_<float>(3, 4) << in_p11, in_p12, in_p13, 0.0f, in_p21, in_p22, in_p23, 0.0f, in_p31, in_p32, in_p33, 0.0f);
-    // invinMatrix = intrinsicsMatrix.inv();
-    // extrinsicsMatrix = (Mat_<float>(4, 4) << R_p11, R_p12, R_p13, T_p11, R_p21, R_p22, R_p23, T_p12, R_p31, R_p32, R_p33, T_p13, 0.0f, 0.0f, 0.0f, 1.0f);
-    // invexMatrix = extrinsicsMatrix.inv();
+//     // // matrix
+//     // intrinsicsMatrix = (Mat_<float>(3, 4) << in_p11, in_p12, in_p13, 0.0f, in_p21, in_p22, in_p23, 0.0f, in_p31, in_p32, in_p33, 0.0f);
+//     // invinMatrix = intrinsicsMatrix.inv();
+//     // extrinsicsMatrix = (Mat_<float>(4, 4) << R_p11, R_p12, R_p13, T_p11, R_p21, R_p22, R_p23, T_p12, R_p31, R_p32, R_p33, T_p13, 0.0f, 0.0f, 0.0f, 1.0f);
+//     // invexMatrix = extrinsicsMatrix.inv();
 
-    // //image to world
-    // Mat image_point = (Mat_<float>(3, 1) << centers[0].x, centers[0].y, 1.0f)
-    // Mat world_pointwithweight = invexMatrix * invinMatrix * image_point;
+//     // //image to world
+//     // Mat image_point = (Mat_<float>(3, 1) << centers[0].x, centers[0].y, 1.0f)
+//     // Mat world_pointwithweight = invexMatrix * invinMatrix * image_point;
 
 
 
@@ -259,7 +240,7 @@ void perspectivetransform_vector(vector<Point2f>& center)
 
     
     
-}
+// }
 
 // DEBUG for mat's type
 // string type2str(int type) {
@@ -303,11 +284,18 @@ void detect_pos(Pos_raw1* pos_raw) {
     theFLIRCamera.Initialize();
     //cout<< "2222"<<endl;
 
-    Mat Mask = Init_mask();
     Mat Background(750, 960, CV_8UC3, Scalar());
-    //cout<< "mask size: " << Mask.size()<< endl;
     
     deque<Mat> buffer;
+
+    //para in while loop
+    vector<Point> contours_poly_temp;
+    Point2f centers_contours_temp;
+    float radius_contours_temp;
+    vector<Point2f>centers;
+    vector<float>radius;
+    vector<vector<Point> > contours;
+    vector<Vec4i> hierarchy;
 
     while(true){
         auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
@@ -378,7 +366,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                 //cout << "background size: " << Background.size() <<endl;
             }
 
-            buffer = background_subtraction(frame, Mask, Background);
+            buffer = background_subtraction(frame, Background);
             //check whether there are available frames in buffer
 			if (!buffer.empty())
 			{
@@ -400,34 +388,30 @@ void detect_pos(Pos_raw1* pos_raw) {
             // threshold( frame, final_view, threshold_value, max_binary_value, threshold_type );
 
             // extract contours and find blob
-            vector<vector<Point> > contours;
-            vector<Vec4i> hierarchy;
+             contours.clear();
+            hierarchy.clear();
             findContours(input_dilate, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
-            vector<vector<Point> > contours_poly( contours.size() );
-            vector<Point2f>centers_contours( contours.size() );
-            vector<float>radius_contours(contours.size());
-            vector<Point2f>centers;
-            vector<float>radius;
+            size_t size_contours = contours.size();
             
+            centers.clear();
+            radius.clear();
+
             // field rect
             // int left_side = 46;
             // int right_side = 936;
             // int up_side = 83;
             // int down_side = 684;
             //cout << contours.size() << endl;
-            for( size_t k = 0; k < contours.size(); k++ ){
+            for( size_t k = 0; k < size_contours; k++ ){
                 if (contourArea(contours[k]) > 100){
-                    approxPolyDP( contours[k], contours_poly[k], 3, true );
-                    minEnclosingCircle( contours_poly[k], centers_contours[k], radius_contours[k] );
-                    if (radius_contours[k] > 100 || radius_contours[k] < 20) {continue;}
-                    // cout << "find contour" <<endl;
-                    // cout << "detected centers:"<<centers[k] <<endl;
-                    centers.push_back(centers_contours[k]);
-                    radius.push_back(radius_contours[k]);
+                    approxPolyDP( contours[k], contours_poly_temp, 3, true );
+                    minEnclosingCircle( contours_poly_temp, centers_contours_temp, radius_contours_temp );
+                    if (radius_contours_temp > 100 || radius_contours_temp < 20) {continue;}
+                    centers.push_back(centers_contours_temp);
+                    radius.push_back(radius_contours_temp);
                     
                 }
             }
-
             
 
             if (!centers.empty()){
