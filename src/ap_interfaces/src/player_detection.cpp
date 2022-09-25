@@ -88,12 +88,18 @@ Mat Init_background(Mat first_frame){
     // int img_width = 960;
     // Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background960_750.jpg");
 
-    // get the first frame in reality(raw_frame 1280*1024)
-    int bg_height = 750;
-    int bg_width = 960;
-    int bg_cut_start_x = 160;
-	int bg_cut_start_y = 137;
-    Mat background_raw(first_frame, Rect(bg_cut_start_x, bg_cut_start_y, bg_width, bg_height));
+    // roi960*750
+    // int bg_height = 750;
+    // int bg_width = 960;
+    // int bg_cut_start_x = 160;
+	// int bg_cut_start_y = 137;
+    //960*640
+    int img_height = 640;
+    int img_width = 960;
+    int cut_start_x = 200;
+	int cut_start_y = 192;
+
+    Mat background_raw(first_frame, Rect(cut_start_x, cut_start_y, img_width, img_height));
 
 
 	return background_raw;
@@ -106,13 +112,17 @@ deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_inp
 	Mat result;
 	Mat result_hsv;
 	Mat testmat;
-
-    int img_height = 750;
+    //960*750
+    // int img_height = 750;
+    // int img_width = 960;
+    // int cut_start_x = 171;
+	// int cut_start_y = 143;
+    // 960*640
+    int img_height = 640;
     int img_width = 960;
-	// int cut_start_x = 320;
-	// int cut_start_y = 110;
-    int cut_start_x = 171;
-	int cut_start_y = 143;
+    int cut_start_x = 200;
+	int cut_start_y = 192;
+
     int high_H = 360 / 2;
 	int high_S = 235;
 	int high_V = 255;
@@ -151,10 +161,10 @@ Mat AverageFrame(vector<Mat> frames){
     Mat avgImg = temp;
     int count = 1;
     //Mat captured_img;
-    cout<< "frames size:" << frames.size() << endl;
+    //cout<< "frames size:" << frames.size() << endl;
     if (frames.size() > 1){
 
-        for(int i = 1 ; i < frames.size(); i++){
+        for(int i = 1 ; i < 1; i++){
             // captured_img = frames[i];
             // accumulate(captured_img, avgImg);
             frames[i].convertTo(temp, CV_32FC3);
@@ -165,8 +175,8 @@ Mat AverageFrame(vector<Mat> frames){
         }
 
     }
-    cout<<"count:"<<count<<endl;
-    avgImg = avgImg / float(frames.size());
+    //cout<<"count:"<<count<<endl;
+    //avgImg = avgImg / float(frames.size());
     avgImg.convertTo(result, CV_8UC3);
     // result = result / float(frames.size());
 
@@ -278,7 +288,7 @@ void perspectivetransform_vector(vector<Point2f>& center)
 void detect_pos(Pos_raw1* pos_raw) {
 
     int first_flag = 0;
-
+    //xrf delay
     ofstream myfile_detect;
     myfile_detect.open ("detect_duration.txt", ios::out);
 
@@ -316,7 +326,7 @@ void detect_pos(Pos_raw1* pos_raw) {
 
             if (first_flag < 11){
                 // cout<< "frame type: " << type2str(frame.type()) << endl;
-                cout<< "first_flag: "<<first_flag << endl;
+                //cout<< "first_flag: "<<first_flag << endl;
                 captured_frames.push_back(frame);
                 // cout <<"captured_frames: "<< captured_frames.size() << endl;
                 avgframe = AverageFrame(captured_frames);
@@ -327,43 +337,43 @@ void detect_pos(Pos_raw1* pos_raw) {
                 //     Background = Init_background(avgframe);
 
                 // }
-                if (first_flag == 0){
+                // if (first_flag == 0){
 
-                    imwrite("first.jpg", Background);
-                }
-                if (first_flag == 1){
+                //     imwrite("first.jpg", Background);
+                // }
+                // if (first_flag == 1){
 
-                    imwrite("result1.jpg", avgframe);
-                }
-                if (first_flag == 2){
+                //     imwrite("result1.jpg", avgframe);
+                // }
+                // if (first_flag == 2){
 
-                    imwrite("result2.jpg", avgframe);
-                }
-                if (first_flag == 3){
+                //     imwrite("result2.jpg", avgframe);
+                // }
+                // if (first_flag == 3){
 
-                    imwrite("result3.jpg", avgframe);
-                }
-                if (first_flag == 4){
+                //     imwrite("result3.jpg", avgframe);
+                // }
+                // if (first_flag == 4){
 
-                    imwrite("result4.jpg", avgframe);
-                }
-                if (first_flag == 10){
+                //     imwrite("result4.jpg", avgframe);
+                // }
+                // if (first_flag == 10){
 
-                    imwrite("result.jpg", avgframe);
-                }
-                if (first_flag == 10){
-                    Mat temp;
-                    std::ostringstream name;
-                    int i;
-                    name << "captured_frames_";
-                    for(i = 0 ; i < captured_frames.size(); i++){
-                        name << i << ".jpg";
-                        // captured_img = frames[i];
-                        // accumulate(captured_img, avgImg);
-                        captured_frames[i].convertTo(temp, CV_32FC3);
-                        imwrite(name.str(), temp);                    
-                    }
-                }
+                //     imwrite("result.jpg", avgframe);
+                // }
+                // if (first_flag == 10){
+                //     Mat temp;
+                //     std::ostringstream name;
+                //     int i;
+                //     name << "captured_frames_";
+                //     for(i = 0 ; i < captured_frames.size(); i++){
+                //         name << i << ".jpg";
+                //         // captured_img = frames[i];
+                //         // accumulate(captured_img, avgImg);
+                //         captured_frames[i].convertTo(temp, CV_32FC3);
+                //         imwrite(name.str(), temp);                    
+                //     }
+                // }
                 first_flag++;
                 //cout << "background size: " << Background.size() <<endl;
             }
@@ -381,7 +391,7 @@ void detect_pos(Pos_raw1* pos_raw) {
             Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 5 + 1, 2 * 5 + 1));
             erode(input, input_erode, elementErosion);
             Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
-	        dilate(input, input_dilate, elementDilate);
+	        dilate(input_erode, input_dilate, elementDilate);
 
             // threshold to binary
             // int threshold_value = 120;
@@ -425,7 +435,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                 for(int i = 0; i < centers.size(); i++){
                     circle( input_dilate, centers[i], (int)radius[i] + 10, (0,0,255), 8);
                     (pos_raw->x)[i] = (float)centers[i].x;
-                    (pos_raw->y)[i] = (float)(1024 - centers[i].y);
+                    (pos_raw->y)[i] = (float)(640 - centers[i].y);
                     (pos_raw->size)[i] = (float)radius[i];
                     
                 }
@@ -434,7 +444,7 @@ void detect_pos(Pos_raw1* pos_raw) {
 
 
             
-
+            //xrf delay
             auto timeend =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             auto d_time = timeend - timestart;
             myfile_detect << d_time <<endl;
@@ -442,8 +452,9 @@ void detect_pos(Pos_raw1* pos_raw) {
             // imshow("input", input);
             //imshow("Background", Background);
             //imshow("mask_display", Mask);
-            imshow("Live", frame);
+            // imshow("Live", frame);
             // moveWindow("Live", 10, 10);
+            // imshow("background",Background);
             //imshow("reduce noise", input_dilate);
             //imshow("final_view", final_view);
             waitKey(1);
@@ -453,6 +464,7 @@ void detect_pos(Pos_raw1* pos_raw) {
         
 
     }
+    //xrf delay
     myfile_detect.close();
 
     //default cam example
@@ -520,6 +532,8 @@ public:
 
             //test time duration
             message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+
+            //xrf delay
             unsigned long timenow_pub = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             if (flag != 0){
                 duration_pub = timenow_pub - time_prev_pub;
