@@ -159,6 +159,14 @@ void detect_pos(Pos_raw1* pos_raw) {
     //cout << "background size: " << Background.size() <<endl;
     deque<Mat> buffer;
 
+    //para in while loop
+    vector<Point> contours_poly_temp;
+    Point2f centers_contours_temp;
+    float radius_contours_temp;
+    vector<Point2f>centers;
+    vector<float>radius;
+    vector<vector<Point> > contours;
+    vector<Vec4i> hierarchy;
 
     while(true){
         
@@ -206,15 +214,16 @@ void detect_pos(Pos_raw1* pos_raw) {
             // threshold( frame, final_view, threshold_value, max_binary_value, threshold_type );
 
             // extract contours and find blob
-            vector<vector<Point> > contours;
-            vector<Vec4i> hierarchy;
+            contours.clear();
+            hierarchy.clear();
             findContours(input_dilate, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
             size_t size_contours = contours.size();
-            vector<vector<Point> > contours_poly( size_contours );
-            vector<Point2f>centers_contours( size_contours );
-            vector<float>radius_contours(size_contours);
-            vector<Point2f>centers;
-            vector<float>radius;
+            // vector<vector<Point> > contours_poly( size_contours );
+            // vector<Point2f>centers_contours( size_contours );
+            // vector<float>radius_contours(size_contours);
+            
+            centers.clear();
+            radius.clear();
             
             // field rect
             // int left_side = 46;
@@ -222,15 +231,18 @@ void detect_pos(Pos_raw1* pos_raw) {
             // int up_side = 83;
             // int down_side = 684;
             //cout << contours.size() << endl;
-            for( size_t k = 0; k < contours.size(); k++ ){
+            for( size_t k = 0; k < size_contours; k++ ){
                 if (contourArea(contours[k]) > 100){
-                    approxPolyDP( contours[k], contours_poly[k], 3, true );
-                    minEnclosingCircle( contours_poly[k], centers_contours[k], radius_contours[k] );
-                    if (radius_contours[k] > 100 || radius_contours[k] < 20) {continue;}
-                    // cout << "find contour" <<endl;
-                    // cout << "detected centers:"<<centers[k] <<endl;
-                    centers.push_back(centers_contours[k]);
-                    radius.push_back(radius_contours[k]);
+                    approxPolyDP( contours[k], contours_poly_temp, 3, true );
+                    minEnclosingCircle( contours_poly_temp, centers_contours_temp, radius_contours_temp );
+                    if (radius_contours_temp > 100 || radius_contours_temp < 20) {continue;}
+                    centers.push_back(centers_contours_temp);
+                    radius.push_back(radius_contours_temp);
+                    // approxPolyDP( contours[k], contours_poly[k], 3, true );
+                    // minEnclosingCircle( contours_poly[k], centers_contours[k], radius_contours[k] );
+                    // if (radius_contours[k] > 100 || radius_contours[k] < 20) {continue;}
+                    // centers.push_back(centers_contours[k]);
+                    // radius.push_back(radius_contours[k]);
                     
                 }
             }
