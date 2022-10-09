@@ -153,7 +153,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     Mat input, input_erode, input_dilate;
     VideoCapture cap;
 
-    cap.open("D:/umich_course/Airplay/video/multiplayer.avi");
+    cap.open("D:/umich_course/Airplay/video/expandarm.avi");
 
     Mat Background = Init_background();
     //cout << "background size: " << Background.size() <<endl;
