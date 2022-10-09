@@ -51,7 +51,11 @@ Mat Init_background(){
     // int img_width = 960;
     int img_height = 640;
     int img_width = 960;
-    Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background960_640.jpg");
+    int cut_start_x = 200;
+	int cut_start_y = 192;
+
+    Mat background_read = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/expandarm_background.jpg"); //same size as the whole frame
+    Mat background_raw(background_read, Rect(cut_start_x, cut_start_y, img_width, img_height));
 
 	return background_raw;
 
@@ -72,7 +76,7 @@ deque<Mat> background_subtraction(Mat frame_input , Mat background_input){
     //960*640
     int img_height = 640;
     int img_width = 960;
-    int cut_start_x = 160;
+    int cut_start_x = 200;
 	int cut_start_y = 192;
 
     int high_H = 360 / 2;
@@ -235,7 +239,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                 if (contourArea(contours[k]) > 100){
                     approxPolyDP( contours[k], contours_poly_temp, 3, true );
                     minEnclosingCircle( contours_poly_temp, centers_contours_temp, radius_contours_temp );
-                    if (radius_contours_temp > 100 || radius_contours_temp < 20) {continue;}
+                    if (radius_contours_temp > 1000 || radius_contours_temp < 20) {continue;}
                     centers.push_back(centers_contours_temp);
                     radius.push_back(radius_contours_temp);
                     // approxPolyDP( contours[k], contours_poly[k], 3, true );
