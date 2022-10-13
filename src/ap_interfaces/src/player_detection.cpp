@@ -81,7 +81,7 @@ Mat Init_background(){
     // int img_width = 670;
     int img_height = 750;
     int img_width = 960;
-    Mat background_raw = imread("D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/src/background960_750.jpg");
+    Mat background_raw = imread("C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/src/background960_750.jpg");
 
 	return background_raw;
 
@@ -178,7 +178,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     Mat input, input_erode, input_dilate;
     VideoCapture cap;
 
-    cap.open("D:/umich_course/Airplay/video/multiplayer.avi");
+    cap.open("C:/ros2newarch/testvideo/tempstill.avi");
 
     // initialize para
     // int input_height = 720;
