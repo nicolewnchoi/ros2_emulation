@@ -24,7 +24,7 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 find_package(rosidl_default_generators REQUIRED)
-find_package(OpenCV 4.3.0 REQUIRED)
+#find_package(OpenCV 4.3.0 REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 #find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
@@ -45,6 +45,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Pos.msg"
   "msg/Score.msg"
   "msg/Button.msg"
+  "srv/gameinfo.srv"
 )
 
 
