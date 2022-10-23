@@ -401,7 +401,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                 if (contourArea(contours[k]) > 100){
                     approxPolyDP( contours[k], contours_poly_temp, 3, true );
                     minEnclosingCircle( contours_poly_temp, centers_contours_temp, radius_contours_temp );
-                    if (radius_contours_temp > 2000 || radius_contours_temp < 20) {continue;}
+                    if (radius_contours_temp > 1000 || radius_contours_temp < 20) {continue;}
                     centers.push_back(centers_contours_temp);
                     radius.push_back(radius_contours_temp);
                 }
