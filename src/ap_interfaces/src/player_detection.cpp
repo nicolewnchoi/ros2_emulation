@@ -361,18 +361,18 @@ void detect_pos(Pos_raw1* pos_raw) {
 
                 //     imwrite("result.jpg", avgframe);
                 // }
-                // if (first_flag == 10){
-                //     Mat temp;
-                //     std::ostringstream name;
-                //     int i;
-                //     name << "captured_frames_";
-                //     for(i = 0 ; i < captured_frames.size(); i++){
-                //         name << i << ".jpg";
-                //         // captured_img = frames[i];
-                //         // accumulate(captured_img, avgImg);
-                //         captured_frames[i].convertTo(temp, CV_32FC3);
-                //         imwrite(name.str(), temp);                    
-                //     }
+                if (first_flag == 10){
+                    Mat temp;
+                    std::ostringstream name;
+                    int i;
+                    name << "captured_frames_";
+                    for(i = 0 ; i < captured_frames.size(); i++){
+                        name << i << ".jpg";
+                        // captured_img = frames[i];
+                        // accumulate(captured_img, avgImg);
+                        captured_frames[i].convertTo(temp, CV_32FC3);
+                        imwrite(name.str(), temp);                    
+                    }
                 // }
                 first_flag++;
                 //cout << "background size: " << Background.size() <<endl;
@@ -449,14 +449,14 @@ void detect_pos(Pos_raw1* pos_raw) {
             auto d_time = timeend - timestart;
             myfile_detect << d_time <<endl;
 
-            // imshow("input", input);
+            imshow("input", input);
             //imshow("Background", Background);
             //imshow("mask_display", Mask);
             // imshow("Live", frame);
             // moveWindow("Live", 10, 10);
             // imshow("background",Background);
             //imshow("reduce noise", input_dilate);
-            //imshow("final_view", final_view);
+            imshow("final_view", final_view);
             waitKey(1);
 
 
