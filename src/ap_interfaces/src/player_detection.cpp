@@ -63,24 +63,6 @@ struct Pos_raw1
 
 };
 
-Mat Init_mask(){
-    int img_height = 750;
-    int img_width = 960;
-    int ball_radius = 15;
-    int goalSize_p1 = 100;
-    int goalSize_p2 = 100;
-    int LINE_THICKNESS = 14;
-
-    Mat mask_raw = Mat::zeros(Size(960, 750), CV_8UC3);
-	mask_raw = Scalar(255);
-	ellipse(mask_raw, Point(70, img_height / 2 - 4), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p1 - 1.5 * ball_radius) * 7 / 3000)), 0, -90, 90, Scalar(0), LINE_THICKNESS + 3, 12);
-	ellipse(mask_raw, Point(img_width - 63, img_height / 2 + 1), Size(img_width / 13, (int)(1.0 * img_height * (goalSize_p2 - 1.5 * ball_radius) * 7 / 3000)), 0, 90, 270, Scalar(0), LINE_THICKNESS + 3, 12);
-
-	circle(mask_raw, Point(img_width / 2, img_height / 2), 80, Scalar(0), 12, 9, 0);
-	
-    return mask_raw;
-
-}
 
 Mat Init_background(Mat first_frame){
     // read from file
@@ -106,7 +88,7 @@ Mat Init_background(Mat first_frame){
 
 }
 
-deque<Mat> background_subtraction(Mat frame_input, Mat mask , Mat background_input){
+deque<Mat> background_subtraction(Mat frame_input, Mat background_input){
 
     Mat recording;
 	Mat result;
@@ -185,73 +167,73 @@ Mat AverageFrame(vector<Mat> frames){
 
 }
 
-void perspectivetransform_vector(vector<Point2f>& center)
-{
-    float img_center_x = 643.56;
-    float img_center_y = 536.71;
-    // perspective_x = ; // percent
-    // perspective_y = ;
-    float focal_x = 1143;
-    float focal_y = 1145;
-    float transform_x = -3.02;
-    float transform_y = 0.0;
-    float z_dis = 1000;
-    vector<Point2f> cam_coordinate(center.size());
-    vector<Point2f> world_coordinate(center.size());
+// void perspectivetransform_vector(vector<Point2f>& center)
+// {
+//     float img_center_x = 643.56;
+//     float img_center_y = 536.71;
+//     // perspective_x = ; // percent
+//     // perspective_y = ;
+//     float focal_x = 1143;
+//     float focal_y = 1145;
+//     float transform_x = -3.02;
+//     float transform_y = 0.0;
+//     float z_dis = 1000;
+//     vector<Point2f> cam_coordinate(center.size());
+//     vector<Point2f> world_coordinate(center.size());
 
     
-    for(int i = 0; i < center.size(); i++){
-        // simplified 
-        //image coordinate to camera coordinate
-        cam_coordinate[i].x = (center[i].x - img_center_x) * z_dis / focal_x;
-        cam_coordinate[i].y = (center[i].y - img_center_y) * z_dis / focal_y;
+//     for(int i = 0; i < center.size(); i++){
+//         // simplified 
+//         //image coordinate to camera coordinate
+//         cam_coordinate[i].x = (center[i].x - img_center_x) * z_dis / focal_x;
+//         cam_coordinate[i].y = (center[i].y - img_center_y) * z_dis / focal_y;
 
-        // camera coordinate to world coordinate
-        world_coordinate[i].x = cam_coordinate[i].x - transform_x;
-        world_coordinate[i].y =  cam_coordinate[i].y - transform_y;
+//         // camera coordinate to world coordinate
+//         world_coordinate[i].x = cam_coordinate[i].x - transform_x;
+//         world_coordinate[i].y =  cam_coordinate[i].y - transform_y;
 
-        // apply perspective transformation
-        // center[i].x = world_coordinate[i].x;
-        // center[i].y = world_coordinate[i].y;
+//         // apply perspective transformation
+//         // center[i].x = world_coordinate[i].x;
+//         // center[i].y = world_coordinate[i].y;
 
-        // igym version
-        // center[i].x = (center[i].x - img_center_x * perspective_x / 100) / (1 - perspective_x / 100);
-        // center[i].y = (center[i].y - img_center_y * perspective_y / 100) / (1 - perspective_y / 100);
-    }
+//         // igym version
+//         // center[i].x = (center[i].x - img_center_x * perspective_x / 100) / (1 - perspective_x / 100);
+//         // center[i].y = (center[i].y - img_center_y * perspective_y / 100) / (1 - perspective_y / 100);
+//     }
 
-    // //Matrix close form
-    // // input points
-    // float in_p11 = ,
-    // in_p12 = ,
-    // in_p13 = ,
-    // in_p21 = ,
-    // in_p22 = ,
-    // in_p23 = ,
-    // in_p31 = ,
-    // in_p32 = ,
-    // in_p33 = ,
-    // R_p11 = ,
-    // R_p12 = ,
-    // R_p13 = ,
-    // R_p21 = ,
-    // R_p22 = ,
-    // R_p23 = ,
-    // R_p31 = ,
-    // R_p32 = ,
-    // R_p33 = ,
-    // T_p11 = ,
-    // T_p12 = ,
-    // T_p13 = ;
+//     // //Matrix close form
+//     // // input points
+//     // float in_p11 = ,
+//     // in_p12 = ,
+//     // in_p13 = ,
+//     // in_p21 = ,
+//     // in_p22 = ,
+//     // in_p23 = ,
+//     // in_p31 = ,
+//     // in_p32 = ,
+//     // in_p33 = ,
+//     // R_p11 = ,
+//     // R_p12 = ,
+//     // R_p13 = ,
+//     // R_p21 = ,
+//     // R_p22 = ,
+//     // R_p23 = ,
+//     // R_p31 = ,
+//     // R_p32 = ,
+//     // R_p33 = ,
+//     // T_p11 = ,
+//     // T_p12 = ,
+//     // T_p13 = ;
 
-    // // matrix
-    // intrinsicsMatrix = (Mat_<float>(3, 4) << in_p11, in_p12, in_p13, 0.0f, in_p21, in_p22, in_p23, 0.0f, in_p31, in_p32, in_p33, 0.0f);
-    // invinMatrix = intrinsicsMatrix.inv();
-    // extrinsicsMatrix = (Mat_<float>(4, 4) << R_p11, R_p12, R_p13, T_p11, R_p21, R_p22, R_p23, T_p12, R_p31, R_p32, R_p33, T_p13, 0.0f, 0.0f, 0.0f, 1.0f);
-    // invexMatrix = extrinsicsMatrix.inv();
+//     // // matrix
+//     // intrinsicsMatrix = (Mat_<float>(3, 4) << in_p11, in_p12, in_p13, 0.0f, in_p21, in_p22, in_p23, 0.0f, in_p31, in_p32, in_p33, 0.0f);
+//     // invinMatrix = intrinsicsMatrix.inv();
+//     // extrinsicsMatrix = (Mat_<float>(4, 4) << R_p11, R_p12, R_p13, T_p11, R_p21, R_p22, R_p23, T_p12, R_p31, R_p32, R_p33, T_p13, 0.0f, 0.0f, 0.0f, 1.0f);
+//     // invexMatrix = extrinsicsMatrix.inv();
 
-    // //image to world
-    // Mat image_point = (Mat_<float>(3, 1) << centers[0].x, centers[0].y, 1.0f)
-    // Mat world_pointwithweight = invexMatrix * invinMatrix * image_point;
+//     // //image to world
+//     // Mat image_point = (Mat_<float>(3, 1) << centers[0].x, centers[0].y, 1.0f)
+//     // Mat world_pointwithweight = invexMatrix * invinMatrix * image_point;
 
 
 
@@ -259,7 +241,7 @@ void perspectivetransform_vector(vector<Point2f>& center)
 
     
     
-}
+// }
 
 // DEBUG for mat's type
 // string type2str(int type) {
@@ -303,9 +285,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     theFLIRCamera.Initialize();
     //cout<< "2222"<<endl;
 
-    Mat Mask = Init_mask();
     Mat Background(750, 960, CV_8UC3, Scalar());
-    //cout<< "mask size: " << Mask.size()<< endl;
     
     deque<Mat> buffer;
 
@@ -373,12 +353,12 @@ void detect_pos(Pos_raw1* pos_raw) {
                         captured_frames[i].convertTo(temp, CV_32FC3);
                         imwrite(name.str(), temp);                    
                     }
-                // }
+                }
                 first_flag++;
                 //cout << "background size: " << Background.size() <<endl;
             }
 
-            buffer = background_subtraction(frame, Mask, Background);
+            buffer = background_subtraction(frame, Background);
             //check whether there are available frames in buffer
 			if (!buffer.empty())
 			{
@@ -449,14 +429,14 @@ void detect_pos(Pos_raw1* pos_raw) {
             auto d_time = timeend - timestart;
             myfile_detect << d_time <<endl;
 
-            imshow("input", input);
+            //imshow("input", input);
             //imshow("Background", Background);
             //imshow("mask_display", Mask);
-            // imshow("Live", frame);
-            // moveWindow("Live", 10, 10);
+            imshow("Live", frame);
+            moveWindow("Live", 10, 10);
             // imshow("background",Background);
-            //imshow("reduce noise", input_dilate);
-            imshow("final_view", final_view);
+            imshow("reduce noise", input_dilate);
+            //imshow("final_view", final_view);
             waitKey(1);
 
 
@@ -466,36 +446,6 @@ void detect_pos(Pos_raw1* pos_raw) {
     }
     //xrf delay
     myfile_detect.close();
-
-    //default cam example
-    // Mat frame;
-    // VideoCapture cap;
-    // int deviceID = 0;   // 0 = open default camera
-    // int apiID = cv::CAP_ANY;      // 0 = autodetect default API
-    // cap.open(deviceID, apiID);
-
-
-    // while (true) {
-        
-    //     cap.read(frame);
-    //     if(cap.isOpened()){
-    //         if (frame.empty()) {
-    //         } else {
-    //             pos_raw->total = 1;
-    //             //pos1->timestamp = static_cast<double>(time.nano);
-    //             (pos_raw->x)[0] = 1;
-    //             (pos_raw->y)[0] = 1;
-    //             (pos_raw->player_id)[0] = 1;
-    //             (pos_raw->size)[0] = 1;
-
-    //             imshow("live", frame);
-    //             waitKey(1);
-    //         }
-
-    //     }else{
-    //     }
-    // }
-   
 }
 /**
  * A small convenience function for converting a thread ID to a string
