@@ -138,29 +138,28 @@ deque<Mat> background_subtraction(Mat frame_input, Mat background_input){
 
 Mat AverageFrame(vector<Mat> frames){
     Mat temp;
+    Mat temp1;
     Mat result;
     frames[0].convertTo(temp, CV_32FC3);
-    Mat avgImg = temp;
-    int count = 1;
+    Mat avgImg(frames[0].rows, frames[0].cols, CV_32FC3);
+    avgImg = temp;
     //Mat captured_img;
     //cout<< "frames size:" << frames.size() << endl;
     if (frames.size() > 1){
 
-        for(int i = 1 ; i < 1; i++){
+        for(int i = 1 ; i < frames.size(); i++){
             // captured_img = frames[i];
             // accumulate(captured_img, avgImg);
-            frames[i].convertTo(temp, CV_32FC3);
-            accumulate(temp, avgImg);
-            count += 1;
-            //avgImg += temp;
+            frames[i].convertTo(temp1, CV_32FC3);
+            //accumulate(temp, avgImg);
+            avgImg += temp1;
             //cout<< i << endl;
         }
 
     }
-    //cout<<"count:"<<count<<endl;
     //avgImg = avgImg / float(frames.size());
+    avgImg = avgImg / float(frames.size());
     avgImg.convertTo(result, CV_8UC3);
-    // result = result / float(frames.size());
 
     //cout << "result size: " << avgImg.size() << endl;
     return result;
@@ -326,30 +325,42 @@ void detect_pos(Pos_raw1* pos_raw) {
                 //     Background = Init_background(avgframe);
 
                 // }
-                // if (first_flag == 0){
+                if (first_flag == 0){
 
-                //     imwrite("first.jpg", Background);
-                // }
-                // if (first_flag == 1){
+                    imwrite("first.jpg", avgframe);
+                }
+                if (first_flag == 1){
 
-                //     imwrite("result1.jpg", avgframe);
-                // }
-                // if (first_flag == 2){
+                    imwrite("result1.jpg", avgframe);
+                }
+                if (first_flag == 2){
 
-                //     imwrite("result2.jpg", avgframe);
-                // }
-                // if (first_flag == 3){
+                    imwrite("result2.jpg", avgframe);
+                }
+                if (first_flag == 3){
 
-                //     imwrite("result3.jpg", avgframe);
-                // }
-                // if (first_flag == 4){
+                    imwrite("result3.jpg", avgframe);
+                }
+                if (first_flag == 4){
 
-                //     imwrite("result4.jpg", avgframe);
-                // }
-                // if (first_flag == 10){
+                    imwrite("result4.jpg", avgframe);
+                }
+                if (first_flag == 5){
 
-                //     imwrite("result.jpg", avgframe);
-                // }
+                    imwrite("result5.jpg", avgframe);
+                }
+                if (first_flag == 6){
+
+                    imwrite("result6.jpg", avgframe);
+                }
+                if (first_flag == 7){
+
+                    imwrite("result7.jpg", avgframe);
+                }
+                if (first_flag == 10){
+
+                    imwrite("result10.jpg", avgframe);
+                }
                 if (first_flag == 10){
                     Mat temp;
                     std::ostringstream name;
