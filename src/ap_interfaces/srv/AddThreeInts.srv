@@ -1,0 +1,15 @@
+float32 ballspeed
+float32 ballradius
+float32 goalsize
+float32 friction
+float32 buttonspeed
+int8 capture
+int8 startstop
+---
+float32 ballspeed
+float32 ballradius
+float32 goalsize
+float32 friction
+float32 buttonspeed
+int8 capture
+int8 startstop
