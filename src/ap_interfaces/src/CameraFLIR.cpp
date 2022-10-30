@@ -148,7 +148,9 @@ cv::Mat CameraFLIR::GrabFrame(int index)
       //MSH : do we really need to convert this image?
       ImagePtr convertedImage = pResultImage->Convert(PixelFormat_Mono8, HQ_LINEAR);
 
+      //cout<< "start converting to mat"<<endl;
       lMat = ConvertToMat(convertedImage);
+      //cout<<"successfully convert to mat"<<endl;
 
       //MSH : do we really need this if we're converting?
       pResultImage->Release();
@@ -168,7 +170,7 @@ cv::Mat CameraFLIR::GrabFrame(int index)
 cv::Mat CameraFLIR::ConvertToMat(ImagePtr& imagePtr)
 {
    mConvertedMatImage = imagePtr->Convert(PixelFormat_BGR8, NEAREST_NEIGHBOR);
-
+   //cout << "convert from BGR8 to Mat"<<endl;
    //image data contains padding. When allocating Mat container size, you need to account for the X,Y image data padding. 
    return cv::Mat(static_cast<int>(mConvertedMatImage->GetHeight()) + static_cast<int>(mConvertedMatImage->GetYPadding()),
                   static_cast<int>(mConvertedMatImage->GetWidth()) + static_cast<int>(mConvertedMatImage->GetXPadding()),

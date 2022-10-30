@@ -140,6 +140,7 @@ Mat AverageFrame(vector<Mat> frames){
     Mat temp;
     Mat temp1;
     Mat result;
+    cout << frames[0].size() << endl;
     frames[0].convertTo(temp, CV_32FC3);
     Mat avgImg(frames[0].rows, frames[0].cols, CV_32FC3);
     avgImg = temp;
@@ -153,7 +154,7 @@ Mat AverageFrame(vector<Mat> frames){
             frames[i].convertTo(temp1, CV_32FC3);
             //accumulate(temp, avgImg);
             avgImg += temp1;
-            //cout<< i << endl;
+            cout<< i << endl;
         }
 
     }
@@ -282,7 +283,7 @@ void detect_pos(Pos_raw1* pos_raw) {
 
     CameraFLIR theFLIRCamera;
     theFLIRCamera.Initialize();
-    //cout<< "2222"<<endl;
+    //cout<< "FLIR Initialize completed"<<endl;
 
     Mat Background(750, 960, CV_8UC3, Scalar());
     
@@ -300,6 +301,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     while(true){
         auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
         frame = theFLIRCamera.GrabFrame(0);
+        //cout << "grab frane!" << endl;
         if(frame.empty()){
             pos_raw->total = -1;
             //pos1->timestamp = static_cast<double>(time.nano);
@@ -312,13 +314,16 @@ void detect_pos(Pos_raw1* pos_raw) {
             // start time
             
 
-            if (first_flag < 11){
+            if (first_flag < 3){
                 // cout<< "frame type: " << type2str(frame.type()) << endl;
                 //cout<< "first_flag: "<<first_flag << endl;
                 captured_frames.push_back(frame);
                 // cout <<"captured_frames: "<< captured_frames.size() << endl;
+                //cout << "start average frame" << endl;
+                //cout << "frame size:" << frame.size() << endl;
                 avgframe = AverageFrame(captured_frames);
-                Background = Init_background(avgframe);
+                //cout << "finish averaging frame " << endl;
+                Background = Init_background(frame);
 
                 // if (captured_frames.size() == 11){
                 //     avgframe = AverageFrame(captured_frames);
@@ -327,58 +332,62 @@ void detect_pos(Pos_raw1* pos_raw) {
                 // }
                 if (first_flag == 0){
 
-                    imwrite("first.jpg", avgframe);
+                    imwrite("first.jpg", Background);
                 }
                 if (first_flag == 1){
 
-                    imwrite("result1.jpg", avgframe);
+                    imwrite("result1.jpg", Background);
                 }
                 if (first_flag == 2){
 
-                    imwrite("result2.jpg", avgframe);
+                    imwrite("result2.jpg", Background);
                 }
                 if (first_flag == 3){
 
-                    imwrite("result3.jpg", avgframe);
+                    imwrite("result3.jpg", Background);
                 }
                 if (first_flag == 4){
 
-                    imwrite("result4.jpg", avgframe);
+                    imwrite("result4.jpg", Background);
                 }
                 if (first_flag == 5){
 
-                    imwrite("result5.jpg", avgframe);
+                    imwrite("result5.jpg", Background);
                 }
                 if (first_flag == 6){
 
-                    imwrite("result6.jpg", avgframe);
+                    imwrite("result6.jpg", Background);
                 }
                 if (first_flag == 7){
 
-                    imwrite("result7.jpg", avgframe);
+                    imwrite("result7.jpg", Background);
                 }
                 if (first_flag == 10){
 
-                    imwrite("result10.jpg", avgframe);
+                    imwrite("result10.jpg", Background);
                 }
-                if (first_flag == 10){
-                    Mat temp;
-                    std::ostringstream name;
-                    int i;
-                    name << "captured_frames_";
-                    for(i = 0 ; i < captured_frames.size(); i++){
-                        name << i << ".jpg";
-                        // captured_img = frames[i];
-                        // accumulate(captured_img, avgImg);
-                        captured_frames[i].convertTo(temp, CV_32FC3);
-                        imwrite(name.str(), temp);                    
-                    }
-                }
+                //if (first_flag == 10){
+                //    Mat temp;
+                //    std::ostringstream name;
+                //    int i;
+                //    name << "captured_frames_";
+                //    for(i = 0 ; i < captured_frames.size(); i++){
+                //        name << i << ".jpg";
+                //        // captured_img = frames[i];
+                //        // accumulate(captured_img, avgImg);
+                //        captured_frames[i].convertTo(temp, CV_32FC3);
+                //        imwrite(name.str(), temp);                    
+                //    }
+                //}
                 first_flag++;
                 //cout << "background size: " << Background.size() <<endl;
             }
 
+            //cout << "background size out: " << Background.size() << endl;
+            int help = 0; //debug
+            //cout << "help: " << help++ << endl;
             buffer = background_subtraction(frame, Background);
+
             //check whether there are available frames in buffer
 			if (!buffer.empty())
 			{
@@ -390,9 +399,10 @@ void detect_pos(Pos_raw1* pos_raw) {
             // erode and dilate
             Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 5 + 1, 2 * 5 + 1));
             erode(input, input_erode, elementErosion);
+       
             Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
 	        dilate(input_erode, input_dilate, elementDilate);
-
+            
             // threshold to binary
             // int threshold_value = 120;
             // int threshold_type = 0; //0 Binary
@@ -407,6 +417,7 @@ void detect_pos(Pos_raw1* pos_raw) {
             
             centers.clear();
             radius.clear();
+
             
             for( size_t k = 0; k < size_contours; k++ ){
                 if (contourArea(contours[k]) > 100){

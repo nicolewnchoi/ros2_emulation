@@ -24,73 +24,73 @@ unset(Spinnaker_LIBRARIES13)
 find_path(Spinnaker_INCLUDE_DIRS NAMES
   Spinnaker.h
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces
   )
 
 find_library(Spinnaker_LIBRARIES1 NAMES 
   AdapterConfig_v140
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES2 NAMES 
   Spinnaker_v140 
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES3 NAMES 
   SpinnakerC_v140 
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES4 NAMES 
   SpinnakerCd_v140 
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES5 NAMES 
   Spinnakerd_v140 
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES6 NAMES 
   SpinnakerGUI_WPF_v140
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES7 NAMES 
   SpinnakerGUI_WPFd_v140
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES8 NAMES 
   SpinnakerGUISelector_WPF_v140 
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES9 NAMES 
   SpinUpdate_v140 
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES10 NAMES 
   SpinVideo_v140 
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES11 NAMES 
   SpinVideoC_v140 
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES12 NAMES 
   SpinVideoCd_v140 
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 find_library(Spinnaker_LIBRARIES13 NAMES 
   SpinVideod_v140 
   PATHS
-  D:/Airplay_ros_main/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
+  C:/ros2newarch/ros2/ros2_emulation/src/ap_interfaces/include/ap_interfaces/lib/vs2015
 )
 
 
