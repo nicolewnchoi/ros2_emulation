@@ -2,5 +2,7 @@ log/
 install/
 build/
 .vs/
-src/pub_diff.txt
+src/ap_interfaces/src/player_detection.cpp
 src/detect_duration.txt
+src/pub_diff.txt
+*.txt
