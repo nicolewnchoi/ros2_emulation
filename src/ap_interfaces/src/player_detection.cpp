@@ -485,14 +485,6 @@ public:
             auto message = ap_interfaces::msg::Pos();
 
             // Extract current thread
-            int temp_num = pos_raw->total;
-            for(int i = 0; i < temp_num; i++){
-                (message.x)[i] = (pos_raw->x)[i];
-                (message.y)[i] = (pos_raw->y)[i];
-                (message.size)[i] = (pos_raw->size)[i];
-            }
-            message.total = pos_raw->total;
-
             rclcpp::Time time = this->now();
 
             //test time duration
