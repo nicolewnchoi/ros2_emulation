@@ -45,6 +45,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Pos.msg"
   "msg/Score.msg"
   "msg/Button.msg"
+  "srv/AddThreeInts.srv"
 )
 
 
