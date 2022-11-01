@@ -15,6 +15,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+
+#set(SFML_DIR "${CMAKE_SOURCE_DIR}/library/SFML-2.5.1/lib/cmake/SFML")
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # find dependencies
@@ -24,10 +26,16 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 find_package(rosidl_default_generators REQUIRED)
-find_package(OpenCV 3.4.6 REQUIRED)
+find_package(OpenCV 4.3.0 REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(Spinnaker REQUIRED)
+
+include(FetchContent)
+FetchContent_Declare(SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 2.6.x)
+FetchContent_MakeAvailable(SFML)
 
 set(msg_files
   "msg/Pos.msg"
