@@ -63,10 +63,16 @@ Mat Init_background(Mat first_frame){
     // int bg_cut_start_x = 160;
 	// int bg_cut_start_y = 137;
     //960*640
-    int img_height = 640;
-    int img_width = 960;
-    int cut_start_x = 200;
-	int cut_start_y = 192;
+    // int img_height = 640;
+    // int img_width = 960;
+    // int cut_start_x = 200;
+	// int cut_start_y = 192;
+
+    //table demo
+    int img_height = 480;
+    int img_width = 720;
+    int cut_start_x = 300;
+	int cut_start_y = 320;
 
     Mat background_raw(first_frame, Rect(cut_start_x, cut_start_y, img_width, img_height));
 
@@ -87,10 +93,16 @@ deque<Mat> background_subtraction(Mat frame_input, Mat background_input){
     // int cut_start_x = 171;
 	// int cut_start_y = 143;
     // 960*640
-    int img_height = 640;
-    int img_width = 960;
-    int cut_start_x = 200;
-	int cut_start_y = 192;
+    // int img_height = 640;
+    // int img_width = 960;
+    // int cut_start_x = 200;
+	// int cut_start_y = 192;
+
+    //table demo
+    int img_height = 480;
+    int img_width = 720;
+    int cut_start_x = 300;
+	int cut_start_y = 320;
 
     int high_H = 360 / 2;
 	int high_S = 235;
@@ -272,7 +284,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     theFLIRCamera.Initialize();
     //cout<< "FLIR Initialize completed"<<endl;
 
-    Mat Background(750, 960, CV_8UC3, Scalar());
+    Mat Background(480, 720, CV_8UC3, Scalar());
     
     deque<Mat> buffer;
 
@@ -301,7 +313,7 @@ void detect_pos(Pos_raw1* pos_raw) {
             // start time
             
 
-            if (first_flag < 3){
+            if (first_flag < 11){
                 // cout<< "frame type: " << type2str(frame.type()) << endl;
                 //cout<< "first_flag: "<<first_flag << endl;
                 captured_frames.push_back(frame);
@@ -371,8 +383,6 @@ void detect_pos(Pos_raw1* pos_raw) {
             }
 
             //cout << "background size out: " << Background.size() << endl;
-            int help = 0; //debug
-            //cout << "help: " << help++ << endl;
             buffer = background_subtraction(frame, Background);
 
             //check whether there are available frames in buffer
@@ -385,7 +395,7 @@ void detect_pos(Pos_raw1* pos_raw) {
 
             // erode and dilate
             //GaussianBlur(input, input_erode, Size(3, 3), 0, 0);
-            Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 5 + 1, 2 * 5 + 1));
+            Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 3 + 1, 2 * 3 + 1));
             erode(input, input_erode, elementErosion);
        
             Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
@@ -411,7 +421,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                 if (contourArea(contours[k]) > 100){
                     approxPolyDP( contours[k], contours_poly_temp, 3, true );
                     minEnclosingCircle( contours_poly_temp, centers_contours_temp, radius_contours_temp );
-                    if (radius_contours_temp > 1000 || radius_contours_temp < 20) {continue;}
+                    if (radius_contours_temp > 1000 || radius_contours_temp < 80) {continue;}
                     centers.push_back(centers_contours_temp);
                     radius.push_back(radius_contours_temp);
                 }
@@ -424,7 +434,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                 for(int i = 0; i < centers.size(); i++){
                     circle( input_dilate, centers[i], (int)radius[i] + 10, (0,0,255), 8);
                     (pos_raw->x)[i] = (float)centers[i].x;
-                    (pos_raw->y)[i] = (float)(640 - centers[i].y);
+                    (pos_raw->y)[i] = (float)(480 - centers[i].y);
                     (pos_raw->size)[i] = (float)radius[i];
                     
                 }
@@ -441,12 +451,12 @@ void detect_pos(Pos_raw1* pos_raw) {
             //imshow("input", input);
             //imshow("Background", Background);
             //imshow("mask_display", Mask);
-            imshow("Live", frame);
-            moveWindow("Live", 10, 10);
-            // imshow("background",Background);
-            imshow("reduce noise", input_dilate);
+            // imshow("Live", frame);
+            // moveWindow("Live", 10, 10);
+            // // imshow("background",Background);
+            // imshow("reduce noise", input_dilate);
             //imshow("final_view", final_view);
-            waitKey(1);
+            // waitKey(1);
 
 
         }
