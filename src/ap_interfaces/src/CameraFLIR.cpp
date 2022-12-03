@@ -149,7 +149,7 @@ cv::Mat CameraFLIR::GrabFrame(int index)
       ImagePtr convertedImage = pResultImage->Convert(PixelFormat_Mono8, HQ_LINEAR);
 
       //cout<< "start converting to mat"<<endl;
-      lMat = ConvertToMat(convertedImage);
+      lMat = ConvertToMat(pResultImage);
       //cout<<"successfully convert to mat"<<endl;
 
       //MSH : do we really need this if we're converting?

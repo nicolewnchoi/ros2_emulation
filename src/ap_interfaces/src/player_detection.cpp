@@ -74,10 +74,20 @@ Mat Init_background(Mat first_frame){
     int cut_start_x = 300;
 	int cut_start_y = 320;
 
+
     Mat background_raw(first_frame, Rect(cut_start_x, cut_start_y, img_width, img_height));
+    //remove all green
+    vector<Mat> channels;
+    Mat background_removegreen;
+    split(background_raw, channels);
+    channels[1] = Mat::zeros(background_raw.rows, background_raw.cols, CV_8UC1);
+    merge(channels, background_removegreen);
 
+    //convert_to_grey
+    //Mat background_grey;
+    //cvtColor(background_raw, background_grey, cv::COLOR_BGR2GRAY);
 
-	return background_raw;
+	return background_removegreen;
 
 }
 
@@ -115,20 +125,27 @@ deque<Mat> background_subtraction(Mat frame_input, Mat background_input){
     deque<Mat> Buffer;
 
     Mat current(frame_input, Rect(cut_start_x, cut_start_y, img_width, img_height));
+    
+    // REMOVE all green
+    split(current, channels);
+    channels[1] = Mat::zeros(current.rows, current.cols, CV_8UC1);
+    merge(channels, result_final);
+    Buffer.push_back(result_hsv);
 
-    absdiff(current, background_input, result);
+    // HSV
+    // absdiff(current, background_input, result);
 
-    cvtColor(result, result_hsv, COLOR_BGR2HSV);
-    split(result_hsv, channels);
+    //cvtColor(result, result_hsv, COLOR_BGR2HSV);
+    // split(result_hsv, channels);
+    // if (!frame_input.empty())
+    // {
 
-    if (!frame_input.empty())
-    {
-
-        //bitwise_and(mask, channels[2], channels[2]);
-        merge(channels, result_hsv);
-        inRange(result_hsv, Scalar(0, 0, 60), Scalar(high_H, high_S, high_V), result_final);
-        Buffer.push_back(result_final);
-    }
+    //     //bitwise_and(mask, channels[2], channels[2]);
+    //     merge(channels, result_hsv);
+    //     //cvtColor(result_hsv, result_final, cv::COLOR_BGR2GRAY);
+    //     //inRange(result_hsv, Scalar(0, 0, 60), Scalar(high_H, high_S, high_V), result_final);
+    //     Buffer.push_back(result_hsv);
+    // }
 
     return Buffer;
 	
@@ -273,7 +290,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     ofstream myfile_detect;
     myfile_detect.open ("detect_duration.txt", ios::out);
 
-    Mat frame, fgMask, fgMask_gray;
+    Mat frame, frame_rgb, fgMask, fgMask_gray;
     Mat fgMask_erode, fgMask_dilate;
     Mat frame_diff;
     Mat input, input_erode, input_dilate;
@@ -300,6 +317,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     while(true){
         auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
         frame = theFLIRCamera.GrabFrame(0);
+        //cvtColor(frame, frame_rgb, cv::COLOR_BGR2RGB);
         //cout << "grab frane!" << endl;
         if(frame.empty()){
             pos_raw->total = -1;
@@ -321,46 +339,46 @@ void detect_pos(Pos_raw1* pos_raw) {
                 //cout << "start average frame" << endl;
                 //cout << "frame size:" << frame.size() << endl;
                 avgframe = AverageFrame(captured_frames);
-                //cout << "finish averaging frame " << endl;
+                cout << "finish averaging frame " << endl;
                 Background = Init_background(frame);
-
+                
                 // if (captured_frames.size() == 11){
                 //     avgframe = AverageFrame(captured_frames);
                 //     Background = Init_background(avgframe);
 
                 // }
-                if (first_flag == 0){
+                // if (first_flag == 0){
 
-                    imwrite("first.jpg", Background);
-                }
-                if (first_flag == 1){
+                //     imwrite("first.jpg", Background);
+                // }
+                // if (first_flag == 1){
 
-                    imwrite("result1.jpg", Background);
-                }
-                if (first_flag == 2){
+                //     imwrite("result1.jpg", Background);
+                // }
+                // if (first_flag == 2){
 
-                    imwrite("result2.jpg", Background);
-                }
-                if (first_flag == 3){
+                //     imwrite("result2.jpg", Background);
+                // }
+                // if (first_flag == 3){
 
-                    imwrite("result3.jpg", Background);
-                }
-                if (first_flag == 4){
+                //     imwrite("result3.jpg", Background);
+                // }
+                // if (first_flag == 4){
 
-                    imwrite("result4.jpg", Background);
-                }
-                if (first_flag == 5){
+                //     imwrite("result4.jpg", Background);
+                // }
+                // if (first_flag == 5){
 
-                    imwrite("result5.jpg", Background);
-                }
-                if (first_flag == 6){
+                //     imwrite("result5.jpg", Background);
+                // }
+                // if (first_flag == 6){
 
-                    imwrite("result6.jpg", Background);
-                }
-                if (first_flag == 7){
+                //     imwrite("result6.jpg", Background);
+                // }
+                // if (first_flag == 7){
 
-                    imwrite("result7.jpg", Background);
-                }
+                //     imwrite("result7.jpg", Background);
+                // }
                 if (first_flag == 10){
 
                     imwrite("result10.jpg", Background);
@@ -379,11 +397,11 @@ void detect_pos(Pos_raw1* pos_raw) {
                 //    }
                 //}
                 first_flag++;
-                //cout << "background size: " << Background.size() <<endl;
+                cout << "background size: " << Background.size() <<endl;
             }
 
-            //cout << "background size out: " << Background.size() << endl;
             buffer = background_subtraction(frame, Background);
+            cout << "get buffer " << endl;
 
             //check whether there are available frames in buffer
 			if (!buffer.empty())
@@ -397,6 +415,7 @@ void detect_pos(Pos_raw1* pos_raw) {
             //GaussianBlur(input, input_erode, Size(3, 3), 0, 0);
             Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 3 + 1, 2 * 3 + 1));
             erode(input, input_erode, elementErosion);
+            cout <<"erode end"<<endl;
        
             Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
 	        dilate(input_erode, input_dilate, elementDilate);
@@ -421,7 +440,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                 if (contourArea(contours[k]) > 100){
                     approxPolyDP( contours[k], contours_poly_temp, 3, true );
                     minEnclosingCircle( contours_poly_temp, centers_contours_temp, radius_contours_temp );
-                    if (radius_contours_temp > 1000 || radius_contours_temp < 80) {continue;}
+                    if (radius_contours_temp > 1000 || radius_contours_temp < 40) {continue;}
                     centers.push_back(centers_contours_temp);
                     radius.push_back(radius_contours_temp);
                 }
@@ -448,15 +467,15 @@ void detect_pos(Pos_raw1* pos_raw) {
             auto d_time = timeend - timestart;
             myfile_detect << d_time <<endl;
 
-            //imshow("input", input);
+            imshow("input", input);
             //imshow("Background", Background);
             //imshow("mask_display", Mask);
-            // imshow("Live", frame);
-            // moveWindow("Live", 10, 10);
+            imshow("Live", frame);
+            moveWindow("Live", 10, 10);
             // // imshow("background",Background);
-            // imshow("reduce noise", input_dilate);
+            imshow("reduce noise", input_dilate);
             //imshow("final_view", final_view);
-            // waitKey(1);
+            waitKey(1);
 
 
         }
