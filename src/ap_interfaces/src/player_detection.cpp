@@ -77,17 +77,17 @@ Mat Init_background(Mat first_frame){
 
     Mat background_raw(first_frame, Rect(cut_start_x, cut_start_y, img_width, img_height));
     //remove all green
-    vector<Mat> channels;
-    Mat background_removegreen;
-    split(background_raw, channels);
-    channels[1] = Mat::zeros(background_raw.rows, background_raw.cols, CV_8UC1);
-    merge(channels, background_removegreen);
+    // vector<Mat> channels;
+    // Mat background_removegreen;
+    // split(background_raw, channels);
+    // channels[1] = Mat::zeros(background_raw.rows, background_raw.cols, CV_8UC1);
+    // merge(channels, background_removegreen);
 
     //convert_to_grey
-    //Mat background_grey;
-    //cvtColor(background_raw, background_grey, cv::COLOR_BGR2GRAY);
+    // Mat background_grey;
+    // cvtColor(background_raw, background_grey, cv::COLOR_BGR2GRAY);
 
-	return background_removegreen;
+	return background_raw;
 
 }
 
@@ -97,16 +97,6 @@ deque<Mat> background_subtraction(Mat frame_input, Mat background_input){
 	Mat result;
 	Mat result_hsv;
 	Mat testmat;
-    //960*750
-    // int img_height = 750;
-    // int img_width = 960;
-    // int cut_start_x = 171;
-	// int cut_start_y = 143;
-    // 960*640
-    // int img_height = 640;
-    // int img_width = 960;
-    // int cut_start_x = 200;
-	// int cut_start_y = 192;
 
     //table demo
     int img_height = 480;
@@ -114,38 +104,62 @@ deque<Mat> background_subtraction(Mat frame_input, Mat background_input){
     int cut_start_x = 300;
 	int cut_start_y = 320;
 
-    int high_H = 360 / 2;
-	int high_S = 235;
+    int low_H = 36;
+	int low_S = 50;
+	int low_V = 70;
+    int high_H = 89;
+	int high_S = 255;
 	int high_V = 255;
 
 	Mat result_hsv_copy;
-	Mat result_final;
+	Mat result_final, result_grey;
+    Mat green_mask, colorMask;
 	vector<Mat> channels;
 
     deque<Mat> Buffer;
 
     Mat current(frame_input, Rect(cut_start_x, cut_start_y, img_width, img_height));
     
-    // REMOVE all green
-    split(current, channels);
-    channels[1] = Mat::zeros(current.rows, current.cols, CV_8UC1);
-    merge(channels, result_final);
-    Buffer.push_back(result_hsv);
 
     // HSV
+    absdiff(current, background_input, result);
+    cvtColor(result, result_hsv, COLOR_BGR2HSV);
+    inRange(result_hsv, Scalar(low_H, low_S, low_V), Scalar(high_H, high_S, high_V), green_mask);
+    bitwise_and(result_hsv, result_hsv, result_final, green_mask);
+    imshow("remove green:", result_final);
+    cvtColor(result_final, result_final, COLOR_HSV2BGR);
+    cvtColor(result_final, result_final, COLOR_BGR2GRAY);
+    // threshold to binary
+    int threshold_value = 120;
+    int threshold_type = 0; //0 Binary
+    int const max_binary_value = 255;
+    threshold( result_final, result_final, threshold_value, max_binary_value, threshold_type );
+    Buffer.push_back(result_final);
+
+    // another try
     // absdiff(current, background_input, result);
 
-    //cvtColor(result, result_hsv, COLOR_BGR2HSV);
-    // split(result_hsv, channels);
-    // if (!frame_input.empty())
-    // {
+    // cvtColor(result, result_hsv, COLOR_BGR2HSV);
+    // cvtColor(result, result_grey, COLOR_BGR2GRAY);
+    // inRange(result_hsv, Scalar(low_H, low_S, low_V), Scalar(high_H, high_S, high_V), green_mask);
+    // int morphosize = 1;
+    // int opIterations = 1;
+    // Mat MorphoElement = getStructuringElement( MORPH_RECT, Size( 2*morphosize + 1, 2*morphosize+1 ));
+    // morphologyEx(green_mask, green_mask, MORPH_CLOSE, MorphoElement);
+    // add(green_mask, result_grey, colorMask);
+    // // split(result_hsv, channels);
 
-    //     //bitwise_and(mask, channels[2], channels[2]);
-    //     merge(channels, result_hsv);
-    //     //cvtColor(result_hsv, result_final, cv::COLOR_BGR2GRAY);
-    //     //inRange(result_hsv, Scalar(0, 0, 60), Scalar(high_H, high_S, high_V), result_final);
-    //     Buffer.push_back(result_hsv);
-    // }
+        
+    // // merge(channels, result_hsv);
+    // // //cvtColor(result_hsv, result_final, cv::COLOR_BGR2GRAY);
+    // // inRange(result_hsv, Scalar(low_H, low_S, low_V), Scalar(high_H, high_S, high_V), result_final);
+    // // Buffer.push_back(result_hsv);
+    // imshow("colorMask:", colorMask);
+    // int threshold_value = 0;
+    // int threshold_type = 0; //0 Binary
+    // int const max_binary_value = 255;
+    // threshold( colorMask, result_final, threshold_value, max_binary_value, threshold_type );
+    // Buffer.push_back(result_final);
 
     return Buffer;
 	
@@ -183,81 +197,6 @@ Mat AverageFrame(vector<Mat> frames){
 
 }
 
-// void perspectivetransform_vector(vector<Point2f>& center)
-// {
-//     float img_center_x = 643.56;
-//     float img_center_y = 536.71;
-//     // perspective_x = ; // percent
-//     // perspective_y = ;
-//     float focal_x = 1143;
-//     float focal_y = 1145;
-//     float transform_x = -3.02;
-//     float transform_y = 0.0;
-//     float z_dis = 1000;
-//     vector<Point2f> cam_coordinate(center.size());
-//     vector<Point2f> world_coordinate(center.size());
-
-    
-//     for(int i = 0; i < center.size(); i++){
-//         // simplified 
-//         //image coordinate to camera coordinate
-//         cam_coordinate[i].x = (center[i].x - img_center_x) * z_dis / focal_x;
-//         cam_coordinate[i].y = (center[i].y - img_center_y) * z_dis / focal_y;
-
-//         // camera coordinate to world coordinate
-//         world_coordinate[i].x = cam_coordinate[i].x - transform_x;
-//         world_coordinate[i].y =  cam_coordinate[i].y - transform_y;
-
-//         // apply perspective transformation
-//         // center[i].x = world_coordinate[i].x;
-//         // center[i].y = world_coordinate[i].y;
-
-//         // igym version
-//         // center[i].x = (center[i].x - img_center_x * perspective_x / 100) / (1 - perspective_x / 100);
-//         // center[i].y = (center[i].y - img_center_y * perspective_y / 100) / (1 - perspective_y / 100);
-//     }
-
-//     // //Matrix close form
-//     // // input points
-//     // float in_p11 = ,
-//     // in_p12 = ,
-//     // in_p13 = ,
-//     // in_p21 = ,
-//     // in_p22 = ,
-//     // in_p23 = ,
-//     // in_p31 = ,
-//     // in_p32 = ,
-//     // in_p33 = ,
-//     // R_p11 = ,
-//     // R_p12 = ,
-//     // R_p13 = ,
-//     // R_p21 = ,
-//     // R_p22 = ,
-//     // R_p23 = ,
-//     // R_p31 = ,
-//     // R_p32 = ,
-//     // R_p33 = ,
-//     // T_p11 = ,
-//     // T_p12 = ,
-//     // T_p13 = ;
-
-//     // // matrix
-//     // intrinsicsMatrix = (Mat_<float>(3, 4) << in_p11, in_p12, in_p13, 0.0f, in_p21, in_p22, in_p23, 0.0f, in_p31, in_p32, in_p33, 0.0f);
-//     // invinMatrix = intrinsicsMatrix.inv();
-//     // extrinsicsMatrix = (Mat_<float>(4, 4) << R_p11, R_p12, R_p13, T_p11, R_p21, R_p22, R_p23, T_p12, R_p31, R_p32, R_p33, T_p13, 0.0f, 0.0f, 0.0f, 1.0f);
-//     // invexMatrix = extrinsicsMatrix.inv();
-
-//     // //image to world
-//     // Mat image_point = (Mat_<float>(3, 1) << centers[0].x, centers[0].y, 1.0f)
-//     // Mat world_pointwithweight = invexMatrix * invinMatrix * image_point;
-
-
-
-
-
-    
-    
-// }
 
 // DEBUG for mat's type
 // string type2str(int type) {
@@ -293,7 +232,7 @@ void detect_pos(Pos_raw1* pos_raw) {
     Mat frame, frame_rgb, fgMask, fgMask_gray;
     Mat fgMask_erode, fgMask_dilate;
     Mat frame_diff;
-    Mat input, input_erode, input_dilate;
+    Mat input, input_erode, input_dilate, input_grey;
     vector<Mat> captured_frames;
     Mat avgframe;
 
@@ -397,11 +336,11 @@ void detect_pos(Pos_raw1* pos_raw) {
                 //    }
                 //}
                 first_flag++;
-                cout << "background size: " << Background.size() <<endl;
+                //cout << "background size: " << Background.size() <<endl;
             }
 
             buffer = background_subtraction(frame, Background);
-            cout << "get buffer " << endl;
+            //cout << "get buffer " << endl;
 
             //check whether there are available frames in buffer
 			if (!buffer.empty())
@@ -411,20 +350,22 @@ void detect_pos(Pos_raw1* pos_raw) {
 				buffer.clear();
 			}
 
-            // erode and dilate
-            //GaussianBlur(input, input_erode, Size(3, 3), 0, 0);
-            Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 3 + 1, 2 * 3 + 1));
-            erode(input, input_erode, elementErosion);
-            cout <<"erode end"<<endl;
-       
-            Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
-	        dilate(input_erode, input_dilate, elementDilate);
-            
             // threshold to binary
             // int threshold_value = 120;
             // int threshold_type = 0; //0 Binary
             // int const max_binary_value = 255;
             // threshold( frame, final_view, threshold_value, max_binary_value, threshold_type );
+            // erode and dilate
+            //cvtColor(input, input_grey, cv::COLOR_BGR2GRAY);
+
+            //GaussianBlur(input, input_erode, Size(3, 3), 0, 0);
+            Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 3 + 1, 2 * 3 + 1));
+            erode(input, input_erode, elementErosion);
+            //cout <<"erode end"<<endl;
+       
+            Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
+	        dilate(input_erode, input_dilate, elementDilate);
+            
 
             // extract contours and find blob
             contours.clear();
@@ -470,8 +411,8 @@ void detect_pos(Pos_raw1* pos_raw) {
             imshow("input", input);
             //imshow("Background", Background);
             //imshow("mask_display", Mask);
-            imshow("Live", frame);
-            moveWindow("Live", 10, 10);
+            //imshow("Live", frame);
+            //moveWindow("Live", 10, 10);
             // // imshow("background",Background);
             imshow("reduce noise", input_dilate);
             //imshow("final_view", final_view);
