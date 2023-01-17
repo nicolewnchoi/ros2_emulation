@@ -91,6 +91,28 @@ Mat Init_background(Mat first_frame){
 
 }
 
+// int threshold_value = 120;
+// void test_thres(){
+//     namedWindow("thres", WINDOW_AUTOSIZE);
+//     createTrackbar( "threshold_value", "thres", &threshold_value, 255);
+// }
+// int low_H = 36;
+// int low_S = 50;
+// int low_V = 70;
+// int high_H = 89;
+// int high_S = 255;
+// int high_V = 255;
+// void test_HSV(){
+//     namedWindow("HSV", WINDOW_AUTOSIZE);
+//     createTrackbar( "low_H", "HSV", &low_H, 255);
+//     createTrackbar( "low_S", "HSV", &low_S, 255);
+//     createTrackbar( "low_V", "HSV", &low_V, 255);
+//     createTrackbar( "high_H", "HSV", &high_H, 255);
+//     createTrackbar( "high_S", "HSV", &high_S, 255);
+//     createTrackbar( "high_V", "HSV", &high_V, 255);
+// }
+
+
 deque<Mat> background_subtraction(Mat frame_input, Mat background_input){
 
     Mat recording;
@@ -103,38 +125,76 @@ deque<Mat> background_subtraction(Mat frame_input, Mat background_input){
     int img_width = 720;
     int cut_start_x = 300;
 	int cut_start_y = 320;
+    
+    // green color
+    int low_H = 39;
+    int low_S = 58;
+    int low_V = 81;
+    int high_H = 114;
+    int high_S = 255;
+    int high_V = 255;
+    
 
-    int low_H = 36;
-	int low_S = 50;
-	int low_V = 70;
-    int high_H = 89;
-	int high_S = 255;
-	int high_V = 255;
+    
 
+    // old version
+    int low_H_all = 0;
+	int low_S_all = 0;
+	int low_V_all = 60;
+    int high_H_all = 360 / 2;
+	int high_S_all = 235;
+	int high_V_all = 255;
 	Mat result_hsv_copy;
-	Mat result_final, result_grey;
+	Mat result_final, result_all;
     Mat green_mask, colorMask;
+    Mat only_green;
 	vector<Mat> channels;
 
     deque<Mat> Buffer;
 
     Mat current(frame_input, Rect(cut_start_x, cut_start_y, img_width, img_height));
     
+    // old version
+    absdiff(current, background_input, result);
+
+    cvtColor(result, result_hsv, COLOR_BGR2HSV);
+    // split(result_hsv, channels);
+
+    if (!frame_input.empty())
+    {
+
+        // merge(channels, result_hsv);
+        inRange(result_hsv, Scalar(low_H, low_S, low_V), Scalar(high_H, high_S, high_V), green_mask);
+        inRange(result_hsv, Scalar(low_H_all, low_S_all, low_V_all), Scalar(high_H_all, high_S_all, high_V_all), result_all);
+        //preprocess
+        // Mat elementErosion = getStructuringElement(MORPH_ELLIPSE, Size(2 * 3 + 1, 2 * 3 + 1));
+        // erode(green_mask, green_mask, elementErosion);
+        // Mat elementDilate = getStructuringElement(MORPH_ELLIPSE,  Size(2 * 6 + 1, 2 * 6 + 1));
+        // dilate(green_mask, green_mask, elementDilate);
+
+        bitwise_xor(green_mask, result_all, result_final);
+        //absdiff(result_hsv, only_green, result_final);
+        // // int threshold_value = 120;
+        // int threshold_type = 0; //0 Binary
+        // int const max_binary_value = 255;
+        // threshold( result_final, result_final, threshold_value, max_binary_value, threshold_type );
+        // imshow("result_all:",result_all);
+        // imshow("green_mask:",green_mask);
+        // imshow("result_final:",result_final);
+        Buffer.push_back(result_final);
+    }
 
     // HSV
-    absdiff(current, background_input, result);
-    cvtColor(result, result_hsv, COLOR_BGR2HSV);
-    inRange(result_hsv, Scalar(low_H, low_S, low_V), Scalar(high_H, high_S, high_V), green_mask);
-    bitwise_and(result_hsv, result_hsv, result_final, green_mask);
-    imshow("remove green:", result_final);
-    cvtColor(result_final, result_final, COLOR_HSV2BGR);
-    cvtColor(result_final, result_final, COLOR_BGR2GRAY);
-    // threshold to binary
-    int threshold_value = 120;
-    int threshold_type = 0; //0 Binary
-    int const max_binary_value = 255;
-    threshold( result_final, result_final, threshold_value, max_binary_value, threshold_type );
-    Buffer.push_back(result_final);
+    // absdiff(current, background_input, result);
+    // cvtColor(result, result_hsv, COLOR_BGR2HSV);
+    // inRange(result_hsv, Scalar(low_H, low_S, low_V), Scalar(high_H, high_S, high_V), green_mask);
+    // bitwise_and(result_hsv, result_hsv, result_final, green_mask);
+    // imshow("remove green:", result_final);
+    // cvtColor(result_final, result_final, COLOR_HSV2BGR);
+    // cvtColor(result_final, result_final, COLOR_BGR2GRAY);
+    // // threshold to binary
+    
+    // Buffer.push_back(result_final);
 
     // another try
     // absdiff(current, background_input, result);
@@ -252,7 +312,8 @@ void detect_pos(Pos_raw1* pos_raw) {
     vector<float>radius;
     vector<vector<Point> > contours;
     vector<Vec4i> hierarchy;
-
+    //test_HSV();
+    //test_thres();
     while(true){
         auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
         frame = theFLIRCamera.GrabFrame(0);
@@ -381,7 +442,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                 if (contourArea(contours[k]) > 100){
                     approxPolyDP( contours[k], contours_poly_temp, 3, true );
                     minEnclosingCircle( contours_poly_temp, centers_contours_temp, radius_contours_temp );
-                    if (radius_contours_temp > 1000 || radius_contours_temp < 40) {continue;}
+                    if (radius_contours_temp > 1000 || radius_contours_temp < 30) {continue;}
                     centers.push_back(centers_contours_temp);
                     radius.push_back(radius_contours_temp);
                 }
@@ -408,15 +469,15 @@ void detect_pos(Pos_raw1* pos_raw) {
             auto d_time = timeend - timestart;
             myfile_detect << d_time <<endl;
 
-            imshow("input", input);
+            //imshow("input", input);
             //imshow("Background", Background);
             //imshow("mask_display", Mask);
             //imshow("Live", frame);
             //moveWindow("Live", 10, 10);
             // // imshow("background",Background);
-            imshow("reduce noise", input_dilate);
+            //imshow("reduce noise", input_dilate);
             //imshow("final_view", final_view);
-            waitKey(1);
+            //waitKey(1);
 
 
         }
