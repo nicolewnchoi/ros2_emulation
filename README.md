@@ -41,3 +41,109 @@ More information about how ros2 and unity is integrated can be found on the offi
 1, Player_detection part only utilizes the core part of old code and delete the useless part due to the camera
 
 2, In the .cmake file and player_detection node, I use the absolute path. I will change it to relative path in the future 
+
+# Readme Portion from desktop
+
+unity install
+based on version that supports ROS-TCP endpoint
+archive https://unity3d.com/get-unity/download/archive
+2020.3.16f1
+Check Microsoft Visual Studio Community 2019
+Universal Windows Platform Build Support
+Windows Build Support (IL2CPP)
+Documentation (default checked)
+
+Question regarding personal license for unity editor.
+
+Visual studio community continued install
+Workloads: Desktop development with C++
+Game development with Unity
+On individual components, make sure no C++ CMake tools are selected.
+
+ros2
+Installation problems with ros2 foxy for windows 10 regarding missing QT
+https://answers.ros.org/question/370180/cmake-error-when-compiling-ros_tutorials-packages-in-windows-10-ros-2-foxy-fitzroy-patch-release-4/
+
+
+update opencv to 4.3.0 
+https://docs.opencv.org/4.3.0/d3/d52/tutorial_windows_install.html#tutorial_windows_install_prebuilt
+
+failed to find opencv 4.3.0
+could not find a configuration file for package 'opencv'is compatible with requested version"4.3.0"
+
+Change a version of ros2 installation(current version):
+https://ms-iot.github.io/ROSOnWindows/GettingStarted/SetupRos2.html
+
+Unity:
+169.254.47.120
+
+169.254.242.195 camera
+
+
+Suggested follow
+https://ms-iot.github.io/ROSOnWindows/GettingStarted/SetupRos2.html
+Ran into issue,
+trying to do binary from https://docs.ros.org/en/foxy/Installation/Windows-Install-Binary.html
+You may need to upgrade pip with the following command "python -m pip install --upgrade pip"
+Seems to be okay. 
+
+Github Desktop install https://desktop.github.com/
+Repo https://github.com/ruotongg/ros2_emulation
+
+Flir Camera Software
+https://www.flir.com/products/spinnaker-sdk/?vertical=machine%20vision&segment=iis > Download Now > Windows > Latest Spinnaker Full SDK > SpinnakerSDK_FULL_2.7.0.128_x64.exe
+or
+https://flir.app.boxcn.net/v/SpinnakerSDK/file/982785476681
+
+After download open the installer. Select the  "camera evaluation" option.
+On the next page, unselect "Participate in the Spinnaker feedback program".
+
+
+
+QT path issue
+https://answers.ros.org/question/354707/qtqpaplugin-could-not-find-the-qt-platform-plugin-windows-in/
+
+
+Hook up camera. Open spinview, configure this camera, close
+
+front-end
+nvm: https://github.com/coreybutler/nvm-windows
+nvm install latest
+install https://github.com/RobotWebTools/ros2-web-bridge
+
+
+running procedure:
+camera detection part:
+#call C:\dev\ros2_foxy\ros2-windows\local_setup.bat(official version)
+c:\opt\ros\foxy\x64\setup.bat &&
+cd C:\ros2newarch\ros2\ros2_emulation\src 
+colcon build --merge-install --packages-select ap_interfaces
+call install\setup.bat
+ros2 run ap_interfaces player_detection
+
+--
+c:\opt\ros\foxy\x64\setup.bat &&cd C:\ros2newarch\ros2\ros2_emulation\src
+--
+
+unity-ros bridge:
+open a new terminal
+c:\opt\ros\foxy\x64\setup.bat
+cd C:\ros2newarch\ros2\ros2_emulation\src
+call install\setup.bat
+ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=169.254.242.195 -p ROS_TCP_PORT:=10000
+
+unity part:
+go to C:\ros2newarch\unity\build\test5
+open ros test out.exe
+
+code path:
+player_detection:
+C:\ros2newarch\ros2\ros2_emulation\src\ap_interfaces\src
+
+unity:
+open unity hub
+open ros test out project
+
+priority:
+C:\ros2newarch\ros2\ros2_emulation\src\SetPriority.reg
+
