@@ -71,6 +71,12 @@ target_link_libraries(player_detection ${Spinnaker_LIBRARIES1}
 rosidl_target_interfaces(player_detection
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
+# add dummy player detection that doesnt do any serious work but still publishes positions                              
+add_executable(player_detection_dummy src/player_detection_dummy.cpp)
+ament_target_dependencies(player_detection_dummy rclcpp std_msgs)
+rosidl_target_interfaces(player_detection_dummy
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+
 add_executable(rfid src/rfid.cpp)
 ament_target_dependencies(rfid rclcpp std_msgs)
 rosidl_target_interfaces(rfid
@@ -89,6 +95,7 @@ rosidl_target_interfaces(ui
 
 install(TARGETS
   player_detection
+  player_detection_dummy
   rfid
   button
   ui
