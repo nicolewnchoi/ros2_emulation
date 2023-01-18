@@ -122,7 +122,7 @@ call install\setup.bat
 ros2 run ap_interfaces player_detection
 
 --
-c:\opt\ros\foxy\x64\setup.bat &&cd C:\ros2newarch\ros2\ros2_emulation\src
+c:\opt\ros\foxy\x64\setup.bat &&cd C:\ros2newarch\ros2\ros2_emulation\src && call install\setup.bat
 --
 
 unity-ros bridge:
