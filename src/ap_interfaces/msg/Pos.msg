@@ -5,3 +5,4 @@ float64[32] y
 int8[32] player_id
 string[32] tag_id
 float64[32] size
+float64 ms

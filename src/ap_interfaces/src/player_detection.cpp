@@ -567,6 +567,18 @@ public:
             RCLCPP_INFO(
                 this->get_logger(), "\n<<THREAD %s>> Publishing '%s'",
                 curr_thread.c_str(), output.c_str());
+                
+            //lets ad the time this message was published to the message so qwe can compare inside 
+            // unity
+            //https://stackoverflow.com/questions/31255486/how-do-i-convert-a-stdchronotime-point-to-long-and-back
+            auto start = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
+            auto value = start.time_since_epoch();
+            double duration = value.count();
+            // cout.precision(20);
+            // cout << duration << "\n";
+            message.ms = duration;    //set the system time the message is sent
+            //
+
             this->publisher_->publish(message);
         };
         timer_ = this->create_wall_timer(16.67ms, timer_callback);

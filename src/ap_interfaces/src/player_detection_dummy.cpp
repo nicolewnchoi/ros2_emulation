@@ -48,6 +48,7 @@ private:
         (message.x)[0] = x;       //(pos_raw->x)[i];
         (message.y)[0] = y;       //(pos_raw->y)[i];
         (message.size)[0] = 30;    //(pos_raw->size)[i];
+        (message.size)[1] = count_;    //use the count as an id
         message.total = 1;          //pos_raw->total;
 
         // keep cycling the list by pushing and popping
@@ -56,6 +57,18 @@ private:
         //yeah the waypoint list manipulation is rather crude, but just needs to work rn
 
         RCLCPP_INFO(this->get_logger(), "Dummy|Msg#:'%d' x:%d y:%d", count_, x, y);
+        
+        //lets ad the time this message was published to the message so qwe can compare inside 
+        // unity
+        //https://stackoverflow.com/questions/31255486/how-do-i-convert-a-stdchronotime-point-to-long-and-back
+        auto start = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
+        auto value = start.time_since_epoch();
+        double duration = value.count();
+        // cout.precision(20);
+        // cout << duration << "\n";
+        message.ms = duration;    //set the system time the message is sent
+        //
+        
         publisher_->publish(message);
     }
     rclcpp::TimerBase::SharedPtr timer_;
