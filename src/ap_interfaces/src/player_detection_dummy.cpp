@@ -48,7 +48,7 @@ private:
         (message.x)[0] = x;       //(pos_raw->x)[i];
         (message.y)[0] = y;       //(pos_raw->y)[i];
         (message.size)[0] = 30;    //(pos_raw->size)[i];
-        (message.size)[1] = count_;    //use the count as an id
+        message.id = count_;    //use the count as an id
         message.total = 1;          //pos_raw->total;
 
         // keep cycling the list by pushing and popping

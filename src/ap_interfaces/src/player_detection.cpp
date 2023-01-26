@@ -577,6 +577,7 @@ public:
             // cout.precision(20);
             // cout << duration << "\n";
             message.ms = duration;    //set the system time the message is sent
+            message.id = count_;
             //
 
             this->publisher_->publish(message);
