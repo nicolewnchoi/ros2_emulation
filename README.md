@@ -130,7 +130,18 @@ open a new terminal
 c:\opt\ros\foxy\x64\setup.bat
 cd C:\ros2newarch\ros2\ros2_emulation\src
 call install\setup.bat
-ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=169.254.242.195 -p ROS_TCP_PORT:=10000
+ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=169.254.47.120 -p ROS_TCP_PORT:=10000
+
+sometimes need to update the ROS_IP above by finding what the address was assigned to the router.
+Use "ipconfig" in a command window and look for the following autoxconfiguration address:
+- ----
+Ethernet adapter Ethernet 2:
+
+   Connection-specific DNS Suffix  . :
+   Link-local IPv6 Address . . . . . : fe80::3360:2caf:8988:70c9%17
+   Autoconfiguration IPv4 Address. . : 169.254.47.120
+- ----
+Further, you will need to update this ip address in unity as well. Click on Robotics>Ros settings and then update the ip.
 
 unity part:
 go to C:\ros2newarch\unity\build\test5
@@ -147,3 +158,17 @@ open ros test out project
 priority:
 C:\ros2newarch\ros2\ros2_emulation\src\SetPriority.reg
 
+
+
+# how to modify ros message type
+make changes to src>ap_interfaces>msg> (whatever msg you are changing)
+save changes
+colcon build in ros workspace
+
+switch to unity
+go to robotics>Generate ROS messages...
+fill out the "Ros Message Path" C:\ros2newarch\ros2\ros2_emulation\src\ap_interfaces\msg
+Click "Build x msgs" where x is the number of messages from the message path.
+
+you may need to update a testpublisher in unity.
+The script is located under the "tester" game object and the Testpublish script.
