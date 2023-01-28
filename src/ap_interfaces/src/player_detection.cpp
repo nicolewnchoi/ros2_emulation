@@ -340,7 +340,7 @@ void detect_pos(Pos_raw1* pos_raw) {
                 //cout << "frame size:" << frame.size() << endl;
                 avgframe = AverageFrame(captured_frames);
                 cout << "finish averaging frame " << endl;
-                Background = Init_background(frame);
+                Background = Init_background(avgframe);
                 
                 // if (captured_frames.size() == 11){
                 //     avgframe = AverageFrame(captured_frames);
