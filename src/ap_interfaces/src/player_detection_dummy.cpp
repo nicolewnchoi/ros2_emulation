@@ -14,23 +14,12 @@ using namespace std;
 using namespace std::chrono_literals;
 using namespace std::chrono;
 
-struct Pos_raw1
-{
-    int total;
-    std::string timestamp;
-    float x[32];
-    float y[32];
-    int player_id[32];
-    std::string tag_id[32];
-    float size[32];
-};
-
 /* Publishing node like the one in minimal_publisher. */
 class PublisherNode : public rclcpp::Node
 {
-    Pos_raw1 * pos_raw;
+    ap_interfaces::msg::Pos * pos_raw;
 public:
-    PublisherNode(Pos_raw1 * pos, double hz, list<std::pair<int,int>> &waypoints)
+    PublisherNode(ap_interfaces::msg::Pos * pos, double hz, list<std::pair<int,int>> &waypoints)
         : Node("PlayerDetectionPublisher"),  pos_raw(pos), hz_(hz), waypoints(waypoints), count_(0)
     {
         publisher_ = this->create_publisher<ap_interfaces::msg::Pos>("pos_raw", 10);
@@ -41,7 +30,7 @@ private:
     void timer_callback()
     {
         count_++;
-        auto message = ap_interfaces::msg::Pos();
+        ap_interfaces::msg::Pos message = ap_interfaces::msg::Pos();
         
         int x = waypoints.front().first;
         int y = waypoints.front().second;
@@ -81,7 +70,7 @@ private:
 
 int main(int argc, char* argv[])
 {
-    Pos_raw1 pos_raw;
+    ap_interfaces::msg::Pos pos_raw;
 
     // Create default frequency for timer to update the dummy player position
     double desired_hz = 60;
