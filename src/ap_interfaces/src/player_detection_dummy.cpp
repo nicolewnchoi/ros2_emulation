@@ -50,12 +50,8 @@ private:
         //lets ad the time this message was published to the message so qwe can compare inside 
         // unity
         //https://stackoverflow.com/questions/31255486/how-do-i-convert-a-stdchronotime-point-to-long-and-back
-        auto start = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
-        auto value = start.time_since_epoch();
-        double duration = value.count();
-        // cout.precision(20);
-        // cout << duration << "\n";
-        message.ms = duration;    //set the system time the message is sent
+        double time_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
+        message.msg_sent_ms = time_ms;    //set the system time the message is sent
         //
         
         publisher_->publish(message);

@@ -6,4 +6,6 @@ float64[32] y
 int8[32] player_id
 string[32] tag_id
 float64[32] size
-float64 ms
+float64 frame_grab_ms
+float64 frame_done_processing_ms
+float64 msg_sent_ms

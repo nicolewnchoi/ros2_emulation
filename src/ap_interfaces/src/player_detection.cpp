@@ -5,6 +5,7 @@
 #include <deque>
 #include <thread>
 #include <stdlib.h>
+#include <mutex> 
 
 //print to file
 #include <iostream>
@@ -37,10 +38,8 @@ using namespace Spinnaker;
 using namespace Spinnaker::GenApi;
 using namespace Spinnaker::GenICam;
 
-
-#include <mutex>          // std::mutex
-std::mutex mtx;           // mutex for critical section
-bool newDetections;
+bool pos_newDetections;
+int frameId;
 
 
 
@@ -275,8 +274,7 @@ Mat AverageFrame(vector<Mat> frames){
 //   return r;
 // }
 
-void detect_pos(ap_interfaces::msg::Pos* pos_raw) {
-
+void detect_pos(ap_interfaces::msg::Pos* pos_raw, std::mutex* pos_mtx) {
     int first_flag = 0;
     //xrf delay
     ofstream myfile_detect;
@@ -310,15 +308,19 @@ void detect_pos(ap_interfaces::msg::Pos* pos_raw) {
     while(true){
         auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
         frame = theFLIRCamera.GrabFrame(0);
+        double frame_grab_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
+        frameId++;
         //cvtColor(frame, frame_rgb, cv::COLOR_BGR2RGB);
         //cout << "grab frane!" << endl;
         if(frame.empty()){
+            pos_mtx->lock();
             pos_raw->total = -1;
             //pos1->timestamp = static_cast<double>(time.nano);
             (pos_raw->x)[0] = -1;
             (pos_raw->y)[0] = -1;
             (pos_raw->player_id)[0] = -1;
             (pos_raw->size)[0] = -1;
+            pos_mtx->unlock();
 
         }else{
             // start time
@@ -443,16 +445,20 @@ void detect_pos(ap_interfaces::msg::Pos* pos_raw) {
 
             
             if (!centers.empty()){
+                pos_mtx->lock();
                 (pos_raw->total) = centers.size();
+                pos_raw->id = frameId;
+                pos_raw->frame_grab_ms = frame_grab_ms;  
                 for(int i = 0; i < centers.size(); i++){
                     circle( input_dilate, centers[i], (int)radius[i] + 10, (0,0,255), 8);
                     (pos_raw->x)[i] = (float)centers[i].x;
                     (pos_raw->y)[i] = (float)(480 - centers[i].y);
                     (pos_raw->size)[i] = (float)radius[i];
                 }
-                mtx.lock();
-                newDetections = true;
-                mtx.unlock();
+                pos_newDetections = true;
+                double frame_done_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
+                pos_raw->frame_done_processing_ms = frame_done_ms;  
+                pos_mtx->unlock();
             }
 
 
@@ -497,24 +503,25 @@ std::string string_thread_id()
 class PublisherNode : public rclcpp::Node
 {
     ap_interfaces::msg::Pos * pos_raw;
+    std::mutex* pos_mtx;
     ofstream & myfile;
 public:
-    PublisherNode(ap_interfaces::msg::Pos * pos, ofstream& file)
-        : Node("PlayerDetectionPublisher"), count_(0), pos_raw(pos), flag(0), myfile(file)
+    PublisherNode(ap_interfaces::msg::Pos * pos, ofstream& file, std::mutex* mtx)
+        : Node("PlayerDetectionPublisher"), count_(0), pos_raw(pos), flag(0), myfile(file), pos_mtx(mtx)
     {
 
         publisher_ = this->create_publisher<ap_interfaces::msg::Pos>("pos_raw", 10);
         auto timer_callback =
             [this]() -> void {
                 
-            mtx.lock();
-            if(!newDetections){
-                mtx.unlock();
+            pos_mtx->lock();
+            if(!pos_newDetections){
+                pos_mtx->unlock();
                 return;
             }
             ap_interfaces::msg::Pos pos_raw_msg = *pos_raw;
-            newDetections = false;
-            mtx.unlock();
+            pos_newDetections = false;
+            pos_mtx->unlock();
 
             // Extract current thread
             rclcpp::Time time = this->now();
@@ -563,13 +570,8 @@ public:
             //lets ad the time this message was published to the message so qwe can compare inside 
             // unity
             //https://stackoverflow.com/questions/31255486/how-do-i-convert-a-stdchronotime-point-to-long-and-back
-            auto start = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
-            auto value = start.time_since_epoch();
-            double duration = value.count();
-            // cout.precision(20);
-            // cout << duration << "\n";
-            pos_raw_msg.ms = duration;    //set the system time the message is sent
-            pos_raw_msg.id = count_;
+            double time_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
+            pos_raw_msg.msg_sent_ms = time_ms;    //set the system time the message is sent
             //
 
             this->publisher_->publish(pos_raw_msg);
@@ -656,19 +658,21 @@ private:
 
 int main(int argc, char* argv[])
 {
-    ap_interfaces::msg::Pos pos_raw;
     ofstream myfile;
-    newDetections = false;
+    ap_interfaces::msg::Pos pos_raw;
+    std::mutex pos_mtx;
+    frameId = 0;
+    pos_newDetections = false;
     
     myfile.open ("pub_diff.txt", ios::out);
 
     rclcpp::init(argc, argv);
 
-    std::thread th_detect(detect_pos,&pos_raw);
+    std::thread th_detect(detect_pos,&pos_raw, &pos_mtx);
 
     // You MUST use the MultiThreadedExecutor to use, well, multiple threads
     rclcpp::executors::MultiThreadedExecutor executor;
-    auto player_detection_pubnode = std::make_shared<PublisherNode>(&pos_raw, myfile);
+    auto player_detection_pubnode = std::make_shared<PublisherNode>(&pos_raw, myfile, &pos_mtx);
     auto player_detection_subnode = std::make_shared<SingleThreadedNode>();  // This contains BOTH subscriber callbacks.
                                                           // They will still run on different threads
                                                           // One Node. Two callbacks. Two Threads

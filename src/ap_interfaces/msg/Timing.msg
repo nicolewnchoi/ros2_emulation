@@ -1,0 +1,7 @@
+int64 id
+float64 frame_grab_ms
+float64 frame_done_processing_ms
+float64 msg_sent_ms
+float64 msg_received_ms
+float64 begin_render_ms
+float64 end_render_ms

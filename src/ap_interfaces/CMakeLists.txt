@@ -41,12 +41,14 @@ set(msg_files
   "msg/Pos.msg"
   "msg/Score.msg"
   "msg/Button.msg"
+  "msg/Timing.msg"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Pos.msg"
   "msg/Score.msg"
   "msg/Button.msg"
+  "msg/Timing.msg"
   "srv/AddThreeInts.srv"
 )
 
