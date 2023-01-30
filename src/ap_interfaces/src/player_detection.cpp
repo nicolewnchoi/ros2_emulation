@@ -37,18 +37,11 @@ using namespace Spinnaker;
 using namespace Spinnaker::GenApi;
 using namespace Spinnaker::GenICam;
 
-struct Pos_raw1
-{
 
-    int total;
-    std::string timestamp;
-    float x[32];
-    float y[32];
-    int player_id[32];
-    std::string tag_id[32];
-    float size[32];
+#include <mutex>          // std::mutex
+std::mutex mtx;           // mutex for critical section
+bool newDetections;
 
-};
 
 
 Mat Init_background(Mat first_frame){
@@ -282,7 +275,7 @@ Mat AverageFrame(vector<Mat> frames){
 //   return r;
 // }
 
-void detect_pos(Pos_raw1* pos_raw) {
+void detect_pos(ap_interfaces::msg::Pos* pos_raw) {
 
     int first_flag = 0;
     //xrf delay
@@ -449,7 +442,6 @@ void detect_pos(Pos_raw1* pos_raw) {
             }
 
             
-
             if (!centers.empty()){
                 (pos_raw->total) = centers.size();
                 for(int i = 0; i < centers.size(); i++){
@@ -457,9 +449,10 @@ void detect_pos(Pos_raw1* pos_raw) {
                     (pos_raw->x)[i] = (float)centers[i].x;
                     (pos_raw->y)[i] = (float)(480 - centers[i].y);
                     (pos_raw->size)[i] = (float)radius[i];
-                    
                 }
-               
+                mtx.lock();
+                newDetections = true;
+                mtx.unlock();
             }
 
 
@@ -503,23 +496,31 @@ std::string string_thread_id()
 
 class PublisherNode : public rclcpp::Node
 {
-    Pos_raw1 * pos_raw;
+    ap_interfaces::msg::Pos * pos_raw;
     ofstream & myfile;
 public:
-    PublisherNode(Pos_raw1 * pos, ofstream& file)
+    PublisherNode(ap_interfaces::msg::Pos * pos, ofstream& file)
         : Node("PlayerDetectionPublisher"), count_(0), pos_raw(pos), flag(0), myfile(file)
     {
 
         publisher_ = this->create_publisher<ap_interfaces::msg::Pos>("pos_raw", 10);
         auto timer_callback =
             [this]() -> void {
-            auto message = ap_interfaces::msg::Pos();
+                
+            mtx.lock();
+            if(!newDetections){
+                mtx.unlock();
+                return;
+            }
+            ap_interfaces::msg::Pos pos_raw_msg = *pos_raw;
+            newDetections = false;
+            mtx.unlock();
 
             // Extract current thread
             rclcpp::Time time = this->now();
 
             //test time duration
-            message.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+            pos_raw_msg.timestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 
             //xrf delay
             unsigned long timenow_pub = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
@@ -541,27 +542,18 @@ public:
                 flag++;
             }
 
-            int temp_num = pos_raw->total;
-            for(int i = 0; i < temp_num; i++){
-                (message.x)[i] = (pos_raw->x)[i];
-                (message.y)[i] = (pos_raw->y)[i];
-                (message.size)[i] = (pos_raw->size)[i];
-            }
-            message.total = pos_raw->total;
-
-
             // Extract current thread
             auto curr_thread = string_thread_id();
             
             std::string output;
             // output += " ";
-            // output += std::to_string(pos_raw->timestamp);
+            // output += std::to_string(pos_raw_msg.timestamp);
             output += " ";
-            output += std::to_string(pos_raw->total);
+            output += std::to_string(pos_raw_msg.total);
             output += " ";
-            output += std::to_string((pos_raw->x)[0]);
+            output += std::to_string((pos_raw_msg.x)[0]);
             output += " ";
-            output += std::to_string((pos_raw->y)[0]);
+            output += std::to_string((pos_raw_msg.y)[0]);
 
             // Prep display message
             RCLCPP_INFO(
@@ -576,11 +568,12 @@ public:
             double duration = value.count();
             // cout.precision(20);
             // cout << duration << "\n";
-            message.ms = duration;    //set the system time the message is sent
-            message.id = count_;
+            pos_raw_msg.ms = duration;    //set the system time the message is sent
+            pos_raw_msg.id = count_;
             //
 
-            this->publisher_->publish(message);
+            this->publisher_->publish(pos_raw_msg);
+            
         };
         timer_ = this->create_wall_timer(16.67ms, timer_callback);
     }
@@ -663,8 +656,9 @@ private:
 
 int main(int argc, char* argv[])
 {
-    Pos_raw1 pos_raw;
+    ap_interfaces::msg::Pos pos_raw;
     ofstream myfile;
+    newDetections = false;
     
     myfile.open ("pub_diff.txt", ios::out);
 
