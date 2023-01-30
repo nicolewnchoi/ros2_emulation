@@ -124,6 +124,8 @@ ros2 run ap_interfaces player_detection
 --
 c:\opt\ros\foxy\x64\setup.bat &&cd C:\ros2newarch\ros2\ros2_emulation\src && call install\setup.bat
 --
+colcon build --merge-install --packages-select ap_interfaces --event-handlers console_direct+ 
+-----------
 
 unity-ros bridge:
 open a new terminal
@@ -172,3 +174,25 @@ Click "Build x msgs" where x is the number of messages from the message path.
 
 you may need to update a testpublisher in unity.
 The script is located under the "tester" game object and the Testpublish script.
+
+# how to add new src file to ros env
+create new src file and code
+modify CMakeLists:
+1) modify and add the following actions (dummy is example):
+add_executable(dummy src/dummy.cpp)
+ament_target_dependencies(dummy rclcpp std_msgs)
+rosidl_target_interfaces(dummy
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+
+2) add program executable name to install target
+install(TARGETS
+  player_detection
+  dummy
+  player_detection_clean
+  rfid
+  button
+  ui
+  DESTINATION lib/${PROJECT_NAME})
+
+## todo
+Make cv code thread safe, currently not protecting message 
