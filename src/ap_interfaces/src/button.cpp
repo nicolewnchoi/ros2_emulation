@@ -17,7 +17,6 @@
 #include <string>
 #include <thread>
 #include <iostream>
-#include <SFML/Graphics.hpp>
 #include <fstream>
 #include <stdlib.h>
 
@@ -27,15 +26,19 @@
 #include "ap_interfaces/msg/pos.hpp"
 #include "ap_interfaces/msg/button.hpp"
 
+#include "common/utils.hpp"
+#include "simpleble/SimpleBLE.h"
+
 using namespace std;
 using namespace std::chrono_literals;
 
-void kick_control(bool * p) {
+int kick_control(bool * p) {
 
     ofstream myfile;
     myfile.open("kick_duration.txt", ios::out);
     myfile.close();
 
+    /*
     sf::RenderWindow window(sf::VideoMode(500, 500), "Please move the mouse here!");
 
     while (window.isOpen())
@@ -80,6 +83,119 @@ void kick_control(bool * p) {
         window.clear();
         window.display();
     }
+    */
+
+    auto adapter_optional = Utils::getAdapter();
+
+    if (!adapter_optional.has_value()) {
+        return EXIT_FAILURE;
+    }
+
+    auto adapter = adapter_optional.value();
+
+
+    /*
+    std::vector<SimpleBLE::Peripheral> peripherals;
+    peripherals = adapter.get_paired_peripherals();
+    for (size_t i = 0; i < peripherals.size(); i++) {
+        std::cout << "[" << i << "] " << peripherals[i].identifier() << " [" << peripherals[i].address() << "]"
+                  << std::endl;
+    }
+    */
+
+
+    SimpleBLE::Peripheral d1, d2;
+
+    std::vector<char[10]> devices;
+
+    adapter.set_callback_on_scan_found([&](SimpleBLE::Peripheral peripheral) {
+        //std::cout << peripheral.identifier() << std::endl;
+
+        if (peripheral.address() == "c0:49:ef:bd:37:72") {
+            d1 = peripheral;
+            //adapter.scan_stop();
+        }
+        else if (peripheral.address() == "c0:49:ef:bd:3a:c2") {
+            d2 = peripheral;
+        }
+        //std::cout << "Found device: " << peripheral.identifier() << " [" << peripheral.address() << "]" << std::endl;
+        //peripherals.push_back(peripheral);
+        });
+
+    adapter.set_callback_on_scan_start([]() { std::cout << "Scan started." << std::endl; });
+    adapter.set_callback_on_scan_stop([]() { std::cout << "Scan stopped." << std::endl; });
+    // Scan for 5 seconds and return.
+    //adapter.scan_start();
+
+    adapter.scan_for(5000);
+
+    /*
+    std::cout << "The following devices were found:" << std::endl;
+    for (size_t i = 0; i < peripherals.size(); i++) {
+        std::cout << "[" << i << "] " << peripherals[i].identifier() << " [" << peripherals[i].address() << "]"
+                  << std::endl;
+    }
+
+
+    auto selection = Utils::getUserInputInt("Please select a device to connect to", peripherals.size() - 1);
+
+    if (!selection.has_value()) {
+        return EXIT_FAILURE;
+    }
+
+    auto peripheral = peripherals[selection.value()];
+    */
+
+    std::cout << "Connecting to " << d1.identifier() << " [" << d1.address() << "]" << std::endl;
+    d1.connect();
+
+
+    std::cout << "Connecting to " << d2.identifier() << " [" << d2.address() << "]" << std::endl;
+    d2.connect();
+
+    std::cout << "Successfully connected, printing services and characteristics.." << std::endl;
+
+    // Store all service and characteristic uuids in a vector.
+
+    /*
+    std::vector<std::pair<SimpleBLE::BluetoothUUID, SimpleBLE::BluetoothUUID>> uuids;
+    for (auto service : d1.services()) {
+        for (auto characteristic : service.characteristics()) {
+            uuids.push_back(std::make_pair(service.uuid(), characteristic.uuid()));
+        }
+    }
+
+    std::cout << "The following services and characteristics were found:" << std::endl;
+    for (size_t i = 0; i < uuids.size(); i++) {
+        std::cout << "[" << i << "] " << uuids[i].first << " " << uuids[i].second << std::endl;
+    }
+
+
+    selection = Utils::getUserInputInt("Select a characteristic to read", uuids.size() - 1);
+
+    if (!selection.has_value()) {
+        return EXIT_FAILURE;
+    }
+    */
+
+    while (true) {
+        SimpleBLE::ByteArray rx_data_1 = d1.read("4fafc201-1fb5-459e-8fcc-c5c9c331914b",
+            "beb5483e-36e1-4688-b7f5-ea07361b26a8");
+
+        SimpleBLE::ByteArray rx_data_2 = d2.read("4fafc201-1fb5-459e-8fcc-c5c9c331914b",
+            "beb5483e-36e1-4688-b7f5-ea07361b26a8");
+
+        std::cout << "Controller 1: ";
+        Utils::print_byte_array(rx_data_1);
+        std::cout << "Controller 2: ";
+        Utils::print_byte_array(rx_data_2);
+        std::this_thread::sleep_for(10ms);
+    }
+
+    d1.disconnect();
+    d2.disconnect();
+
+    return EXIT_SUCCESS;
 }
 
 

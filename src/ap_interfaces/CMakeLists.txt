@@ -6,16 +6,19 @@ if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
 endif()
 
+set(CMAKE_CXX_STANDARD 17)
+
 # Default to C++14
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
+#if(NOT CMAKE_CXX_STANDARD)
+#  set(CMAKE_CXX_STANDARD 14)
+#endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-#set(SFML_DIR "${CMAKE_SOURCE_DIR}/library/SFML-2.5.1/lib/cmake/SFML")
+set(simpleble_DIR "${CMAKE_SOURCE_DIR}/library/SimpleBLE-main/simpleble")
+add_subdirectory("${simpleble_DIR}")
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
@@ -27,13 +30,7 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(OpenCV 4.3.0 REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
-#find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
-
-include(FetchContent)
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.x)
-FetchContent_MakeAvailable(SFML)
+find_package(simpleble REQUIRED)
 
 set(msg_files
   "msg/Pos.msg"
@@ -59,8 +56,8 @@ ament_target_dependencies(rfid rclcpp std_msgs)
 rosidl_target_interfaces(rfid
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-add_executable(button src/button.cpp)
-target_link_libraries(button sfml-graphics)
+add_executable(button src/button.cpp src/common/utils.hpp src/common/utils.cpp)
+target_link_libraries(button simpleble)
 ament_target_dependencies(button rclcpp std_msgs)
 rosidl_target_interfaces(button
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
