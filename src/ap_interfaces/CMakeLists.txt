@@ -79,6 +79,27 @@ ament_target_dependencies(player_detection_dummy rclcpp std_msgs)
 rosidl_target_interfaces(player_detection_dummy
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
+#add single threaded cv code and publisher in one 
+add_executable(player_detection_single src/player_detection_single.cpp src/CameraFLIR.cpp)
+ament_target_dependencies(player_detection_single OpenCV rclcpp std_msgs)
+target_link_libraries(player_detection_single ${Spinnaker_LIBRARIES1}
+	              ${Spinnaker_LIBRARIES2}
+	              ${Spinnaker_LIBRARIES3}
+	              ${Spinnaker_LIBRARIES4}
+	              ${Spinnaker_LIBRARIES5}
+	              ${Spinnaker_LIBRARIES6}
+	              ${Spinnaker_LIBRARIES7}
+	              ${Spinnaker_LIBRARIES8}
+	              ${Spinnaker_LIBRARIES9}
+	              ${Spinnaker_LIBRARIES10}
+	              ${Spinnaker_LIBRARIES11}
+	              ${Spinnaker_LIBRARIES12}
+	              ${Spinnaker_LIBRARIES13}
+                              )
+
+rosidl_target_interfaces(player_detection_single
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+
 add_executable(rfid src/rfid.cpp)
 ament_target_dependencies(rfid rclcpp std_msgs)
 rosidl_target_interfaces(rfid
@@ -98,6 +119,7 @@ rosidl_target_interfaces(ui
 install(TARGETS
   player_detection
   player_detection_dummy
+  player_detection_single
   rfid
   button
   ui
