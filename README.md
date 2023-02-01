@@ -112,6 +112,8 @@ nvm install latest
 install https://github.com/RobotWebTools/ros2-web-bridge
 
 
+Rememebr to open camera in spinnaker and set frame rate
+
 running procedure:
 camera detection part:
 #call C:\dev\ros2_foxy\ros2-windows\local_setup.bat(official version)
