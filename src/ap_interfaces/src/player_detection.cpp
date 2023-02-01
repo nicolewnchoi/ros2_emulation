@@ -41,6 +41,24 @@ using namespace Spinnaker::GenICam;
 bool pos_newDetections;
 int frameId;
 
+// TODO Determine if the following line would need to be used
+// std::ios_base::sync_with_stdio(false);
+
+// TODO, use of debug print macro to specific file, for now just done in runtime
+// #define DEBUG
+// // #undef DEBUG
+// // #define OUTFILE ""
+
+// #ifdef DEBUG
+// #define DEBUG_TEST 1
+// #else
+// #define DEBUG_TEST 0
+// #endif
+
+// #define DEBUG_PRINT(fp,fmt, ...) \
+//             do { if (DEBUG_TEST) fprintf(fp, fmt, __VA_ARGS__); } while (0)
+//Example usage: DEBUG_PRINT(stderr, "%s","Hello World\n");
+
 
 
 Mat Init_background(Mat first_frame){
@@ -277,8 +295,16 @@ Mat AverageFrame(vector<Mat> frames){
 void detect_pos(ap_interfaces::msg::Pos* pos_raw, std::mutex* pos_mtx) {
     int first_flag = 0;
     //xrf delay
-    ofstream myfile_detect;
-    myfile_detect.open ("detect_duration.txt", ios::out);
+    // ofstream myfile_detect;
+    // myfile_detect.open("detect_duration.txt", ios::out);
+
+    // debug print statements to file for timing purposes
+    // FILE *fp = fopen("cam_detect_duration.csv","w+");
+    
+
+    double intial_time = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
+    double last_flush_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
+
 
     Mat frame, frame_rgb, fgMask, fgMask_gray;
     Mat fgMask_erode, fgMask_dilate;
@@ -306,6 +332,7 @@ void detect_pos(ap_interfaces::msg::Pos* pos_raw, std::mutex* pos_mtx) {
     //test_HSV();
     //test_thres();
     while(true){
+        double start_loop_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
         auto timestart =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
         frame = theFLIRCamera.GrabFrame(0);
         double frame_grab_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
@@ -466,7 +493,28 @@ void detect_pos(ap_interfaces::msg::Pos* pos_raw, std::mutex* pos_mtx) {
             //xrf delay
             auto timeend =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
             auto d_time = timeend - timestart;
-            myfile_detect << d_time <<endl;
+            // myfile_detect << d_time <<endl;
+
+            /*debug print statements to file for timing purposes
+            fprintf(fp,"%.2f\n",(start_loop_ms-intial_time));
+            if(start_loop_ms-last_flush_ms>60000){
+                cout<<"Flushing now"<<endl;
+                fflush(fp);
+                exit(0);
+                last_flush_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
+            }
+            */
+
+            /*//Test add sleep to slow down processing 
+            double now_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
+            double dur_ms = now_ms - start_loop_ms;
+            if(dur_ms < 30){
+                int diff_ms = (int)(30 - dur_ms);
+                // cout << "sleep for " << diff_ms << "ms" << endl;
+                std::this_thread::sleep_for(std::chrono::milliseconds(diff_ms));
+            }
+            */
+
 
             //imshow("input", input);
             //imshow("Background", Background);
@@ -484,7 +532,7 @@ void detect_pos(ap_interfaces::msg::Pos* pos_raw, std::mutex* pos_mtx) {
 
     }
     //xrf delay
-    myfile_detect.close();
+    // myfile_detect.close();
 }
 /**
  * A small convenience function for converting a thread ID to a string
@@ -658,6 +706,9 @@ private:
 
 int main(int argc, char* argv[])
 {
+    //added to maybe help with io synchronization issues, likely not really needed
+    std::ios_base::sync_with_stdio(false);
+    
     ofstream myfile;
     ap_interfaces::msg::Pos pos_raw;
     std::mutex pos_mtx;
